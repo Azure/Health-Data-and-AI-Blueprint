@@ -1,0 +1,41 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentReference": {
+      "type": "secureObject"
+    },
+    "workloadReference": {
+      "type": "secureObject"
+    },
+    "monitoring": {
+      "type": "secureObject"
+    }
+  },
+  "resources": [ 
+    { 
+      "apiVersion": "2017-05-10", 
+      "name": "deploy-monitoring-solution", 
+      "type": "Microsoft.Resources/deployments", 
+      "properties": { 
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('environmentReference')._artifactsLocation,'templates/buildingblocks/monitoring/azuredeploy.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": { 
+          "_artifactsLocation":{"value": "[parameters('environmentReference')._artifactsLocation]"}, 
+          "_artifactsSasToken":{"value": "[parameters('environmentReference')._artifactsLocationSasToken]"},
+          "uniquePrefix":{"value": "[parameters('environmentReference').prefix]"},
+          "appInsightsServiceName":{"value": "[parameters('monitoring').appInsights.serviceName]"},
+          "logAnalyticsServiceName":{"value": "[parameters('monitoring').logAnalytics.serviceName]"},
+          "environment":{"value": "[parameters('environmentReference').env]"},
+          "location":{"value": "[parameters('environmentReference').location]"},
+          "omsTags": {"value": "[union(parameters('environmentReference').tags, parameters('monitoring').logAnalytics.tags)]"},
+          "appInsightsTags": {"value": "[union(parameters('environmentReference').tags, parameters('monitoring').appInsights.tags)]"}
+        }
+      }
+    }
+  ],
+  "outputs": {}
+}

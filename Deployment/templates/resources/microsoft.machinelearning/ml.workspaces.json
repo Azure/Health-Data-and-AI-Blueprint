@@ -1,0 +1,41 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspaceName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "storageAccountId": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "object"
+        }        
+    },
+    "variables": {
+        "mlVersion": "2016-04-01",
+        "mlResourceId": "[resourceId('Microsoft.MachineLearning/workspaces', parameters('workspaceName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.MachineLearning/workspaces",
+            "name": "[parameters('workspaceName')]",
+            "apiVersion": "[variables('mlVersion')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",            
+            "properties": {
+                "userStorageAccountId": "[parameters('storageAccountId')]"
+            }
+        }
+    ],
+    "outputs": {
+        "mlWorkspaceObject": {"type": "object", "value": "[reference(variables('mlResourceId'), variables('mlVersion'))]"},
+        "mlWorkspaceToken": {"type": "string", "value": "[listWorkspaceKeys(variables('mlResourceId'), variables('mlVersion')).primaryToken]"},
+        "mlWorkspaceWorkspaceID": {"type": "string", "value": "[reference(variables('mlResourceId'), variables('mlVersion')).WorkspaceId]"},
+        "mlWorkspaceWorkspaceLink": {"type": "string", "value": "[concat('https://studio.azureml.net/Home/ViewWorkspace/', reference(variables('mlResourceId'), variables('mlVersion')).WorkspaceId)]"},
+        "mlWorkspaceLocation":{"type": "string", "value": "[parameters('location')]"}
+    }
+}

@@ -1,0 +1,58 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "String"
+        },
+        "publisherName": {
+            "type": "String"
+        },
+        "endpointType": {
+            "type": "String"
+        },
+        "endpointUrl": {
+            "type": "String"
+        },
+        "subjectBeginsWith": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "subjectEndsWith": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "subjectIsCaseSensitive": {
+            "type": "Bool",
+            "defaultValue": false
+        },
+        "includedEventTypes": {
+            "type": "Array"
+        },
+        "labels": {
+            "type": "Array"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/StorageAccounts/providers/eventSubscriptions",
+            "name": "[concat(concat(parameters('publisherName'), '/Microsoft.EventGrid/'), parameters('name'))]",
+            "apiVersion": "2017-06-15-preview",
+            "properties": {
+                "destination": {
+                    "endpointType": "[parameters('endpointType')]",
+                    "properties": {
+                        "endpointUrl": "[parameters('endpointUrl')]"
+                    }
+                },
+                "filter": {
+                    "subjectBeginsWith": "[parameters('subjectBeginsWith')]",
+                    "subjectEndsWith": "[parameters('subjectEndsWith')]",
+                    "subjectIsCaseSensitive": "[parameters('subjectIsCaseSensitive')]",
+                    "includedEventTypes": "[parameters('includedEventTypes')]"
+                },
+                "labels": "[parameters('labels')]"
+            }
+        }
+    ]
+}

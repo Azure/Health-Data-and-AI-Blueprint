@@ -1,0 +1,236 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+      "_artifactsLocation": {
+        "type": "securestring"
+      },
+      "_artifactsSasToken": {
+        "type": "securestring"
+      },
+      "uniquePrefix": {
+        "defaultValue": "qwerty",
+        "type": "string"
+      },
+      "serviceName": {
+        "type": "string"
+      },
+      "environment": {
+        "defaultValue": "dev",
+        "type": "string"
+      },
+      "tenantId": {
+        "type": "string"
+      },
+      "tenantDomain": {
+        "type": "string"
+      },
+      "administratorLogin":{
+        "type": "string"
+      },
+      "administratorLoginPassword":{
+        "type": "securestring"
+      },
+      "sqlAdAdministrator":{
+        "type": "string"
+      },
+      "sqlAdAdministratorSid":{
+        "type": "string"
+      },
+      "databaseName":{
+        "type": "string"
+      },
+      "location":{
+        "type": "string"
+      },
+      "firewallRules": {
+        "type": "array"
+      },
+      "tags": {
+        "type": "object"
+      },
+      "omsWorkspaceResourceId": {
+        "type": "string"
+      }
+  },
+  "variables": {
+    "sqlServerName": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('serviceName'),'-sql-',parameters('environment')))]",
+    "sqlAdAdministratorLogin": "[concat(parameters('sqlAdAdministrator'),'@',parameters('tenantDomain'))]",
+    "storageAccountName": "[toLower(replace(concat(parameters('uniquePrefix'),'-',parameters('serviceName'),'-sqllog-stg',parameters('environment')),'-',''))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-05-10",
+      "name": "sql-audit-storage",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.storage/storage-encrypt-httpsonly.json')]"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('storageAccountName')]"
+          },
+          "sku": {
+            "value": "Standard_LRS"
+          },
+          "location": {
+              "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "sql",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "sql-audit-storage"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.sql/sqlserver.v12.json')]"
+        },
+        "parameters": {
+          "sqlServerName": {
+            "value": "[variables('sqlServerName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "administratorLogin": {
+            "value": "[parameters('administratorLogin')]"
+          },
+          "administratorLoginPassword": {
+            "value": "[parameters('administratorLoginPassword')]"
+          },
+          "externalAdministratorLogin":{
+            "value": "[variables('sqlADAdministratorLogin')]"
+          },
+          "externalAdministratorSid":{
+            "value": "[parameters('sqlADAdministratorSid')]"
+          },
+          "tenantId":{
+            "value": "[parameters('tenantId')]"
+          },
+          "storageAccountName": {
+            "value": "[variables('storageAccountName')]"
+          },
+          "sendAlertsTo": {
+            "value": "[variables('sqlAdAdministratorLogin')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "database",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "sql"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.sql/sqldatabase.default.json')]"
+        },
+        "parameters": {
+          "sqlServerName": {
+            "value": "[variables('sqlServerName')]"
+          },
+          "databaseName": {
+            "value": "[parameters('databaseName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "omsWorkspaceResourceId": {
+            "value": "[parameters('omsWorkspaceResourceId')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "firewallrule-allowazureservices",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "sql"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.sql/sql-firewallrules.json')]"
+        },
+        "parameters": {
+          "sqlServerName": {
+            "value": "[variables('sqlServerName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "firewallrule-allowlocalIP",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "sql"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.sql/sql-firewallrules.json')]"
+        },
+        "parameters": {
+          "sqlServerName": {
+            "value": "[variables('sqlServerName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "ruleName": {
+            "value": "[parameters('firewallRules')[0].name]"
+          },
+          "startIpAddress": {
+            "value": "[parameters('firewallRules')[0].startIP]"
+          },
+          "endIpAddress": {
+            "value": "[parameters('firewallRules')[0].endIP]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "sqlServerName": {
+      "type": "string",
+      "value": "[variables('sqlServerName')]"
+    },
+    "sqlServerPassword": {
+      "type": "string",
+      "value": "[parameters('administratorLoginPassword')]"
+    },
+    "dbConnectionString": {
+      "type": "string",
+      "value": "[concat('Server=tcp:',reference('sql').outputs.fqdn.value,',1433;Initial Catalog=',parameters('databaseName'),';Persist Security Info=False;User ID=',parameters('administratorLogin'),';Password=',parameters('administratorLoginPassword'),';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;')]"
+    },
+    "sqlServerPrincipalId": {
+      "type": "string",
+      "value": "[reference('sql').outputs.principalId.value]"
+    }
+  }
+}

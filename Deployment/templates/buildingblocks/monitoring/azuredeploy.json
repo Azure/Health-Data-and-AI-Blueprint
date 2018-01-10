@@ -1,0 +1,98 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "_artifactsLocation": {
+      "type": "securestring"
+    },
+    "_artifactsSasToken": {
+      "type": "securestring"
+    },
+    "uniquePrefix": {
+      "defaultValue": "qwerty",
+      "type": "string"
+    },
+    "logAnalyticsServiceName": {
+      "type": "string"
+    },
+    "appInsightsServiceName": {
+      "type": "string"
+    },
+    "environment": {
+      "defaultValue": "dev",
+      "type": "string"
+    },
+    "location":{
+      "type": "string"
+    },
+    "omsTags": {
+      "type": "object"
+    },
+    "appInsightsTags": {
+      "type": "object"
+    }
+  },
+  "variables": {
+    "workspaceName": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('logAnalyticsServiceName'),'-analytics-',parameters('environment')))]",
+    "appInsightsName": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('appInsightsServiceName'),'-insights-',parameters('environment')))]",
+    "solutionNames": [
+      "AzureWebAppsAnalytics",
+      "AzureSQLAnalytics",
+      "ChangeTracking",
+      "KeyVaultAnalytics",
+      "Security",
+      "ApplicationInsights",
+      "AzureActivity",
+      "SecurityCenterFree"
+    ]
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-05-10",
+      "name": "oms-workspaces",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.loganalytics/workspaces.json')]"
+        },
+        "parameters": {
+          "omsWorkspaceName": {
+            "value": "[variables('workspaceName')]"
+          },
+          "omsSolutionsName":{
+            "value": "[variables('solutionNames')]"
+          },
+          "tags": {
+            "value": "[parameters('omsTags')]"
+          },
+          "sku": {
+            "value": "PerNode"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "appInsights",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.appinsights/components.json')]"
+        },
+        "parameters": {
+          "appName": {
+            "value": "[variables('appInsightsName')]"
+          },
+          "tags": {
+            "value": "[parameters('appInsightsTags')]"
+          },
+          "priceCode": {
+            "value": 2
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>53b84ef5-5971-4ab1-9170-9812c488c9b6</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworkIdentifier>Deployment</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>1.0</TargetFrameworkVersion>
+    <PrepareForBuildDependsOn>
+    </PrepareForBuildDependsOn>
+  </PropertyGroup>
+  <Import Condition=" Exists('Deployment.targets') " Project="Deployment.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- vertag<:>start tokens<:>maj.min -->
+  <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
+  <!-- vertag<:>end -->
+  <ItemGroup>
+    <None Include="deploy.ps1" />
+    <None Include="Deployment.targets">
+      <Visible>False</Visible>
+    </None>
+    <None Include="functions\HealthCareIngestion.zip" />
+    <None Include="functions\HealthCareWorkflow.zip" />
+    <None Include="How-To-Run.ps1" />
+    <None Include="scripts\demoscripts\HealthcareDemo.ps1" />
+    <None Include="scripts\demoscripts\lib.psm1" />
+    <None Include="scripts\dlls\AzureMLPS.dll" />
+    <None Include="scripts\dlls\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
+    <None Include="scripts\jsonscripts\aad.manifest.json" />
+    <None Include="scripts\jsonscripts\input_admission.json" />
+    <None Include="scripts\jsonscripts\input_discharge.json" />
+    <None Include="scripts\jsonscripts\subscription.roleassignments.json" />
+    <None Include="scripts\pshscripts\configureAADUsers.ps1" />
+    <None Include="scripts\pshscripts\Enable-AzureRMDiagnostics.ps1" />
+    <None Include="scripts\pshscripts\pshfunction.ps1" />
+    <None Include="scripts\sqlscripts\patientdb_schema.sql" />
+    <None Include="templates\azuredeploy.parameters.json" />
+    <None Include="templates\buildingblocks\blobstorage\azuredeploy.json" />
+    <None Include="templates\buildingblocks\eventgrid\azuredeploy.json" />
+    <None Include="templates\buildingblocks\keyvault\azuredeploy.json" />
+    <None Include="templates\buildingblocks\machinelearning\azuredeploy.json" />
+    <None Include="templates\buildingblocks\monitoring\azuredeploy.json" />
+    <None Include="templates\buildingblocks\sql\azuredeploy.json" />
+    <None Include="templates\buildingblocks\web\azuredeploy.json" />
+    <None Include="templates\resources\microsoft.appinsights\components.json" />
+    <None Include="templates\resources\microsoft.eventgrid\storage.eventsubscription.json" />
+    <None Include="templates\resources\microsoft.keyvault\secrets.vaults.json" />
+    <None Include="templates\resources\microsoft.keyvault\vaults.json" />
+    <None Include="templates\resources\microsoft.loganalytics\workspaces.json" />
+    <None Include="templates\resources\microsoft.machinelearning\ml.commitmentplans.json" />
+    <None Include="templates\resources\microsoft.machinelearning\ml.workspaces.json" />
+    <None Include="templates\resources\microsoft.sql\ekm.tde.encryption.json" />
+    <None Include="templates\resources\microsoft.sql\sql-firewallrules.json" />
+    <None Include="templates\resources\microsoft.sql\sqldatabase.default.json" />
+    <None Include="templates\resources\microsoft.sql\sqlserver.v12.json" />
+    <None Include="templates\resources\microsoft.storage\blobstorage-encrypt-httpsonly.json" />
+    <None Include="templates\resources\microsoft.storage\storage-encrypt-httpsonly.json" />
+    <None Include="templates\resources\microsoft.web\function.authsettings.json" />
+    <None Include="templates\resources\microsoft.web\function.connection.json" />
+    <None Include="templates\resources\microsoft.web\function.package.json" />
+    <None Include="templates\resources\microsoft.web\functionapp.json" />
+    <None Include="templates\scenarios\monitoring\azuredeploy.json" />
+    <None Include="templates\scenarios\workload\azuredeploy.json" />
+    <None Include="templates\scenarios\workload\update-resources\azuredeploy.json" />
+    <None Include="trainingdata\LengthOfStayname.csv" />
+  </ItemGroup>
+  <Target Name="GetReferenceAssemblyPaths" />
+</Project>

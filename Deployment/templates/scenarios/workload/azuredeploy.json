@@ -1,0 +1,215 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentReference": {
+      "type": "secureObject"
+    },
+    "workloadReference": {
+      "type": "secureObject"
+    },
+    "monitoring": {
+      "type": "secureObject"
+    }
+  },
+  "variables": {
+    "omsWorkspaceName": "[toLower(concat(parameters('environmentReference').prefix,'-',parameters('monitoring').logAnalytics.serviceName,'-analytics-',parameters('environmentReference').env))]",
+    "omsWorkspaceResourceId": "[resourceId(concat(parameters('environmentReference').prefix,'-monitoring-',parameters('environmentReference').env,'-rg'),'Microsoft.OperationalInsights/workspaces', variables('omsWorkspaceName'))]"
+  },
+  "resources": [ 
+    { 
+      "apiVersion": "2017-05-10", 
+      "name": "deploy-blobstorage", 
+      "type": "Microsoft.Resources/deployments", 
+      "properties": { 
+         "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('environmentReference')._artifactsLocation,'templates/buildingblocks/blobstorage/azuredeploy.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+         "parameters": { 
+          "_artifactsLocation":{"value": "[parameters('environmentReference')._artifactsLocation]"}, 
+          "_artifactsSasToken":{"value": "[parameters('environmentReference')._artifactsLocationSasToken]"},
+          "uniquePrefix":{"value": "[parameters('environmentReference').prefix]"},
+          "serviceName":{"value": "[parameters('workloadReference').blobstorage.serviceName]"},
+          "environment":{"value": "[parameters('environmentReference').env]"},
+          "location":{"value": "[parameters('environmentReference').location]"},
+          "tags": {"value": "[union(parameters('environmentReference').tags, parameters('workloadReference').blobstorage.tags)]"}
+        }
+      }
+    },
+    { 
+      "apiVersion": "2017-05-10", 
+      "name": "deploy-sql", 
+      "type": "Microsoft.Resources/deployments", 
+      "properties": { 
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('environmentReference')._artifactsLocation,'templates/buildingblocks/sql/azuredeploy.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+          "parameters": { 
+          "_artifactsLocation" : {"value": "[parameters('environmentReference')._artifactsLocation]"}, 
+          "_artifactsSasToken" : {"value": "[parameters('environmentReference')._artifactsLocationSasToken]"},
+          "uniquePrefix" : {"value": "[parameters('environmentReference').prefix]"},
+          "serviceName"  : {"value": "[parameters('workloadReference').sql.serviceName]"},
+          "environment"  : {"value": "[parameters('environmentReference').env]"},
+          "tenantId":{"value": "[parameters('environmentReference').tenantId]"},
+          "tenantDomain"  : {"value": "[parameters('environmentReference').tenantDomain]"},
+          "administratorLogin" : {"value": "[parameters('workloadReference').sql.sqlAdministrator]"},
+          "administratorLoginPassword" : {"value": "[parameters('environmentReference').deploymentPassword]"},
+          "sqlAdAdministrator" : {"value": "[parameters('workloadReference').sql.sqlAdAdministrator]"},
+          "sqlAdAdministratorSid" : {"value": "[parameters('workloadReference').sql.sqlAdAdministratorSid]"},
+          "databaseName": {"value": "[parameters('workloadReference').sql.databaseName]"},
+          "location": {"value": "[parameters('environmentReference').location]"},
+          "firewallRules": {"value": "[parameters('workloadReference').sql.firewallRules]"},
+          "tags": {"value": "[union(parameters('environmentReference').tags, parameters('workloadReference').sql.tags)]"},
+          "omsWorkspaceResourceId": {"value": "[variables('omsWorkspaceResourceId')]"}
+        }
+      }
+    },
+    { 
+      "apiVersion": "2017-05-10", 
+      "name": "deploy-functionapp", 
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "deploy-sql",
+        "deploy-blobstorage",
+        "deploy-keyvault"
+      ],
+      "properties": { 
+         "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('environmentReference')._artifactsLocation,'templates/buildingblocks/web/azuredeploy.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+         "parameters": { 
+          "_artifactsLocation":{"value": "[parameters('environmentReference')._artifactsLocation]"}, 
+          "_artifactsSasToken":{"value": "[parameters('environmentReference')._artifactsLocationSasToken]"},
+          "uniquePrefix":{"value": "[parameters('environmentReference').prefix]"},
+          "functions":{"value": "[parameters('workloadReference').function]"},
+          "environment":{"value": "[parameters('environmentReference').env]"},
+          "location":{"value": "[parameters('environmentReference').location]"},
+          "appInsightServiceName":{"value": "[parameters('monitoring').appInsights.serviceName]"},
+          "adAppClientId":{"value": "[parameters('environmentReference').adAppClientId]"},
+          "adAppClientPassword":{"value": "[parameters('environmentReference').deploymentPassword]"},
+          "keyVaultUri": {"value": "[reference('deploy-keyvault').outputs.keyVaultUri.value]"},
+          "tags": {"value": "[parameters('environmentReference').tags]"},
+          "tenantId":{"value": "[parameters('environmentReference').tenantId]"},
+          "tenantDomain":{"value": "[parameters('environmentReference').tenantDomain]"}
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10", 
+      "name": "deploy-machinelearning", 
+      "type": "Microsoft.Resources/deployments", 
+      "properties": { 
+         "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('environmentReference')._artifactsLocation,'templates/buildingblocks/machinelearning/azuredeploy.json')]",
+          "contentVersion": "1.0.0.0"
+        }, 
+         "parameters": { 
+          "_artifactsLocation":{"value": "[parameters('environmentReference')._artifactsLocation]"}, 
+          "_artifactsSasToken":{"value": "[parameters('environmentReference')._artifactsLocationSasToken]"},
+          "uniquePrefix":{"value": "[parameters('environmentReference').prefix]"},
+          "serviceName":{"value": "[parameters('workloadReference').azureML.serviceName]"},
+          "environment":{"value": "[parameters('environmentReference').env]"},
+          "location":{"value": "[parameters('environmentReference').location]"},
+          "tags": {"value": "[union(parameters('environmentReference').tags, parameters('workloadReference').azureML.tags)]"}
+        }
+      }
+    },
+    { 
+      "apiVersion": "2017-05-10", 
+      "name": "deploy-keyvault", 
+      "type": "Microsoft.Resources/deployments", 
+      "dependsOn": [
+        "deploy-sql",
+        "deploy-blobstorage"
+      ],
+      "properties": { 
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('environmentReference')._artifactsLocation,'templates/buildingblocks/keyvault/azuredeploy.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "_artifactsLocation":{"value": "[parameters('environmentReference')._artifactsLocation]"}, 
+          "_artifactsSasToken":{"value": "[parameters('environmentReference')._artifactsLocationSasToken]"},
+          "uniquePrefix":{"value": "[parameters('environmentReference').prefix]"},
+          "serviceName":{"value": "[parameters('workloadReference').keyVault.serviceName]"},
+          "environment":{"value": "[parameters('environmentReference').env]"},
+          "location":{"value": "[parameters('environmentReference').location]"},
+          "tenantId":{"value": "[parameters('environmentReference').tenantId]"},
+          "accessPolicies":{"value": "[parameters('workloadReference').keyVault.accessPolicies]"},
+          "sqlServerObjectId":{"value": "[reference('deploy-sql').outputs.sqlServerPrincipalId.value]"},
+          "appinsightsInstrumentationKey":{"value": "[reference(resourceId(toLower(concat(parameters('environmentReference').prefix,'-monitoring-', parameters('environmentReference').env,'-rg')),'microsoft.insights/components/', toLower(concat(parameters('environmentReference').prefix,'-',parameters('monitoring').appInsights.serviceName,'-insights-',parameters('environmentReference').env))), '2015-05-01').InstrumentationKey]"},
+          "blobStorageAccessKey":{"value": "[reference('deploy-blobstorage').outputs.blobStorageAccessKey.value]"},
+          "patientDbConnectionString":{"value": "[reference('deploy-sql').outputs.dbConnectionString.value]"},
+          "patientDbData":{"value": "[parameters('workloadReference').sql.patientDbData]"},
+          "mlWebServiceEndpoint":{"value": "[parameters('workloadReference').azureML.predictLengthOfStayServiceEndpoint]"},
+          "mlWebServiceApiKey":{"value": "[parameters('workloadReference').azureML.predictLengthOfStayServiceApiKey]"},
+          "tags": {"value": "[union(parameters('environmentReference').tags, parameters('workloadReference').keyVault.tags)]"},
+          "secretExpirationDate": {"value": "[parameters('workloadReference').keyVault.secretExpirationDate]"},
+          "omsWorkspaceResourceId": {"value": "[variables('omsWorkspaceResourceId')]"}
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "sqlServerName": {
+      "type": "string",
+      "value": "[reference('deploy-sql').outputs.sqlServerName.value]"
+    },
+    "sqlPassword": {
+      "type": "string",
+      "value": "[reference('deploy-sql').outputs.sqlServerPassword.value]"
+    },
+    "blobStorageAccessKey": {
+      "type": "string",
+      "value": "[reference('deploy-blobstorage').outputs.blobStorageAccessKey.value]"
+    },
+    "blobStorageAccessUri": {
+      "type": "string",
+      "value": "[reference('deploy-blobstorage').outputs.blobStorageUri.value]"
+    },
+    "blobStorageAccountName": {
+      "type": "string",
+      "value": "[reference('deploy-blobstorage').outputs.blobStorageAccountName.value]"
+    },
+    "mlWorkspaceToken": {
+      "type": "string",
+      "value": "[reference('deploy-machinelearning').outputs.mlWorkspaceToken.value]"
+    },
+    "mlWorkspaceWorkspaceID": {
+        "type": "string", 
+        "value": "[reference('deploy-machinelearning').outputs.mlWorkspaceWorkspaceID.value]"
+    },
+    "mlWorkspaceLocation":{
+        "type": "string", 
+        "value": "[reference('deploy-machinelearning').outputs.mlWorkspaceLocation.value]"
+    },
+    "keyVaultName":{
+      "type": "string",
+      "value": "[reference('deploy-keyvault').outputs.keyVaultName.value]"
+    },
+    "keyVaultUri":{
+      "type": "string",
+      "value": "[concat('https://', reference('deploy-keyvault').outputs.keyVaultName.value, '.vault.azure.net/')]"
+    },
+    "sqlServerFqdn": {
+      "type": "string",
+      "value": "[concat(reference('deploy-sql').outputs.sqlServerName.value,'.database.windows.net')]"
+    },
+    "sqlDbConnectionString": {
+      "type": "string",
+      "value": "[reference('deploy-sql').outputs.dbConnectionString.value]"
+    },
+    "sqlDatabaseName": {
+      "type": "string",
+      "value": "[parameters('workloadReference').sql.databaseName]"
+    }
+  }
+}

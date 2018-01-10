@@ -1,0 +1,122 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appName": {
+            "type": "string",
+            "metadata": {
+                "description": "Enter the application name."
+            }
+        },
+        "appType": {
+            "type": "string",
+            "defaultValue": "web",
+            "allowedValues": [
+                "web",
+                "java",
+                "HockeyAppBridge",
+                "other"
+            ],
+            "metadata": {
+                "description": "Enter the application type."
+            }
+        },
+        "appLocation": {
+            "type": "string",
+            "defaultValue": "East US",
+            "allowedValues": [
+                "South Central US",
+                "West Europe",
+                "East US",
+                "North Europe"
+            ],
+            "metadata": {
+                "description": "Enter the application location."
+            }
+        },
+        "priceCode": {
+            "type": "int",
+            "defaultValue": 1,
+            "allowedValues": [
+                1,
+                2
+            ],
+            "metadata": {
+                "description": "1 = Basic, 2 = Enterprise"
+            }
+        },
+        "dailyQuota": {
+            "type": "int",
+            "defaultValue": 100,
+            "minValue": 1,
+            "metadata": {
+                "description": "Enter daily quota in GB."
+            }
+        },
+        "dailyQuotaResetTime": {
+            "type": "int",
+            "defaultValue": 24,
+            "metadata": {
+                "description": "Enter daily quota reset hour in UTC (0 to 23). Values outside the range will get a random reset hour."
+            }
+        },
+        "warningThreshold": {
+            "type": "int",
+            "defaultValue": 90,
+            "minValue": 1,
+            "maxValue": 100,
+            "metadata": {
+                "description": "Enter the % value of daily quota after which warning mail to be sent. "
+            }
+        },
+        "tags": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "priceArray": [
+            "Basic",
+            "Application Insights Enterprise"
+        ],
+        "pricePlan": "[take(variables('priceArray'),parameters('priceCode'))]",
+        "billingplan": "[concat(parameters('appName'),'/', variables('pricePlan')[0])]"
+    },
+    "resources": [
+        {
+            "type": "microsoft.insights/components",
+            "kind": "[parameters('appType')]",
+            "name": "[parameters('appName')]",
+            "apiVersion": "2014-04-01",
+            "location": "[parameters('appLocation')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "ApplicationId": "[parameters('appName')]",
+                "Request_Source": "IbizaWebAppExtensionCreate"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[variables('billingplan')]",
+            "type": "microsoft.insights/components/CurrentBillingFeatures",
+            "location": "[parameters('appLocation')]",
+            "apiVersion": "2015-05-01",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('appName'))]"
+            ],
+            "properties": {
+                "CurrentBillingFeatures": "[variables('pricePlan')]",
+                "DataVolumeCap": {
+                    "Cap": "[parameters('dailyQuota')]",
+                    "WarningThreshold": "[parameters('warningThreshold')]",
+                    "ResetTime": "[parameters('dailyQuotaResetTime')]"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "instrumentationKey" :{
+            "type": "string",
+            "value": "[reference(resourceId('microsoft.insights/components/', parameters('appName')), '2015-05-01').InstrumentationKey]"
+        }
+    }
+}

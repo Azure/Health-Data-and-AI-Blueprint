@@ -1,0 +1,14 @@
+{
+    "appRoles" : [
+        {
+          "allowedMemberTypes": [
+            "User"
+          ],
+          "displayName": "Care Line Manager",
+          "id": "e0729d63-2eac-446f-8490-00028251f7e0",
+          "isEnabled": true,
+          "description": "Care Line Manager Can Admit and Discharge Patient",
+          "value": "CareLineManager"
+        }
+    ]
+}

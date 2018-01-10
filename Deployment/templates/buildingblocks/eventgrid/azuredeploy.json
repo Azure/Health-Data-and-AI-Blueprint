@@ -1,0 +1,68 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "_artifactsLocation": {
+            "type": "securestring"
+        },
+        "_artifactsSasToken": {
+            "type": "securestring"
+        },
+        "uniquePrefix": {
+            "defaultValue": "qwerty",
+            "type": "string"
+        },
+        "eventGridInputObj": {
+            "type": "object"
+        },
+        "environment": {
+            "defaultValue": "dev",
+            "type": "string"
+        },
+        "eventGridSubscriptionEndpointUrl":{
+            "type": "string"
+        },
+        "storageAccName":{
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2017-05-10",
+            "name": "eventgrid-subscription-storage",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.eventgrid/storage.eventsubscription.json')]"
+              },
+              "parameters": {
+                "name": {
+                    "value": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('eventGridInputObj').subscription[0].serviceName,'-egs-',parameters('environment')))]"
+                },
+                "publisherName": {
+                    "value": "[parameters('storageAccName')]"
+                },
+                "endpointType": {
+                    "value": "WebHook"
+                },
+                "endpointUrl": {
+                    "value": "[parameters('eventGridSubscriptionEndpointUrl')]"
+                },
+                "includedEventTypes": {
+                    "value": [
+                        "Microsoft.Storage.BlobCreated"
+                    ]
+                },
+                "labels": {
+                    "value": [
+                        "[parameters('storageAccName')]"
+                    ]
+                }
+              }
+            }
+        }
+    ],
+    "outputs": {
+    }
+}

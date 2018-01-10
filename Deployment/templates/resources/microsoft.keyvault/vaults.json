@@ -1,0 +1,125 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "keyVaultName":{
+            "type": "string",
+            "defaultValue": "qwerty-kv"
+        },
+        "location":{
+            "type": "string",
+            "defaultValue": "eastus"
+        },
+        "tenantId":{
+            "type": "securestring"
+        },
+        "skuName":{
+            "type": "string",
+            "allowedValues": [
+                "standard", "premium"
+            ],
+            "defaultValue": "standard"
+        },
+        "enabledForDeployment":{
+            "type": "bool",
+            "defaultValue": false
+        },
+        "enabledForDiskEncryption":{
+            "type": "bool",
+            "defaultValue": false
+        },
+        "enabledForTemplateDeployment":{
+            "type": "bool",
+            "defaultValue": true
+        },
+        "createMode":{
+            "type": "string",
+            "allowedValues": [
+                "recover", "default"
+            ],
+            "defaultValue": "default"
+        },
+        "accessPolicies" :{
+            "type": "array"
+        },
+        "tags": {
+            "type": "object"
+        },
+        "omsWorkspaceResourceId": {
+            "type": "string"
+        },
+        "logsRetentionInDays": {
+            "type": "int",
+            "defaultValue": 0,
+            "minValue": 0,
+            "maxValue": 365,
+            "metadata": {
+              "description": "Specifies the number of days that logs are gonna be kept. If you do not want to apply any retention policy and retain data forever, set value to 0."
+            }
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('keyVaultName')]",
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2016-10-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "tenantId": "[parameters('tenantId')]",
+                "sku": {
+                    "family": "A",
+                    "name": "[parameters('skuName')]"
+                },
+                "accessPolicies": "[parameters('accessPolicies')]",
+                "enabledForDeployment": "[parameters('enabledForDeployment')]",
+                "enabledForDiskEncryption": "[parameters('enabledForDiskEncryption')]",
+                "enabledForTemplateDeployment": "[parameters('enabledForTemplateDeployment')]",
+                "createMode": "[parameters('createMode')]"
+            },
+            "resources": [
+                {
+                    "type": "providers/diagnosticSettings",
+                    "name": "Microsoft.Insights/service",
+                    "dependsOn": [
+                        "[parameters('keyVaultName')]"
+                    ],
+                    "apiVersion": "2015-07-01",
+                    "properties": {
+                        "workspaceId": "[parameters('omsWorkspaceResourceId')]",
+                        "logs": [
+                            {
+                                "category": "AuditEvent",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                "days": "[parameters('logsRetentionInDays')]",
+                                "enabled": true
+                                }
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "timeGrain": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                "enabled": true,
+                                "days": "[parameters('logsRetentionInDays')]"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "name":{
+            "type": "string",
+            "value": "[parameters('keyVaultName')]"
+        },
+        "uri":{
+            "type": "string",
+            "value": "[reference(parameters('keyVaultName'), '2016-10-01', 'Full').properties.vaultUri]"
+        }  
+    }
+}

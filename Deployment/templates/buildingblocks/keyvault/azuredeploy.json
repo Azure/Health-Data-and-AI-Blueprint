@@ -1,0 +1,287 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "_artifactsLocation": {
+            "type": "securestring"
+        },
+        "_artifactsSasToken": {
+            "type": "securestring"
+        },
+        "uniquePrefix": {
+            "type": "string"
+        },
+        "serviceName": {
+            "type": "string"
+        },
+        "environment": {
+            "type": "string"
+        },
+        "location":{
+            "type": "string"
+        },
+        "tenantId":{
+            "type": "securestring"
+        },
+        "accessPolicies" :{
+            "type": "array"
+        },
+        "sqlServerObjectId" :{
+            "type": "string"
+        },
+        "appinsightsInstrumentationKey" :{
+            "type": "securestring"
+        },
+        "blobStorageAccessKey" :{
+            "type": "securestring"
+        },
+        "patientDbConnectionString" :{
+            "type": "securestring"
+        },
+        "patientDbData" :{
+            "type": "securestring"
+        },
+        "mlWebServiceEndpoint" :{
+            "type": "string"
+        },
+        "mlWebServiceApiKey" :{
+            "type": "string"
+        },
+        "tags": {
+            "type": "object"
+        },
+        "secretExpirationDate": {
+            "type": "int"
+        },
+        "omsWorkspaceResourceId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "keyVaultName":"[toLower(concat(parameters('uniquePrefix'),'-',parameters('serviceName'),'-kv-',parameters('environment')))]",
+        "sqlAccessPolicy": [
+            {
+                "tenantId": "[parameters('tenantId')]",
+                "objectId": "[parameters('sqlServerObjectId')]",
+                "permissions": {
+                  "keys": [
+                    "get", "list", "wrapKey", "unwrapKey"
+                  ]
+                }
+            }
+        ]
+    },
+    "resources": [
+        {
+            "apiVersion": "2017-05-10",
+            "name": "keyvault",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.keyvault/vaults.json')]"
+              },
+              "parameters": {
+                    "keyVaultName": {
+                        "value": "[variables('keyVaultName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "tenantId": {
+                        "value": "[parameters('tenantId')]"
+                    },
+                    "accessPolicies": {
+                        "value": "[union(parameters('accessPolicies'), variables('sqlAccessPolicy'))]"
+                    },
+                    "tags": {
+                        "value": "[parameters('tags')]"
+                    },
+                    "omsWorkspaceResourceId": {
+                        "value": "[parameters('omsWorkspaceResourceId')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "secret-appinsightsInstrumentationKey",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "keyvault"
+            ],
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.keyvault/secrets.vaults.json')]"
+              },
+              "parameters": {
+                    "keyVaultName": {
+                        "value": "[variables('keyVaultName')]"
+                    },
+                    "secretName": {
+                        "value": "AppInsights-InstrumentationKey"
+                    },
+                    "secretValue": {
+                        "value": "[parameters('appinsightsInstrumentationKey')]"
+                    },
+                    "expirationDate": {
+                        "value": "[parameters('secretExpirationDate')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "secret-patientStorageAccessKey",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "keyvault"
+            ],
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.keyvault/secrets.vaults.json')]"
+              },
+              "parameters": {
+                    "keyVaultName": {
+                        "value": "[variables('keyVaultName')]"
+                    },
+                    "secretName": {
+                        "value": "StorageAcc-PatientAccesskey"
+                    },
+                    "secretValue": {
+                        "value": "[parameters('blobStorageAccessKey')]"
+                    },
+                    "expirationDate": {
+                        "value": "[parameters('secretExpirationDate')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "secret-patientDbConnectionString",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "keyvault"
+            ],
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.keyvault/secrets.vaults.json')]"
+              },
+              "parameters": {
+                    "keyVaultName": {
+                        "value": "[variables('keyVaultName')]"
+                    },
+                    "secretName": {
+                        "value": "Sqldb-ConnectionString"
+                    },
+                    "secretValue": {
+                        "value": "[parameters('patientDbConnectionString')]"
+                    },
+                    "expirationDate": {
+                        "value": "[parameters('secretExpirationDate')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "secret-patientData",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "keyvault"
+            ],
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.keyvault/secrets.vaults.json')]"
+              },
+              "parameters": {
+                    "keyVaultName": {
+                        "value": "[variables('keyVaultName')]"
+                    },
+                    "secretName": {
+                        "value": "Sqldb-PatientDataTableName"
+                    },
+                    "secretValue": {
+                        "value": "[parameters('patientDbData')]"
+                    },
+                    "expirationDate": {
+                        "value": "[parameters('secretExpirationDate')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[startsWith(parameters('mlWebServiceEndpoint'),'https')]",
+            "apiVersion": "2017-05-10",
+            "name": "secret-mlwebservice-endpoint",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "keyvault"
+            ],
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.keyvault/secrets.vaults.json')]"
+              },
+              "parameters": {
+                    "keyVaultName": {
+                        "value": "[variables('keyVaultName')]"
+                    },
+                    "secretName": {
+                        "value": "ML-PredictLengthOfStayServiceEndPoint"
+                    },
+                    "secretValue": {
+                        "value": "[parameters('mlWebServiceEndpoint')]"
+                    },
+                    "expirationDate": {
+                        "value": "[parameters('secretExpirationDate')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[contains(parameters('mlWebServiceApiKey'),'=')]",
+            "apiVersion": "2017-05-10",
+            "name": "secret-mlwebservice-api-key",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "keyvault"
+            ],
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.keyvault/secrets.vaults.json')]"
+              },
+              "parameters": {
+                    "keyVaultName": {
+                        "value": "[variables('keyVaultName')]"
+                    },
+                    "secretName": {
+                        "value": "ML-PredictLengthOfStayApiKey"
+                    },
+                    "secretValue": {
+                        "value": "[parameters('mlWebServiceApiKey')]"
+                    },
+                    "expirationDate": {
+                        "value": "[parameters('secretExpirationDate')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "keyVaultName": {
+            "type": "string",
+            "value": "[reference('keyvault').outputs.name.value]"
+        },
+        "keyVaultUri": {
+            "type": "string",
+            "value": "[reference('keyvault').outputs.uri.value]"
+        }
+    }
+}

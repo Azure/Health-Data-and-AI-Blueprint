@@ -1,0 +1,76 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "_artifactsLocation": {
+      "type": "securestring"
+    },
+    "_artifactsSasToken": {
+      "type": "securestring"
+    },
+    "uniquePrefix": {
+      "defaultValue": "qwerty",
+      "type": "string"
+    },
+    "serviceName": {
+      "type": "string"
+    },
+    "environment": {
+      "defaultValue": "dev",
+      "type": "string"
+    },
+    "location":{
+      "type": "string"
+    },
+    "tags": {
+      "type": "object"
+    }
+  },
+  "variables": {
+    "storageAccountName": "[toLower(replace(concat(parameters('uniquePrefix'),parameters('serviceName'),parameters('environment'),'stg'),'-',''))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-05-10",
+      "name": "storage",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.storage/blobstorage-encrypt-httpsonly.json')]"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('storageAccountName')]"
+          },
+          "sku": {
+            "value": "Standard_LRS"
+          },
+          "accessTier": {
+            "value": "Cool"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "blobStorageAccountName": {
+      "type": "string",
+      "value": "[reference('storage').outputs.name.value]"
+    },
+    "blobStorageAccessKey":{
+      "type": "string",
+      "value": "[reference('storage').outputs.key1.value]"
+    },
+    "blobStorageUri":{
+      "type": "string",
+      "value": "[reference('storage').outputs.blobUri.value]"
+    }
+  }
+}

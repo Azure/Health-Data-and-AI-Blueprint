@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlServerName": {
+            "type": "string"
+        },
+        "location":{
+            "type": "string"
+        },
+        "sqlTdeKeyUri": {
+            "type": "string"
+        },
+        "sqlServerKeyName": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('sqlServerName'),'/',parameters('sqlServerKeyName'))]",
+            "type": "Microsoft.Sql/servers/keys",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "properties": {
+                "serverKeyType":"AzureKeyVault",
+                "uri": "[parameters('sqlTdeKeyUri')]"
+            }
+        },
+        {
+            "name": "[concat(parameters('sqlServerName'),'/current')]",
+            "type": "Microsoft.Sql/servers/encryptionProtector",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[parameters('sqlServerKeyName')]"
+            ],
+            "properties": {
+                "serverKeyType":"AzureKeyVault",
+                "serverKeyName": "[parameters('sqlServerKeyName')]"
+            }
+        }
+    ]
+}

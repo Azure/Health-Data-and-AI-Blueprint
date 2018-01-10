@@ -1,0 +1,116 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hostingPlanName": {
+            "type": "string"
+        },        
+        "functionAppName": {
+            "type": "string"
+        },       
+        "location": {
+            "type": "string"
+        },
+        "storageAccountName":{
+            "type": "string"
+        },
+        "appInsightsName":{
+            "type": "string"
+        },
+        "appInsightsResourceGroup":{
+            "type": "string"
+        },
+        "adAppClientId":{
+            "type": "string"
+        },
+        "adAppClientPassword":{
+            "type": "string"
+        },
+        "keyVaultUri":{
+            "type": "string"
+        },
+        "tenantDomain":{
+            "type": "string"
+        },        
+        "tags": {
+            "type": "object"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2015-04-01",
+            "name": "[parameters('hostingPlanName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "name": "[parameters('hostingPlanName')]",
+                "computeMode": "Dynamic",
+                "sku": "Dynamic"
+            },
+            "tags": "[parameters('tags')]"
+        },
+        {
+            "apiVersion": "2016-03-01",
+            "name": "[parameters('functionAppName')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
+            ],
+            "kind": "functionapp",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "name": "[parameters('functionAppName')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "AzureWebJobsDashboard",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~1"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[toLower(parameters('functionAppName'))]"
+                        },
+                        {
+                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                            "value": "6.5.0"
+                        },
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference(resourceId(parameters('appInsightsResourceGroup'),'microsoft.insights/components/', parameters('appInsightsName')), '2015-05-01').InstrumentationKey]"
+                        },
+                        {
+                            "name": "ClientId",
+                            "value": "[parameters('adAppClientId')]"
+                        },
+                        {
+                            "name": "ClientSecret",
+                            "value": "[parameters('adAppClientPassword')]"
+                        },
+                        {
+                            "name": "VaultUrl",
+                            "value": "[parameters('keyVaultUri')]"
+                        },
+                        {
+                            "name": "TenantName",
+                            "value": "[parameters('tenantDomain')]"
+                        }                        
+                    ]
+                }
+            }
+        }
+    ]
+}

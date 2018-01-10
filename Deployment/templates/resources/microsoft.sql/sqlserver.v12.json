@@ -1,0 +1,127 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlServerName": {
+            "type": "string"
+        },
+        "location":{
+            "type": "string"
+        },
+        "administratorLogin":{
+            "type": "string",
+            "defaultValue": "sqladmin"
+        },
+        "administratorLoginPassword":{
+            "type": "securestring"
+        },
+        "externalAdministratorLogin":{
+            "type": "string"
+        },
+        "externalAdministratorSid":{
+            "type": "string"
+        },
+        "tenantId":{
+            "type": "string"
+        },
+        "storageAccountName": {
+            "type": "string",
+            "defaultValue": "storageaccountname"
+        },
+        "storageEndpoint": {
+            "type": "string",
+            "defaultValue": "[concat('https://',parameters('storageAccountName'),'.blob.core.windows.net')]"
+        },
+        "sendAlertsTo": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the semicolon-separated list of e-mail addresses to which the alert is sent."
+            }
+        },
+        "tags": {
+            "type": "object"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('sqlServerName')]",
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "identity": {
+              "type": "SystemAssigned"
+            },
+            "properties": {
+              "administratorLogin": "[parameters('administratorLogin')]",
+              "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+              "version": "12.0"
+            },
+            "resources": [
+                {
+                    "name": "activeDirectory",
+                    "type": "administrators",
+                    "apiVersion": "2014-04-01",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[parameters('sqlServerName')]"
+                    ],
+                    "properties": {
+                      "administratorType": "ActiveDirectory",
+                      "login": "[parameters('externalAdministratorLogin')]",
+                      "sid": "[parameters('externalAdministratorSid')]",
+                      "tenantId": "[parameters('tenantId')]"
+                    }
+                },
+                {
+                    "apiVersion": "2015-05-01-preview",
+                    "type": "auditingSettings",
+                    "name": "default",
+                    "dependsOn": [
+                        "[parameters('sqlServerName')]"
+                    ],
+                    "properties": {
+                        "state": "Enabled",
+                        "storageEndpoint": "[parameters('storageEndpoint')]",
+                        "storageAccountAccessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').keys[0].value]",
+                        "retentionDays": 0,
+                        "auditActionsAndGroups": null,
+                        "storageAccountSubscriptionId": "[subscription().subscriptionId]",
+                        "isStorageSecondaryKeyInUse": false
+                    }
+                },
+                {
+                    "apiVersion": "2015-05-01-preview",
+                    "type": "securityAlertPolicies",
+                    "name": "default",
+                    "dependsOn": [
+                        "[parameters('sqlServerName')]",
+                        "[concat('Microsoft.Sql/servers/', parameters('sqlServerName'), '/auditingSettings/default')]"
+                    ],
+                    "properties": {
+                        "state": "Enabled",
+                        "disabledAlerts": "",
+                        "emailAddresses": "[parameters('sendAlertsTo')]",
+                        "storageEndpoint": "[parameters('storageEndpoint')]",
+                        "storageAccountAccessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').keys[0].value]",
+                        "retentionDays": 0
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "name": {
+            "type": "string",
+            "value": "parameters('sqlServerName')"
+        },
+        "fqdn": {
+            "type": "string",
+            "value": "[reference(concat('Microsoft.Sql/servers/', parameters('sqlServerName'))).fullyQualifiedDomainName]"
+        },
+        "principalId": {
+            "type": "string",
+            "value": "[reference(parameters('sqlServerName'), '2015-05-01-preview', 'Full').identity.principalId]"
+        }
+    }
+}

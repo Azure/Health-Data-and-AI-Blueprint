@@ -1,0 +1,38 @@
+{
+    "patient": {
+        "resourceType": "Patient",
+        "id": "1",
+        "active": true,
+        "name": [{
+            "use": "official",
+            "family": "LastA",
+            "given": [
+                "FirstA",
+                "Amiddle"
+            ]
+        }],
+        "gender": "female"
+    },    
+    "encounter": {
+        "resourceType": "Encounter",
+        "id": "100001",
+        "status": "finished",
+        "class": {
+            "system": "http://hl7.org/fhir/v3/ActCode",
+            "code": "IMP",
+            "display": "inpatient encounter"
+        },
+        "period": {
+            "start": "2012-08-29T00:00:00+00:00",
+            "end": "2012-09-01T00:30:00+00:00"
+        },
+        "subject": {
+            "reference": "Patient/1",
+            "display": "FirstA"
+        },
+        "serviceProvider": {
+            "reference": "Organization/B",
+            "display": "B"
+        }    
+    }
+}

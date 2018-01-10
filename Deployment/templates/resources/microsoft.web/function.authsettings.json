@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "functionAppName": {
+            "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "tenantId": {
+            "type": "string"
+        },
+        "adAppClientId": {
+            "type": "string"
+        },
+        "adAppClientPassword": {
+            "type": "securestring"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2016-08-01",
+            "name": "[concat(parameters('functionAppName'),'/authsettings')]",
+            "type": "Microsoft.Web/sites/config",
+            "location": "[parameters('location')]",
+            "properties": {
+                "enabled": true,
+                "unauthenticatedClientAction": "RedirectToLoginPage",
+                "tokenStoreEnabled": true,
+                "defaultProvider": "AzureActiveDirectory",
+                "clientId": "[parameters('adAppClientId')]",
+                "clientSecret": "[parameters('adAppClientPassword')]",
+                "issuer": "[concat('https://sts.windows.net/', parameters('tenantId'), '/')]",
+                "allowedAudiences": "[concat('https://', parameters('functionAppName'), '.azurewebsites.net/.auth/login/aad/callback')]"
+            }
+        }
+    ]
+}

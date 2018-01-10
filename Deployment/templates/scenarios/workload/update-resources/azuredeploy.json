@@ -1,0 +1,118 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentReference": {
+      "type": "secureObject"
+    },
+    "workloadReference": {
+      "type": "secureObject"
+    },
+    "monitoring": {
+      "type": "secureObject"
+    }
+  },
+  "variables": {
+    "functionAppName":"[toLower(concat(parameters('environmentReference').prefix,'-',parameters('workloadReference').function[0].serviceName,'-fapp-',parameters('environmentReference').env))]",
+    "patientDataIngestionFunctionName":"PatientDataBulkImportFunc",
+    "storageAccountName": "[toLower(replace(concat(parameters('environmentReference').prefix, parameters('workloadReference').blobstorage.serviceName, parameters('environmentReference').env,'stg'),'-',''))]",
+    "sqlServerName": "[toLower(concat(parameters('environmentReference').prefix,'-',parameters('workloadReference').sql.serviceName,'-sql-',parameters('environmentReference').env))]",
+    "omsWorkspaceName": "[toLower(concat(parameters('environmentReference').prefix,'-',parameters('monitoring').logAnalytics.serviceName,'-analytics-',parameters('environmentReference').env))]",
+    "omsWorkspaceResourceId": "[resourceId(concat(parameters('environmentReference').prefix,'-monitoring-',parameters('environmentReference').env,'-rg'),'Microsoft.OperationalInsights/workspaces', variables('omsWorkspaceName'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-05-10",
+      "name": "update-sql-tde-ekm",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('environmentReference')._artifactsLocation,'templates/resources/microsoft.sql/ekm.tde.encryption.json')]"
+        },
+        "parameters": {
+          "sqlServerName": {
+            "value": "[variables('sqlServerName')]"
+          },
+          "location": {
+            "value": "[parameters('environmentReference').location]"
+          },
+          "sqlTdeKeyUri": {
+            "value": "[parameters('workloadReference').sql.tdeKeyUri]"
+          },
+          "sqlServerKeyName": {
+            "value": "[parameters('workloadReference').sql.sqlServerKeyName]"
+          }
+        }
+      }
+    },
+    { 
+      "apiVersion": "2017-05-10", 
+      "name": "update-keyvault", 
+      "type": "Microsoft.Resources/deployments", 
+      "dependsOn": [],
+      "properties": { 
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('environmentReference')._artifactsLocation,'templates/buildingblocks/keyvault/azuredeploy.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "_artifactsLocation":{"value": "[parameters('environmentReference')._artifactsLocation]"}, 
+          "_artifactsSasToken":{"value": "[parameters('environmentReference')._artifactsLocationSasToken]"},
+          "uniquePrefix":{"value": "[parameters('environmentReference').prefix]"},
+          "serviceName":{"value": "[parameters('workloadReference').keyVault.serviceName]"},
+          "environment":{"value": "[parameters('environmentReference').env]"},
+          "location":{"value": "[parameters('environmentReference').location]"},
+          "tenantId":{"value": "[parameters('environmentReference').tenantId]"},
+          "accessPolicies":{"value": "[parameters('workloadReference').keyVault.accessPolicies]"},
+          "sqlServerObjectId":{"value": "[reference(resourceId(toLower(concat(parameters('environmentReference').prefix,'-workload-', parameters('environmentReference').env,'-rg')),'Microsoft.Sql/servers/', toLower(concat(parameters('environmentReference').prefix,'-',parameters('workloadReference').sql.serviceName,'-sql-',parameters('environmentReference').env))), '2015-05-01-preview', 'Full').identity.principalId]"},
+          "appinsightsInstrumentationKey":{"value": "[reference(resourceId(toLower(concat(parameters('environmentReference').prefix,'-monitoring-', parameters('environmentReference').env,'-rg')),'microsoft.insights/components/', toLower(concat(parameters('environmentReference').prefix,'-',parameters('monitoring').appInsights.serviceName,'-insights-',parameters('environmentReference').env))), '2015-05-01').InstrumentationKey]"},
+          "blobStorageAccessKey":{"value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', toLower(replace(concat(parameters('environmentReference').prefix, parameters('workloadReference').blobstorage.serviceName, parameters('environmentReference').env,'stg'),'-',''))), '2016-01-01').keys[0].value]"},
+          "patientDbConnectionString":{"value": "[concat('Server=tcp:',reference(resourceId(toLower(concat(parameters('environmentReference').prefix,'-workload-', parameters('environmentReference').env,'-rg')),'Microsoft.Sql/servers/', toLower(concat(parameters('environmentReference').prefix,'-',parameters('workloadReference').sql.serviceName,'-sql-',parameters('environmentReference').env))), '2015-05-01-preview', 'Full').properties.fullyQualifiedDomainName,',1433;Initial Catalog=',parameters('workloadReference').sql.databaseName,';Persist Security Info=False;User ID=',parameters('workloadReference').sql.sqlAdministrator,';Password=',parameters('environmentReference').deploymentPassword,';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;')]"},
+          "patientDbData":{"value": "[parameters('workloadReference').sql.patientDbData]"},
+          "mlWebServiceEndpoint":{"value": "[parameters('workloadReference').azureML.predictLengthOfStayServiceEndpoint]"},
+          "mlWebServiceApiKey":{"value": "[parameters('workloadReference').azureML.predictLengthOfStayServiceApiKey]"},
+          "tags": {"value": "[union(parameters('environmentReference').tags, parameters('workloadReference').keyVault.tags)]"},
+          "secretExpirationDate": {"value": "[parameters('workloadReference').keyVault.secretExpirationDate]"},
+          "omsWorkspaceResourceId": {"value": "[variables('omsWorkspaceResourceId')]"}
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10", 
+      "name": "deploy-eventgrid", 
+      "type": "Microsoft.Resources/deployments",
+      "properties": { 
+         "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('environmentReference')._artifactsLocation,'templates/buildingblocks/eventgrid/azuredeploy.json')]",
+          "contentVersion": "1.0.0.0"
+        }, 
+         "parameters": { 
+          "_artifactsLocation":{"value": "[parameters('environmentReference')._artifactsLocation]"}, 
+          "_artifactsSasToken":{"value": "[parameters('environmentReference')._artifactsLocationSasToken]"},
+          "uniquePrefix":{"value": "[parameters('environmentReference').prefix]"},
+          "eventGridInputObj":{"value": "[parameters('workloadReference').eventGrid]"},
+          "environment":{"value": "[parameters('environmentReference').env]"},
+          "eventGridSubscriptionEndpointUrl":{"value": "[concat(listSecrets(resourceId('Microsoft.Web/sites/functions', variables('functionAppName'), variables('patientDataIngestionFunctionName')),'2015-08-01').trigger_url)]"},
+          "storageAccName":{"value": "[variables('storageAccountName')]"}
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "admissionFunctionUrl":{
+      "type": "string",
+      "value": "[listSecrets(resourceId('Microsoft.Web/sites/functions', toLower(concat(parameters('environmentReference').prefix,'-',parameters('workloadReference').function[1].serviceName,'-fapp-',parameters('environmentReference').env)), 'PatientAdmissionFunc'),'2015-08-01').trigger_url]"
+    },
+    "dischargeFunctionUrl":{
+      "type": "string",
+      "value": "[listSecrets(resourceId('Microsoft.Web/sites/functions', toLower(concat(parameters('environmentReference').prefix,'-',parameters('workloadReference').function[1].serviceName,'-fapp-',parameters('environmentReference').env)), 'PatientDischargeFunc'),'2015-08-01').trigger_url]"
+    },
+    "learnFunctionUrl":{
+      "type": "string",
+      "value": "[listSecrets(resourceId('Microsoft.Web/sites/functions', variables('functionAppName'), variables('patientDataIngestionFunctionName')),'2015-08-01').trigger_url]"
+    }
+  }
+}

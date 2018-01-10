@@ -1,0 +1,65 @@
+﻿{
+  "Subscription": {
+    "Id": ""
+  },
+  "UserConfiguration": {
+    "Alex_SiteAdmin": [
+      {
+        "Subscription": [
+          {
+            "role": [
+              {
+                "name": "Owner"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Danny_DBAnalyst": [
+      {
+        "ResourceGroup": [
+          {
+            "name": "hash-workload-env-rg",
+            "role": [
+              {
+                "name": "SQL DB Contributor"
+              },
+              {
+                "name": "SQL Server Contributor"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Debra_DataScientist": [
+      {
+        "ResourceGroup": [
+          {
+            "name": "hash-workload-env-rg",
+            "role": [
+              {
+                "name": "Storage Account Contributor"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Han_Auditor": [
+      {
+        "Subscription": [
+          {
+            "role": [
+              {
+                "name": "Reader"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "CustomRoles":[]
+}

@@ -1,0 +1,426 @@
+{
+    "patient": {
+        "resourceType": "Patient",
+        "id": "1",
+        "active": true,
+        "name": [{
+            "use": "official",
+            "family": "LastA",
+            "given": [
+                "FirstA",
+                "Amiddle"
+            ]
+        }],
+        "gender": "female"
+    },    
+    "encounter": {
+        "resourceType": "Encounter",
+        "id": "1",
+        "status": "finished",
+        "class": {
+            "system": "http://hl7.org/fhir/v3/ActCode",
+            "code": "IMP",
+            "display": "inpatient encounter"
+        },
+        "period": {
+            "start": "2017-08-29T00:00:00+00:00"
+        },
+        "subject": {
+            "reference": "Patient/1",
+            "display": "FirstA"
+        },
+        "serviceProvider": {
+            "reference": "Organization/B",
+            "display": "B"
+        }    
+    },    
+    "observations": [
+        {
+            "resourceType": "Observation",
+            "id": "1",
+            "status": "final",
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "4544-3",
+                    "display": "Hematocrit"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            },
+            "valueQuantity": {
+                "value": 11.5,
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+            }
+        },
+        {
+            "resourceType": "Observation",
+            "id": "2",
+            "status": "final",
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "770-8",
+                    "display": "Neutrophils"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            },
+            "valueQuantity": {
+                "value": 14.2,
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+            }
+        },
+        {
+            "resourceType": "Observation",
+            "id": "3",
+            "status": "final",
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "2947-0",
+                    "display": "Sodium"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            },
+            "valueQuantity": {
+                "value": 140.3611318,
+                "unit": "mmol/L",
+                "system": "http://unitsofmeasure.org",
+                "code": "mmol/L"
+            }
+        },
+        {
+            "resourceType": "Observation",
+            "id": "4",
+            "status": "final",
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Glucose"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            },
+            "valueQuantity": {
+                "value": 192.4769177,
+                "unit": "mmol/L",
+                "system": "http://unitsofmeasure.org",
+                "code": "mmol/L"
+            }
+        },
+        {
+            "resourceType": "Observation",
+            "id": "5",
+            "status": "final",
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "6299-2",
+                    "display": "Urea nitrogen"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            },
+            "valueQuantity": {
+                "value": 12,
+                "unit": "mg/dL ",
+                "system": "http://unitsofmeasure.org",
+                "code": "mg/dL "
+            }
+        },
+        {
+            "resourceType": "Observation",
+            "id": "6",
+            "status": "final",
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "2160-0",
+                    "display": "Creatinine"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            },
+            "valueQuantity": {
+                "value": 1.390722238,
+                "unit": "mg/dL",
+                "system": "http://unitsofmeasure.org",
+                "code": "mg/dL"
+            }
+        },
+        {
+            "resourceType": "Observation",
+            "id": "7",
+            "status": "final",
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "2160-0",
+                    "display": "Body mass index"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            },
+            "valueQuantity": {
+                "value": 30.43241778,
+                "unit": "kg/m2",
+                "system": "http://unitsofmeasure.org",
+                "code": "kg/m2 "
+            }
+        },
+        {
+            "resourceType": "Observation",
+            "id": "8",
+            "status": "final",
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "8867-4",
+                    "display": "Heart rate "
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            },
+            "valueQuantity": {
+                "value": 96,
+                "unit": "beats/min",
+                "system": "http://unitsofmeasure.org",
+                "code": "beats/min"
+            }
+        },
+        {
+            "resourceType": "Observation",
+            "id": "9",
+            "status": "final",
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "9279-1",
+                    "display": "Heart rate "
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            },
+            "valueQuantity": {
+                "value": 6.5,
+                "unit": "breaths/min",
+                "system": "http://unitsofmeasure.org",
+                "code": "breaths/min"
+            }
+        }
+    ],
+    "conditions": [
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "236435004",
+                    "display": "End stage renal failure on dialysis"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        },
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "195967001",
+                    "display": "Asthma"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        },
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "35240004",
+                    "display": "Iron deficiency"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        },
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "233604007",
+                    "display": "Pneumonia"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        },
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "361055000",
+                    "display": "Misuses drugs"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        },
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "81659004",
+                    "display": "Psychological sign or symptom"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        },
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "35489007",
+                    "display": "Depressive disorder"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        },
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "81659004",
+                    "display": "Psychological sign or symptom"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        },
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "263756000",
+                    "display": "Fibrosis"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        },
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "263756000",
+                    "display": "Fibrosis"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        },
+        {
+            "resourceType": "Condition",
+            "id": "1",
+            "clinicalStatus": "resolved",
+            "verificationStatus": "confirmed",
+            "code": {
+                "coding": [{
+                    "system": "http://snomed.info/sct",
+                    "code": "34093004",
+                    "display": "Disorder of hematopoietic system"
+                }]
+            },
+            "subject": {
+                "reference": "Patient/1",
+                "display": "FirstA"
+            }
+        }                
+    ]
+}

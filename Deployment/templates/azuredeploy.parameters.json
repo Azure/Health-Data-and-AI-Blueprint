@@ -1,0 +1,145 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentReference": {
+      "value": {
+        "env": "dev",
+        "prefix": "demo",
+        "_artifactsLocation": "auto-update",
+        "_artifactsLocationSasToken": "auto-update",
+        "location":"auto-update",
+        "tags": {
+          "dataProfile" : "ePHI",
+          "environment" : "Pilot",
+          "department" : "Global Ecosystem"
+        },
+        "tenantId": "auto-update",
+        "adAppClientId": "auto-update",
+        "deploymentPassword": "auto-update",
+        "tenantDomain": "auto-update"
+      }
+    },
+    "workloadReference": {
+      "value": {
+        "blobstorage": {
+          "type": "Standard_LRS",
+          "tags": {
+            "tier": "DataStore"
+          },
+          "serviceName": "losingestion"
+        },
+        "eventGrid": {
+          "subscription": [
+            {
+              "serviceName": "storage",
+              "tags": {
+                "tier": "Operations"
+              }
+            }
+          ]
+        },
+        "function": [
+          {
+            "name": "HealthCareIngestion",
+            "serviceName": "learn",
+            "hostingPlanServiceName": "los",
+            "tags": {
+              "tier": "Application",
+              "serviceName": "learn"
+            }
+          },
+          {
+            "name": "HealthCareWorkflow",
+            "serviceName": "admission-discharge",
+            "hostingPlanServiceName": "los",
+            "tags": {
+              "tier": "Application",
+              "serviceName": "admission-discharge"
+            }
+          }
+        ],
+        "sql": {
+          "serviceName": "los",
+          "sqlAdministrator": "sqlAdmin",
+          "sqlAdAdministrator": "Danny_DBAnalyst",
+          "sqlAdAdministratorSid": "auto-update",
+          "databaseName":"patientdb",
+          "patientDbData":"PatientData",
+          "tdeKeyUri": "auto-update",
+          "sqlServerKeyName": "auto-update",
+          "firewallRules":[
+            {
+              "name":"localIP",
+              "startIP":"auto-update",
+              "endIP":"auto-update"
+            }
+          ],
+          "tags": {
+            "tier": "Applications"
+          }
+        },
+        "azureML": {
+          "serviceName": "los",
+          "tags": {
+            "tier": "Operations"
+          },
+          "predictLengthOfStayServiceEndpoint": "auto-update",
+          "predictLengthOfStayServiceApiKey": "auto-update"
+        },
+        "keyVault": {
+          "serviceName": "los",
+          "secretExpirationDate": "auto-update",
+          "tags": {
+            "tier": "Operations"
+          },
+          "accessPolicies": [
+            {
+              "tenantId": "auto-update",
+              "objectId": "siteAdminObjectId-auto-update",
+              "permissions": {
+                "keys": [
+                  "get", "list", "create", "update", "import", "delete", "backup", "restore", "recover"
+                ],
+                "secrets": [
+                  "get", "list", "set", "delete", "backup", "restore", "recover"
+                ],
+                "certificates": [
+                  "get", "list", "delete", "create", "import", "update", "managecontacts", "getissuers", "listissuers", "setissuers", "deleteissuers", "manageissuers", "recover"
+                ]
+              }
+            },
+            {
+              "tenantId": "auto-update",
+              "objectId": "AADServicePrincipalObjectId-auto-update",
+              "permissions": {
+                "keys": [
+                  "get", "wrapKey", "unwrapKey", "sign", "verify"
+                ],
+                "secrets": [
+                  "get", "list" 
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "monitoring": {
+      "value": {
+        "appInsights":{
+          "serviceName": "los",
+          "tags": {
+            "tier": "Operations"
+          }
+        },
+        "logAnalytics" :{
+          "serviceName": "los",
+          "tags": {
+            "tier": "Operations"
+          }
+        }
+      }
+    }
+  }
+}
