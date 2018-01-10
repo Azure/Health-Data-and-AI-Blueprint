@@ -33,11 +33,8 @@ https://microsoft-my.sharepoint.com/:f:/p/frasim/ElfAwXiJbVZIuqr48_hnQ3wBqeHH8b9
 7.	Follow manual config steps from doc steps ‘Integrate Application Insights Log Analytics’
 8.	Run ``` .\HealthcareDemo.ps1 -deploymentPrefix prefix -Operation BulkPatientAdmission ```
 9.	Run ``` .\HealthcareDemo.ps1 -deploymentPrefix prefix -Operation Ingestion ```
-10.	Check your database, ML, and PowerBI for data accuracy from SQL explorer
-  ``` 
-SELECT TOP 20 *
-  FROM [dbo].[PatientData]
-  ORDER by eID desc ```
+10.	Check your database, ML, and PowerBI for data accuracy from SQL explorer 
+  ``` SELECT TOP 20 *  FROM [dbo].[PatientData]  ORDER by eID desc ```
 
 
 
