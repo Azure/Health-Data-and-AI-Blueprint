@@ -21,7 +21,7 @@ I've also posted a video and blueprint deck you can view on how the solution wor
 https://microsoft-my.sharepoint.com/:f:/p/frasim/ElfAwXiJbVZIuqr48_hnQ3wBqeHH8b9ONhWuBYvywXY5pw?e=3MyEaG
 
 
-## QUick Deployment steps
+## Quick Deployment steps
 1. You will need a clean VM to deploy the solution
 - Launch your VM (windows 10)
 - How to stand up a VM https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal 
@@ -33,11 +33,11 @@ https://microsoft-my.sharepoint.com/:f:/p/frasim/ElfAwXiJbVZIuqr48_hnQ3wBqeHH8b9
 7.	Follow manual config steps from doc steps ‘Integrate Application Insights Log Analytics’
 8.	Run ``` .\HealthcareDemo.ps1 -deploymentPrefix prefix -Operation BulkPatientAdmission ```
 9.	Run ``` .\HealthcareDemo.ps1 -deploymentPrefix prefix -Operation Ingestion ```
-10.	Check your database, ML, and PowerBI for data accuracy
- - EG ``` -- After Bulk Patient Admission (FHIR formatted) 
+10.	Check your database, ML, and PowerBI for data accuracy from SQL explorer
+  ``` 
 SELECT TOP 20 *
   FROM [dbo].[PatientData]
-  ORDER by eID desc '''
+  ORDER by eID desc ```
 
 
 
