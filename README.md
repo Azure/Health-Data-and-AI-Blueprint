@@ -1,3 +1,6 @@
+## We are tracking a critical failure in Event Grid that is preventing deployment 
+- Status update - no change - 01/11/2018 12:00AM PST
+
 # Pre GA DEPLOYMENT
 ## PLEASE DO NOT FORK, OR PROVIDE BUGS IN GIT 
 ## CONTACT frasim@microsoft.com WITH ANY ISSUES, OR CHANGES
