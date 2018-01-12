@@ -9,13 +9,13 @@ Project status : Ready
 
 1. Must have a subscription where you have access and can manage the GLOBAL ADMIN. 
 
-### FOR MSFT EMPLOYEES - If not you will need to set one up via ARIS - https://azuremsregistration.cloudapp.net/Request.aspx
--  You must select - External test or External Demo for access to a DS that is not associated with MSFT
+### FOR MSFT EMPLOYEES - Subscriptions can be set up using ARIS - https://azuremsregistration.cloudapp.net/Request.aspx
+-  You must select - External test or External Demo for access to a DS that is not associated with MSFT Domain.
 - ALSO NOTE THAT RUNNING THIS SCRIPT FROM HOST ON MSFT WILL FAIL, DUE TO MSFT FIREWALL RULES.
 
 
-2. Follow the instructions on deploying the solution 
-- Read Azure Healthcare Blueprint.docx (deployment document)
+2. Follow the deployment instructions 
+- ReadAzure Healthcare Analytics Blueprint Jan Stable.docx (deployment document)
 https://github.com/Azure/HIPAA-Healthcare-ML-LOS/tree/master/Documents/Content
 
 
