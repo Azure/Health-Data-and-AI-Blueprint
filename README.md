@@ -39,6 +39,11 @@ https://microsoft-my.sharepoint.com/:f:/p/frasim/ElfAwXiJbVZIuqr48_hnQ3wBqeHH8b9
   ``` SELECT TOP 20 *  FROM [dbo].[PatientData]  ORDER by eID desc ```
 
 
+# Compliance Content
+Additional content 
+- Threat model
+- HITRUST Customer Responsibility Matrix
+Supporting material for solution can be found at https://github.com/Azure/HIPAA-Healthcare-ML-LOS/tree/master/Documents/Compliance
 
 
 # Contribute
