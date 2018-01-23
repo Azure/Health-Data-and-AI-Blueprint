@@ -1,4 +1,3 @@
-
 ---
 title: Azure Health Analytics Blueprint
 description: Guidance for deploying a HIPAA/HITRUST Health Analytics Blueprint 
@@ -11,11 +10,11 @@ ms.date: 01/23/2018
 ## Overview
 
 
-** The Azure health analytics blueprint offers a turn-key deployment of
+**The Azure health analytics blueprint offers a turn-key deployment of
 Azure PaaS to solutions to successfully collect, store, analyze,
 visualize, and interact with health data while being able to meet
 compliance requirements. The blueprint helps accelerate cloud adoption
-and utilization for customers with data that is regulated. **
+and utilization for customers with data that is regulated.**
 
 The Azure Health Analytics Blueprint provides tools and guidance to help
 deploy a more secure, HIPAA, and HITRUST ready platform-as-a-service
@@ -1002,4 +1001,23 @@ address manually. Click **Save** and you should be able to connect to
 the database by clicking **Refresh** again in Power BI.
 
 
+# Disclaimer and acknowledgements
+February 2017
 
+This document is for informational purposes only. MICROSOFT AND AVYAN MAKE NO WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY, AS TO THE INFORMATION IN THIS DOCUMENT. This document is provided “as-is.” Information and views expressed in this document, including URL and other Internet website references, may change without notice. Customers reading this document bear the risk of using it.
+This document does not provide customers with any legal rights to any intellectual property in any Microsoft or Avyan product or solutions.
+Customers may copy and use this document for internal reference purposes.
+
+**Note**
+
+Certain recommendations in this material may result in increased data, network, or compute resource usage in Azure, and may increase a customer’s Azure license or subscription costs.
+
+The solution in this document is intended as a architecture and must not be used as-is for production purposes. Achieving Health compliance (such as HIPAA, or HITRUST) requires that customers consult with compliance or audit office.  
+
+All customer names, transaction records, and any related data on this page are fictitious, created for the purpose of this architecture and provided for illustration only. No real association or connection is intended, and none should be inferred.
+This solution was designed by Microsoft with development support from Avyan Consulting The work in it's entirety, or parts is available under the [MIT License](https://opensource.org/licenses/MIT).
+This solution has been reviewed by Coalfire, a Microsoft auditor. The HIPAA, and HITRUST Compliance Review provides an independent, third-party review of the solution, and components that need to be addressed.
+
+# Document authors
+
+Frank Simorjay (Microsoft)
