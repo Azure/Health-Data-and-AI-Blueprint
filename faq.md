@@ -126,6 +126,10 @@ during the installation. To grant permissions in Azure Active Directory:
 5.  Click **Grant Permissions** at top. You will be asked if you want to
     grant permissions for all accounts in the current directory. Click
     **Yes**.
+	
+**I redeploy the solution after an error... and it fails due to a 'cache' error, such as a token is duplicate**
+
+Due to PowerShell's limitations on caching users information it's recommended if your script fails, to close and reopen your PowerShell session to clear any local caches. 
 
 # Disclaimer and acknowledgements
 February 2017
