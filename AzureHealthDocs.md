@@ -964,6 +964,8 @@ PowerBI](https://powerbi.microsoft.com/en-us/downloads/) will be
 required to open the sample report located (Using PowerBi free edition will work for this demo, but will not allow for reports to be shared)
 Blueprint\\Deployment\\Reports\\Healthcare-CLM,CMIO Report.pbix
 
+> ![](images/image7.png)
+
 The PBIX file contains cached data when first opened. To connect it to
 your live data source:
 
