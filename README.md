@@ -14,9 +14,7 @@ Project status : Ready
 - ALSO NOTE THAT RUNNING THIS SCRIPT FROM HOST ON MSFT WILL FAIL, DUE TO MSFT FIREWALL RULES.
 
 
-2. Follow the deployment instructions 
-- ReadAzure Healthcare Analytics Blueprint Jan Stable.docx (deployment document)
-https://github.com/Azure/HIPAA-Healthcare-ML-LOS/tree/master/Documents/Content
+2. Follow the [deployment instructions](./md/AzureHealthDocs.md) 
 
 
 I've also posted a video and blueprint deck you can view on how the solution works, and what you can expect when deploying it. 
