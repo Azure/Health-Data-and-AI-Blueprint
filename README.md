@@ -14,11 +14,11 @@ Project status : Ready
 - ALSO NOTE THAT RUNNING THIS SCRIPT FROM HOST ON MSFT WILL FAIL, DUE TO MSFT FIREWALL RULES.
 
 
-2. Follow the [deployment instructions](./AzureHealthDocs.md) 
+2. Follow the **[deployment instructions](./AzureHealthDocs.md) **
 
 
 I've also posted a video and blueprint deck you can view on how the solution works, and what you can expect when deploying it. 
-https://microsoft-my.sharepoint.com/:f:/p/frasim/ElfAwXiJbVZIuqr48_hnQ3wBqeHH8b9ONhWuBYvywXY5pw?e=3MyEaG
+https://1drv.ms/f/s!AuGGBuEyUCt7j69YoWIiOZBC3euOOA 
 
 
 ## Quick Deployment steps

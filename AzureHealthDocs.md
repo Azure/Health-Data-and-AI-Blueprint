@@ -47,8 +47,7 @@ note the following:
 -   This blueprint provides a baseline to help customers use Microsoft
     Azure in a HITRUST, and HIPAA
 
--   Although the blueprint is designed to be aligned with HIPAA (through
-    NIST SP 800-66) and HITRUST (through the Common Security Framework
+-   Although the blueprint is designed to be aligned with HIPAA and HITRUST (through the Common Security Framework
     -- CSF), it should not be considered compliant until certified by an
     external auditor per HIPAA and HITRUST certification requirements.
 
@@ -298,15 +297,16 @@ can be used to store, process, and display sensitive personal data.
 This section details the default configurations and security measures
 built into the Azure Health Analytics Blueprint outlined to:
 
-- **COLLECT** data
-- **STORAGE** of ePHI
+- **COLLECT** data raw sources including FHIR data source
+- **STORAGE** of sensitive information
 - **ANALYZE** and predict outcomes
-- **VISUALIZE** outcomes, and preditions
-- **IDENTITY** management
-- **SECURITY** enablement
+- **VISUALIZE** outcomes, and perditions
+- **IDENTITY** management of solution
+- **SECURITY** enabled features
 
 
 ## IDENTITY 
+
 ### Azure Active Directory and role-based access control (RBAC)
 
 
@@ -355,7 +355,6 @@ built into the Azure Health Analytics Blueprint outlined to:
 
 ### Azure Key Vault
 
-
 -   Data stored in Key Vault includes:
 
     -   Application insight key
@@ -391,8 +390,6 @@ built into the Azure Health Analytics Blueprint outlined to:
 
 -   Permitted cryptographic operations for keys are restricted to the
     ones actually required
-
-
 
 ## COLLECT 
 
@@ -518,6 +515,7 @@ routing of all events from any source to any destination, providing:
 -   Data in Blob storage is encrypted at rest.
 
 ## ANALYZE
+
 ### Machine Learning
 
 
@@ -527,14 +525,20 @@ routing of all events from any source to any destination, providing:
 - using [Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/preview/experimentation-service-configuration) workbench requires the development of experiments, that will provide the ability to provide preditions to a solution set. [Integrating the workbench](https://docs.microsoft.com/en-us/azure/machine-learning/preview/using-git-ml-project) can help streamline management of experiments.
 
 ## SECURITY
+
 ### Azure Security Center
 - [Azure Security Center](https://azure.microsoft.com/services/security-center/) provides a centralized view of the security state of all your Azure resources. At a glance, you can verify that the appropriate security controls are in place and configured correctly, and you can quickly identify any resources that require attention. 
 
 - [Azure Advisor](https://docs.microsoft.com/en-us/azure/advisor/advisor-overview) is a personalized cloud consultant that helps you follow best practices to optimize your Azure deployments. It analyzes your resource configuration and usage telemetry and then recommends solutions that can help you improve the cost effectiveness, performance, high availability, and security of your Azure resources.
 
+### Application Insights
+- [Application Insights](https://docs.microsoft.com/en-us/azure/application-insights/app-insights-overview) is an extensible Application Performance Management (APM) service for web developers on multiple platforms. Use it to monitor your live web application. It will automatically detect performance anomalies. It includes powerful analytics tools to help you diagnose issues and to understand what users actually do with your app. It's designed to help you continuously improve performance and usability.
 
-## Operations Management Suite (OMS)
+### Azure Alerts
+- [Alerts](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitoring-overview-alerts) offer a method of monitoring Azure services and allows you to configure conditions over data. Alerts also provide notifications when a alert conditions matches the monitoring data.
 
+### Operations Management Suite (OMS)
+[Operations Management Suite (also known as OMS)](https://docs.microsoft.com/en-us/azure/operations-management-suite/operations-management-suite-overview) is a collection of management services.
 
 -   Workspace is enabled for Security Center
 
@@ -569,7 +573,7 @@ routing of all events from any source to any destination, providing:
 # Deployment guide
 
 The components for deploying the solution can be downloaded from the
-[Azure Healthcare Analytics Blueprint repository on Github.](http://aka.ms/healthblueprint)  For
+[Azure Health Analytics Blueprint repository on Github.](http://aka.ms/healthblueprint)  For
 integration with PowerShell it is necessary to have [Git for Windows](https://git-scm.com/download/win)
 installed.
 
@@ -784,7 +788,7 @@ principles, AD applications, and AD users.
 
 **NOTE** Ensure that permissions have been set correctly; see "Grant
 permissions in Azure Active Directory" in the deployment documentation
-for more information. The Azure Healthcare Analytics Blueprint was
+for more information. The Azure Health Analytics Blueprint was
 designed to provide you a sample use example. This will consist of the
 following steps:
 
@@ -957,7 +961,7 @@ experiments.
 The solution provides a simple Microsoft PowerBI visualization of the
 solution. [Microsoft
 PowerBI](https://powerbi.microsoft.com/en-us/downloads/) will be
-required to open the sample report located
+required to open the sample report located (Using PowerBi free edition will work for this demo, but will not allow for reports to be shared)
 Blueprint\\Deployment\\Reports\\Healthcare-CLM,CMIO Report.pbix
 
 The PBIX file contains cached data when first opened. To connect it to
@@ -1001,7 +1005,7 @@ address manually. Click **Save** and you should be able to connect to
 the database by clicking **Refresh** again in Power BI.
 
 
-# Disclaimer and acknowledgements
+# Disclaimer and acknowledgments
 February 2017
 
 This document is for informational purposes only. MICROSOFT AND AVYAN MAKE NO WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY, AS TO THE INFORMATION IN THIS DOCUMENT. This document is provided “as-is.” Information and views expressed in this document, including URL and other Internet website references, may change without notice. Customers reading this document bear the risk of using it.
