@@ -1,4 +1,7 @@
-Project status : Ready
+Project Change Log : 
+Updated 1/23/2018 Moved documentation content to MD
+Updated 1/24/2018 inserted OMS switch (detail in FAQ)
+
 
 # Pre GA DEPLOYMENT
 ## PLEASE DO NOT FORK, OR PROVIDE BUGS IN GIT 
@@ -9,7 +12,7 @@ Project status : Ready
 
 1. Must have a subscription where you have access and can manage the GLOBAL ADMIN. 
 
-### FOR MSFT EMPLOYEES - Subscriptions can be set up using ARIS - https://azuremsregistration.cloudapp.net/Request.aspx
+ **FOR MSFT EMPLOYEES - Subscriptions can be set up using ARIS - https://azuremsregistration.cloudapp.net/Request.aspx**
 -  You must select - External test or External Demo for access to a DS that is not associated with MSFT Domain.
 - ALSO NOTE THAT RUNNING THIS SCRIPT FROM HOST ON MSFT WILL FAIL, DUE TO MSFT FIREWALL RULES.
 
@@ -21,20 +24,6 @@ I've also posted a video and blueprint deck you can view on how the solution wor
 https://1drv.ms/f/s!AuGGBuEyUCt7j69YoWIiOZBC3euOOA 
 
 
-## Quick Deployment steps
-1. You will need a clean VM to deploy the solution
-- Launch your VM (windows 10)
-- How to stand up a VM https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal 
-2.	Download or clone this repo to your new VM
-3.  Open a PowerShell in Admin mode
-4.	Run ```Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force``` 
-5.	Run ```deploy.ps1 -installmodules ``` in the deployment directory
-6.	Run ``` .\deploy.ps1 -deploymentPrefix <PREFIX> -tenantId <ID> -tenantDomain <DOMAIN> -subscriptionId <SUBSCRIPTION> -globalAdminUsername <ADMIN@ONMICROSOFT.COM> -deploymentPassword <A SINGLE PASSWORD> ```  
-7.	Follow manual config steps from doc steps ‘Integrate Application Insights Log Analytics’
-8.	Run ``` .\HealthcareDemo.ps1 -deploymentPrefix prefix -Operation BulkPatientAdmission ```
-9.	Run ``` .\HealthcareDemo.ps1 -deploymentPrefix prefix -Operation Ingestion ```
-10.	Check your database, ML, and PowerBI for data accuracy from SQL explorer 
-  ``` SELECT TOP 20 *  FROM [dbo].[PatientData]  ORDER by eID desc ```
 
 
 # Compliance Content
