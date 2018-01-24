@@ -17,7 +17,8 @@ Updated 1/24/2018 inserted OMS switch (detail in FAQ)
 - ALSO NOTE THAT RUNNING THIS SCRIPT FROM HOST ON MSFT WILL FAIL, DUE TO MSFT FIREWALL RULES.
 
 
-2. Follow the **[deployment instructions](./AzureHealthDocs.md) **
+2. Follow the **[deployment instructions](./AzureHealthDocs.md)**
+   Read the **[FAQ](./faq.md)** 
 
 
 I've also posted a video and blueprint deck you can view on how the solution works, and what you can expect when deploying it. 
