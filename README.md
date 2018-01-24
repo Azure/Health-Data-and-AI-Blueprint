@@ -18,7 +18,7 @@ Updated 1/24/2018 inserted OMS switch (detail in FAQ)
 
 
 2. Follow the **[deployment instructions](./AzureHealthDocs.md)**
-   Read the **[FAQ](./faq.md)** 
+3. Read the **[FAQ](./faq.md)** if you run into any issues.
 
 
 I've also posted a video and blueprint deck you can view on how the solution works, and what you can expect when deploying it. 
