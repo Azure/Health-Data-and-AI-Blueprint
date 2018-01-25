@@ -1,6 +1,9 @@
 Project Change Log : 
 Updated 1/23/2018 Moved documentation content to MD
+
 Updated 1/24/2018 inserted OMS switch (detail in FAQ)
+
+
 
 
 # Pre GA DEPLOYMENT

@@ -131,7 +131,8 @@
           "serviceName": "los",
           "tags": {
             "tier": "Operations"
-          }
+          },
+          "plan": "auto-update"
         },
         "logAnalytics" :{
           "serviceName": "los",

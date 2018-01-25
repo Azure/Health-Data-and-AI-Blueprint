@@ -9,6 +9,8 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A PARTICULAR PURPOSE AND ONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+For Machine Learning module, MIT License can be found here https://raw.githubusercontent.com/hning86/azuremlps/master/LICENSE.txt
+
 .EXAMPLE
 
 .\deploy.ps1 -installModules
@@ -159,7 +161,14 @@ param
     [Parameter(Mandatory = $false,
     ParameterSetName = "Deployment",
     Position = 11)]
-    [switch]$enableMFA
+    [switch]$enableMFA,
+
+    #Select Application Insights Pricing Plan.
+    [Parameter(Mandatory = $false,
+    ParameterSetName = "Deployment",
+    Position = 12)]
+    [ValidateSet(0,1,2)]
+    [Int]$appInsightsPlan = 1
 
 )
 
@@ -714,7 +723,7 @@ else {
     log "ML Workspace User - $mlWorkspaceUser"
 
     # Import the AzureMLPS module. Additional information about the module can be found here - https://blogs.technet.microsoft.com/machinelearning/2016/05/04/announcing-the-powershell-module-for-azure-ml/
-
+        
     #The module will provide access to Powershell to run ML cmdlets. 
 
     log "Importing AzureMLPS.dll from scripts\dlls"

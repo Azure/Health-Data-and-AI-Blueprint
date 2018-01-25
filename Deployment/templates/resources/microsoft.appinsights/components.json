@@ -36,8 +36,9 @@
         },
         "priceCode": {
             "type": "int",
-            "defaultValue": 1,
+            "defaultValue": 0,
             "allowedValues": [
+                0,
                 1,
                 2
             ],
@@ -76,10 +77,16 @@
     "variables": {
         "priceArray": [
             "Basic",
-            "Application Insights Enterprise"
+            "Application Insights Enterprise",
+            "None"
         ],
-        "pricePlan": "[take(variables('priceArray'),parameters('priceCode'))]",
-        "billingplan": "[concat(parameters('appName'),'/', variables('pricePlan')[0])]"
+        "pricePlan": "[variables('priceArray')[parameters('priceCode')]]",
+        "billingPlanName": "[concat(parameters('appName'),'/', variables('priceArray')[parameters('priceCode')])]",
+        "deployBillingPlan": [
+            true,
+            true,
+            false
+        ]
     },
     "resources": [
         {
@@ -96,7 +103,8 @@
             "dependsOn": []
         },
         {
-            "name": "[variables('billingplan')]",
+            "condition":"[variables('deployBillingPlan')[parameters('priceCode')]]",
+            "name": "[variables('billingPlanName')]",
             "type": "microsoft.insights/components/CurrentBillingFeatures",
             "location": "[parameters('appLocation')]",
             "apiVersion": "2015-05-01",

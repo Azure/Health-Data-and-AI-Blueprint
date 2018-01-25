@@ -18,11 +18,19 @@
     "appInsightsServiceName": {
       "type": "string"
     },
+    "appInsightsPlan": {
+      "type": "int",
+      "allowedValues": [
+        0,
+        1,
+        2
+      ]
+    },
     "environment": {
       "defaultValue": "dev",
       "type": "string"
     },
-    "location":{
+    "location": {
       "type": "string"
     },
     "omsTags": {
@@ -60,7 +68,7 @@
           "omsWorkspaceName": {
             "value": "[variables('workspaceName')]"
           },
-          "omsSolutionsName":{
+          "omsSolutionsName": {
             "value": "[variables('solutionNames')]"
           },
           "tags": {
@@ -89,7 +97,7 @@
             "value": "[parameters('appInsightsTags')]"
           },
           "priceCode": {
-            "value": 2
+            "value": "[parameters('appInsightsPlan')]"
           }
         }
       }

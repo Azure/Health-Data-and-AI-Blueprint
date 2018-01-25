@@ -131,7 +131,25 @@ during the installation. To grant permissions in Azure Active Directory:
 
 Due to PowerShell's limitations on caching users information it's recommended if your script fails, to close and reopen your PowerShell session to clear any local caches. 
 
-# Disclaimer and acknowledgements
+**I get an error durring deployment at 'appInsights' step that relates to /CurrentBillingFeatures**
+![](images/OMSlicense.PNG)
+This is due to the license of your OMS/appInsights you have currently sign-up for. You can correct this by adding an enterprise plan in Azure Portal, or changing the deployment:
+0 – Setup App Insights with Application Insights Basic Plan.
+1 – Setup App insights with Application Insights Enterprise Plan.
+2 –  Only deploys App Insights without any billing plan. 
+
+Subscriptions such as BizSpark, where there is a spending limits, the use of option "2" is required. 
+```
+.\deploy.ps1 -deploymentPrefix <1-5-length-prefix> `
+             -tenantId <tenant-id> `
+             -tenantDomain <tenant-domain> `
+             -subscriptionId <subscription-id> `
+             -globalAdminUsername <username> `
+             -deploymentPassword Hcbnt54%kQoNs62`
+             -appInsightsPlan 2            
+```
+
+# Disclaimer and acknowledgments
 February 2017
 
 This document is for informational purposes only. MICROSOFT AND AVYAN MAKE NO WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY, AS TO THE INFORMATION IN THIS DOCUMENT. This document is provided “as-is.” Information and views expressed in this document, including URL and other Internet website references, may change without notice. Customers reading this document bear the risk of using it.

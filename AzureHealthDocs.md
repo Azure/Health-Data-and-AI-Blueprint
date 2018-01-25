@@ -358,36 +358,24 @@ built into the Azure Health Analytics Blueprint outlined to:
 -   Data stored in Key Vault includes:
 
     -   Application insight key
-
     -   Patient Data Storage Access key
-
     -   Patient connection string
-
     -   Patient data table name
-
     -   Azure ML Web Service Endpoint
-
     -   Azure ML Service API Key
 
 -   Advanced access policies are configured on a need basis
-
 -   Key Vault access policies are defined with minimum required
     permissions to keys and secrets
-
 -   All keys and secrets in Key Vault have expiration dates
-
 -   All keys in Key Vault are protected by HSM \[Key Type = HSM
     Protected 2048-bit RSA Key\]
-
 -   All users/identities are granted minimum required permissions using
     Role Based Access Control (RBAC)
-
 -   Applications do not share a Key Vault unless they trust each other
     and they need access to the same secrets at runtime
-
 -   Diagnostics logs for Key Vault are enabled with a retention period
     of at least 365 days.
-
 -   Permitted cryptographic operations for keys are restricted to the
     ones actually required
 
@@ -719,6 +707,17 @@ account name in the dashboard followed by ".onmicrosoft.com" (example:
 To find the Azure tenant ID, click **Azure Active Directory** in the
 dashboard sidebar, and under **Manage**, click **Properties**. The
 tenant ID is a GUID in the box labeled **Directory ID**.
+
+```
+-appInsightsPlan 
+```
+Provides the ability to select your Application Insights plan level. 
+0 – Setup App Insights with Application Insights Basic Plan.
+1 – Setup App insights with Application Insights Enterprise Plan.
+2 –  Only deploys App Insights without any billing plan. 
+
+Subscriptions such as BizSpark, where there is a spending limits, the use of option "2" is required. 
+
 
 ## Grant permissions in Azure Active Directory
 

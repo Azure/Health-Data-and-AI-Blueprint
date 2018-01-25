@@ -32,7 +32,8 @@
           "environment":{"value": "[parameters('environmentReference').env]"},
           "location":{"value": "[parameters('environmentReference').location]"},
           "omsTags": {"value": "[union(parameters('environmentReference').tags, parameters('monitoring').logAnalytics.tags)]"},
-          "appInsightsTags": {"value": "[union(parameters('environmentReference').tags, parameters('monitoring').appInsights.tags)]"}
+          "appInsightsTags": {"value": "[union(parameters('environmentReference').tags, parameters('monitoring').appInsights.tags)]"},
+          "appInsightsPlan": {"value": "[parameters('monitoring').appInsights.plan]"}
         }
       }
     }
