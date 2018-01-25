@@ -241,7 +241,7 @@ managing an on-premise network and reduce costs for management. Alex has
 been evaluating Azure for some time but has struggled to configure the
 services that he needs to meet the HiTrust compliance requirements to
 store Patient Data in the cloud. Alex has just selected the Azure
-Blueprint for Healthcare to deploy a compliance-ready healthcare
+Health Analytics to deploy a compliance-ready health
 solution, which has addressed the requirements to meet the customer
 requirements for HiTrust.
 
@@ -297,10 +297,10 @@ can be used to store, process, and display sensitive personal data.
 This section details the default configurations and security measures
 built into the Azure Health Analytics Blueprint outlined to:
 
-- **COLLECT** data raw sources including FHIR data source
-- **STORAGE** of sensitive information
+- **INGEST** data raw sources including FHIR data source
+- **STORE**  sensitive information
 - **ANALYZE** and predict outcomes
-- **VISUALIZE** outcomes, and perditions
+- **INTERACT** with the results and perditions
 - **IDENTITY** management of solution
 - **SECURITY** enabled features
 
@@ -382,7 +382,7 @@ built into the Azure Health Analytics Blueprint outlined to:
 ## COLLECT 
 
 ### Azure Functions
-The solution was designed to  use [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/) to process the sample lenght of stay data used in the analytics demo. Three capabilities in the fuctions have been created.
+The solution was designed to  use [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/) to process the sample length of stay data used in the analytics demo. Three capabilities in the functions have been created.
 
 **1. Bulk import of customer data ephi data**
 
@@ -409,11 +409,11 @@ When using the demo script. .\\HealthcareDemo.ps1 with the **BulkPatientadmissio
 
 **2. Key Vault** requested for a secret that will be associated to the requested token.
 
-**3. Azure Roles** validate the request, and permission levels to the request.
+**3. Azure Roles** validate the request, and authorizes access request to the Key Vault.
 
-**4. Key Vault** generates a secret and conntection string to Azure SQL.
+**4. Key Vault** returns the secret, in this case the SQL DB Connection string.
 
-**5. Azure SQL DB** uses the connection string to securly store ePHI data.
+**5. Azure Function** uses the connection string to securely connect to SQL Database and continues further processing to store ePHI data.
 
 To achive the storage of the data, a common API schema was implemented  following Fast Healthcare Interoperability Resources (FHIR, pronounced fire). The function was provided the following FHIR exchange elements:
 
@@ -709,14 +709,21 @@ dashboard sidebar, and under **Manage**, click **Properties**. The
 tenant ID is a GUID in the box labeled **Directory ID**.
 
 ```
--appInsightsPlan 
+-appInsightsPlan *\<Level number\>*
 ```
-Provides the ability to select your Application Insights plan level. 
+Provides the ability to select your Application Insights plan level. Default is set to 1.
+
 0 – Setup App Insights with Application Insights Basic Plan.
+
 1 – Setup App insights with Application Insights Enterprise Plan.
-2 –  Only deploys App Insights without any billing plan. 
+
+2 – Only deploys App Insights without any billing plan. 
 
 Subscriptions such as BizSpark, where there is a spending limits, the use of option "2" is required. 
+
+```
+-appInsightsPlan 2
+```
 
 
 ## Grant permissions in Azure Active Directory
