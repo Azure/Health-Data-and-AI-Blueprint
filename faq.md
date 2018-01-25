@@ -132,10 +132,12 @@ during the installation. To grant permissions in Azure Active Directory:
 Due to PowerShell's limitations on caching users information it's recommended if your script fails, to close and reopen your PowerShell session to clear any local caches. 
 
 **I get an error durring deployment at 'appInsights' step that relates to /CurrentBillingFeatures**
-![](images/OMSlicense.PNG)
+![](images/OMSlicense.png)
 This is due to the license of your OMS/appInsights you have currently sign-up for. You can correct this by adding an enterprise plan in Azure Portal, or changing the deployment:
 0 – Setup App Insights with Application Insights Basic Plan.
+
 1 – Setup App insights with Application Insights Enterprise Plan.
+
 2 –  Only deploys App Insights without any billing plan. 
 
 Subscriptions such as BizSpark, where there is a spending limits, the use of option "2" is required. 

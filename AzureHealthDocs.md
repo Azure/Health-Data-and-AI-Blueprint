@@ -45,7 +45,7 @@ configuring roles correctly and implementing any modifications. Please
 note the following:
 
 -   This blueprint provides a baseline to help customers use Microsoft
-    Azure in a HITRUST, and HIPAA
+    Azure in a HITRUST, and HIPAA format
 
 -   Although the blueprint is designed to be aligned with HIPAA and HITRUST (through the Common Security Framework
     -- CSF), it should not be considered compliant until certified by an
