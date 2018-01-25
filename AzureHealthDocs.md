@@ -1,22 +1,22 @@
 ---
-title: Azure Health Analytics Blueprint
-description: Guidance for deploying a HIPAA/HITRUST Health Analytics Blueprint 
+title: Azure Health AI Blueprint
+description: Guidance for deploying a HIPAA/HITRUST Health AI Blueprint 
 author: simorjay
 ms.date: 01/23/2018
 ---
 
-# Azure Health Analytics Blueprint
+# Azure Health AI Blueprint for HIPAA/HITRUST
 
 ## Overview
 
 
-**The Azure health analytics blueprint offers a turn-key deployment of
+**The Azure health AI blueprint offers a turn-key deployment of
 Azure PaaS to solutions to successfully collect, store, analyze,
 visualize, and interact with health data while being able to meet
 compliance requirements. The blueprint helps accelerate cloud adoption
 and utilization for customers with data that is regulated.**
 
-The Azure Health Analytics Blueprint provides tools and guidance to help
+The Azure Health AI Blueprint provides tools and guidance to help
 deploy a more secure, HIPAA, and HITRUST ready platform-as-a-service
 (PaaS) environment for ingesting, storing, analyzing, visualizing and
 working with personal and non-personal medical records in a more secure,
@@ -241,7 +241,7 @@ managing an on-premise network and reduce costs for management. Alex has
 been evaluating Azure for some time but has struggled to configure the
 services that he needs to meet the HiTrust compliance requirements to
 store Patient Data in the cloud. Alex has just selected the Azure
-Health Analytics to deploy a compliance-ready health
+Health AI to deploy a compliance-ready health
 solution, which has addressed the requirements to meet the customer
 requirements for HiTrust.
 
@@ -295,7 +295,7 @@ can be used to store, process, and display sensitive personal data.
 
 
 This section details the default configurations and security measures
-built into the Azure Health Analytics Blueprint outlined to:
+built into the Azure Health AI Blueprint outlined to:
 
 - **INGEST** data raw sources including FHIR data source
 - **STORE**  sensitive information
@@ -561,7 +561,7 @@ routing of all events from any source to any destination, providing:
 # Deployment guide
 
 The components for deploying the solution can be downloaded from the
-[Azure Health Analytics Blueprint repository on Github.](http://aka.ms/healthblueprint)  For
+[Azure Health AI Blueprint repository on Github.](http://aka.ms/healthblueprint)  For
 integration with PowerShell it is necessary to have [Git for Windows](https://git-scm.com/download/win)
 installed.
 
@@ -574,7 +574,7 @@ If you encounter any issues during the deployment, see [FAQ and troubleshooting]
 
 ## Deploy the solution
 
-You will need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the respository. Once you have a copy of the Azure Health Analytics Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that will deploy or manages the Azure Health Analytics Blueprint.
+You will need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the respository. Once you have a copy of the Azure Health AI Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that will deploy or manages the Azure Health AI Blueprint.
 
 
 Once the repository has been copied, or cloned change your working directory to
@@ -794,7 +794,7 @@ principles, AD applications, and AD users.
 
 **NOTE** Ensure that permissions have been set correctly; see "Grant
 permissions in Azure Active Directory" in the deployment documentation
-for more information. The Azure Health Analytics Blueprint was
+for more information. The Azure Health AI Blueprint was
 designed to provide you a sample use example. This will consist of the
 following steps:
 
@@ -830,7 +830,7 @@ Learning](https://docs.microsoft.com/en-us/azure/machine-learning/studio/what-is
 ## Import and Train a Machine Learning experiment (Database Analyst role)
 
 
-After deploying the Azure Health Analytics Blueprint, the first step in
+After deploying the Azure Health AI Blueprint, the first step in
 running the length-of-stay (LOS) demonstration project is for the user created by the deployment script called 'Danny, the
 database analyst', to input the sample historical patient data into the
 solution.
