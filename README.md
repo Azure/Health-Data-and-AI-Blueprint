@@ -4,28 +4,21 @@ Updated 1/23/2018 Moved documentation content to MD
 Updated 1/24/2018 inserted OMS switch (detail in FAQ)
 
 
-
-
 # Pre GA DEPLOYMENT
-## PLEASE DO NOT FORK, OR PROVIDE BUGS IN GIT 
-## CONTACT frasim@microsoft.com WITH ANY ISSUES, OR CHANGES
 
-
-## To run the solution please review requirements:
 
 1. Must have a subscription where you have access and can manage the GLOBAL ADMIN. 
 
  **FOR MSFT EMPLOYEES - Subscriptions can be set up using ARIS - https://azuremsregistration.cloudapp.net/Request.aspx**
+ 
 -  You must select - External test or External Demo for access to a DS that is not associated with MSFT Domain.
+
 - ALSO NOTE THAT RUNNING THIS SCRIPT FROM HOST ON MSFT WILL FAIL, DUE TO MSFT FIREWALL RULES.
 
-
 2. Follow the **[deployment instructions](./AzureHealthDocs.md)**
+
 3. Read the **[FAQ](./faq.md)** if you run into any issues.
 
-
-I've also posted a video and blueprint deck you can view on how the solution works, and what you can expect when deploying it. 
-https://1drv.ms/f/s!AuGGBuEyUCt7j69YoWIiOZBC3euOOA 
 
 
 
