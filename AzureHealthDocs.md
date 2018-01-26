@@ -1,22 +1,22 @@
 ---
-title: Azure Health AI Blueprint
-description: Guidance for deploying a HIPAA/HITRUST Health AI Blueprint 
+title: Azure Health Data & AI Blueprint
+description: Guidance for deploying a HIPAA/HITRUST Health Data & AI Blueprint
 author: simorjay
 ms.date: 01/23/2018
 ---
 
-# Azure Health AI Blueprint for HIPAA/HITRUST
+# Azure Health Data & AI Blueprint for HIPAA/HITRUST
 
 ## Overview
 
 
-**The Azure health AI blueprint offers a turn-key deployment of
+**The Azure Health Data & AI Blueprint offers a turn-key deployment of
 Azure PaaS to solutions to successfully collect, store, analyze,
 visualize, and interact with health data while being able to meet
 compliance requirements. The blueprint helps accelerate cloud adoption
 and utilization for customers with data that is regulated.**
 
-The Azure Health AI Blueprint provides tools and guidance to help
+The Azure Health Data & AI Blueprint provides tools and guidance to help
 deploy a more secure, HIPAA, and HITRUST ready platform-as-a-service
 (PaaS) environment for ingesting, storing, analyzing, visualizing and
 working with personal and non-personal medical records in a more secure,
@@ -208,8 +208,8 @@ access to the network.
 ## Use case
 
 
-The use case included with this blueprint illustrates how the Azure
-Blueprint for Healthcare can be used to enable machine learning and
+The use case included with this blueprint illustrates how the 
+Azure Health Data & AI Blueprint can be used to enable machine learning and
 analytics on healthcare data in the cloud. Contosoclinic is a small
 hospital located in the United States. The hospital network
 administrators want to use Azure Machine Learning to better predict the
@@ -295,7 +295,7 @@ can be used to store, process, and display sensitive personal data.
 
 
 This section details the default configurations and security measures
-built into the Azure Health AI Blueprint outlined to:
+built into the Azure Health Data & AI Blueprint outlined to:
 
 - **INGEST** data raw sources including FHIR data source
 - **STORE**  sensitive information
@@ -561,7 +561,7 @@ routing of all events from any source to any destination, providing:
 # Deployment guide
 
 The components for deploying the solution can be downloaded from the
-[Azure Health AI Blueprint repository on Github.](http://aka.ms/healthblueprint)  For
+[Azure Health Data & AI Blueprint repository on Github.](http://aka.ms/healthblueprint)  For
 integration with PowerShell it is necessary to have [Git for Windows](https://git-scm.com/download/win)
 installed.
 
@@ -574,7 +574,7 @@ If you encounter any issues during the deployment, see [FAQ and troubleshooting]
 
 ## Deploy the solution
 
-You will need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the respository. Once you have a copy of the Azure Health AI Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that will deploy or manages the Azure Health AI Blueprint.
+You will need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the respository. Once you have a copy of the Azure Health Data & AI Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that will deploy or manages the Azure Health Data & AI Blueprint.
 
 
 Once the repository has been copied, or cloned change your working directory to
@@ -794,7 +794,7 @@ principles, AD applications, and AD users.
 
 **NOTE** Ensure that permissions have been set correctly; see "Grant
 permissions in Azure Active Directory" in the deployment documentation
-for more information. The Azure Health AI Blueprint was
+for more information. The Azure Health Data & AI Blueprint was
 designed to provide you a sample use example. This will consist of the
 following steps:
 
@@ -830,7 +830,7 @@ Learning](https://docs.microsoft.com/en-us/azure/machine-learning/studio/what-is
 ## Import and Train a Machine Learning experiment (Database Analyst role)
 
 
-After deploying the Azure Health AI Blueprint, the first step in
+After deploying the Azure Health Data & AI Blueprint, the first step in
 running the length-of-stay (LOS) demonstration project is for the user created by the deployment script called 'Danny, the
 database analyst', to input the sample historical patient data into the
 solution.

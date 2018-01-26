@@ -1,11 +1,11 @@
 ---
-title: Azure Health Analytics Blueprint FAQ
+title: AAzure Health Data & AI Blueprint FAQ
 description: Guidance for deploying a HIPAA/HITRUST Health Analytics Blueprint 
 author: simorjay
 ms.date: 01/23/2018
 ---
 
-# Azure Health Analytics Blueprint FAQ
+# Azure Health Data & AI Blueprint FAQ
 
 
 **Why am I unable to login or run the PowerShell scripts with my Azure
