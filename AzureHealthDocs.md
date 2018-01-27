@@ -1,8 +1,8 @@
 ---
 title: Azure Health Data & AI Blueprint
 description: Guidance for deploying a HIPAA/HITRUST Health Data & AI Blueprint
-author: simorjay
-ms.date: 01/23/2018
+author: Simorjay | Doyle
+ms.date: 01/26/2018
 ---
 
 # Azure Health Data & AI Blueprint for HIPAA/HITRUST
@@ -11,16 +11,16 @@ ms.date: 01/23/2018
 
 
 **The Azure Health Data & AI Blueprint offers a turn-key deployment of
-Azure PaaS to solutions to successfully collect, store, analyze,
-visualize, and interact with health data while being able to meet
+an Azure PaaS solution to securely ingest, store, analyze,
+and interact with health data while being able to meet industry
 compliance requirements. The blueprint helps accelerate cloud adoption
 and utilization for customers with data that is regulated.**
 
 The Azure Health Data & AI Blueprint provides tools and guidance to help
-deploy a more secure, HIPAA, and HITRUST ready platform-as-a-service
-(PaaS) environment for ingesting, storing, analyzing, visualizing and
-working with personal and non-personal medical records in a more secure,
-multi-tier cloud environment deployed as an end-to-end solution. It
+deploy a secure, HIPAA, and HITRUST ready platform-as-a-service
+(PaaS) environment for ingesting, storing, analyzing and interacting
+with personal and non-personal medical records in a secure,
+multi-tier cloud environment, deployed as an end-to-end solution. It
 showcases a common reference architecture and is designed to simplify
 adoption of Microsoft Azure. This provided architecture illustrates an
 end-to-end solution to meet the needs of organizations seeking a
@@ -35,11 +35,11 @@ secure manner. Customers can then use Azure Machine Learning to take
 advantage of powerful business intelligence tools and analytics to
 review predictions made on the sample data. As an example of the kind of
 analysis Azure Machine Learning can facilitate, the blueprint includes
-scripts and tools for predicting the length of a patient's stay in a
-hospital facility.
+a sample dataset, scripts and tools for predicting the length of a 
+patient's stay in a hospital facility.
 
 This blueprint is intended to serve as a foundation for customers to
-adjust to their specific requirements. It is designed to be more secure
+adjust to their specific requirements. It is designed to be secure
 and compliant when deployed; however, customers are responsible for
 configuring roles correctly and implementing any modifications. Please
 note the following:
