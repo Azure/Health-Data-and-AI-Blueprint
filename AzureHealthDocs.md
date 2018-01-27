@@ -11,8 +11,8 @@ ms.date: 01/26/2018
 
 
 **The Azure Health Data & AI Blueprint offers a turn-key deployment of
-an Azure PaaS solution to securely ingest, store, analyze,
-and interact with health data while being able to meet industry
+an Azure PaaS solution to demonstrate how to securely ingest, store, 
+analyze, and interact with health data while being able to meet industry
 compliance requirements. The blueprint helps accelerate cloud adoption
 and utilization for customers with data that is regulated.**
 
@@ -34,18 +34,17 @@ for exchanging healthcare information electronically, and store it in a
 secure manner. Customers can then use Azure Machine Learning to take
 advantage of powerful business intelligence tools and analytics to
 review predictions made on the sample data. As an example of the kind of
-analysis Azure Machine Learning can facilitate, the blueprint includes
+experiment Azure Machine Learning can facilitate, the blueprint includes
 a sample dataset, scripts and tools for predicting the length of a 
-patient's stay in a hospital facility.
+patient's stay in a hospital facility. 
 
-This blueprint is intended to serve as a foundation for customers to
-adjust to their specific requirements. It is designed to be secure
-and compliant when deployed; however, customers are responsible for
+This blueprint is intended to serve as a modular foundation for customers 
+to adjust to their specific requirements, developing new Azure Machine learning experiments to solve both clincal and operational use case scenarios. It is designed to be secure and compliant when deployed; however, customers are responsible for
 configuring roles correctly and implementing any modifications. Please
 note the following:
 
 -   This blueprint provides a baseline to help customers use Microsoft
-    Azure in a HITRUST, and HIPAA format
+    Azure in a HITRUST, and HIPAA environment.
 
 -   Although the blueprint is designed to be aligned with HIPAA and HITRUST (through the Common Security Framework
     -- CSF), it should not be considered compliant until certified by an
@@ -64,7 +63,7 @@ explaining and demonstrating its deployment.
 The foundational architecture is comprised of the following components:
 
 -   **Architectural diagram.** The diagram shows the reference
-    architecture used for the blueprint and use case scenario.
+    architecture used for the blueprint and the example use case scenario.
 
 -   **Deployment templates**. In this deployment, [Azure Resource
     Manager
@@ -98,7 +97,7 @@ The foundational architecture is comprised of the following components:
     the relevant HITRUST requirements and explains how Microsoft and the
     customer are responsible for meeting each one.
 
--   **Healthcare compliance review.** The solution was reviewed by
+-   **Health compliance review.** The solution was reviewed by
     Coalfire systems, Inc. The Health Compliance (HIPAA, and HITRIUST)
     Review and guidance for implementation provides an auditor\'s review
     of the solution, and considerations for transforming the blueprint
@@ -205,12 +204,12 @@ access to the network.
 
 -   Scope: Subscription
 
-## Use case
+## Example Use case
 
 
-The use case included with this blueprint illustrates how the 
+The example use case included with this blueprint illustrates how the 
 Azure Health Data & AI Blueprint can be used to enable machine learning and
-analytics on healthcare data in the cloud. Contosoclinic is a small
+analytics on health data in the cloud. Contosoclinic is a small
 hospital located in the United States. The hospital network
 administrators want to use Azure Machine Learning to better predict the
 length of a patient's stay at the time of admittance, in order to
@@ -220,7 +219,7 @@ it can provide.
 ### Predicting length of stay
 
 
-The use case solution uses Azure Machine Learning to predict a newly
+The example use case scenario uses Azure Machine Learning to predict a newly
 admitted patient's length of stay by comparing the medical details taken
 at patient intake to aggregated historical data from previous patients.
 The blueprint includes a large set of anonymized medical records to
