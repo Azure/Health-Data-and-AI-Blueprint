@@ -17,13 +17,13 @@ compliance requirements. The blueprint helps accelerate cloud adoption
 and utilization for customers with data that is regulated.**
 
 The Azure Health Data & AI Blueprint provides tools and guidance to help
-deploy a secure, HIPAA, and HITRUST ready platform-as-a-service
+deploy a secure,  Health Insurance Portability and Accountability Act (HIPAA), and Health Information Trust Alliance (HITRUST) ready platform-as-a-service
 (PaaS) environment for ingesting, storing, analyzing and interacting
 with personal and non-personal medical records in a secure,
 multi-tier cloud environment, deployed as an end-to-end solution. It
 showcases a common reference architecture and is designed to simplify
-adoption of Microsoft Azure. This provided architecture illustrates an
-end-to-end solution to meet the needs of organizations seeking a
+adoption of Microsoft Azure. This provided architecture illustrates a
+ solution to meet the needs of organizations seeking a
 cloud-based approach to reducing the burden and cost of deployment.
 
 ![](images/components.png)
@@ -39,14 +39,17 @@ a sample dataset, scripts and tools for predicting the length of a
 patient's stay in a hospital facility. 
 
 This blueprint is intended to serve as a modular foundation for customers 
-to adjust to their specific requirements, developing new Azure Machine learning experiments to solve both clincal and operational use case scenarios. It is designed to be secure and compliant when deployed; however, customers are responsible for
+to adjust to their specific requirements, developing new Azure Machine 
+learning experiments to solve both clincal and operational use case scenarios. 
+It is designed to be secure and compliant when deployed; however, customers are responsible for
 configuring roles correctly and implementing any modifications. Please
 note the following:
 
 -   This blueprint provides a baseline to help customers use Microsoft
     Azure in a HITRUST, and HIPAA environment.
 
--   Although the blueprint is designed to be aligned with HIPAA and HITRUST (through the Common Security Framework
+-   Although the blueprint was designed to be aligned with 
+HIPAA and HITRUST (through the Common Security Framework
     -- CSF), it should not be considered compliant until certified by an
     external auditor per HIPAA and HITRUST certification requirements.
 
@@ -60,7 +63,7 @@ explaining and demonstrating its deployment.
 ## Solution components
 
 
-The foundational architecture is comprised of the following components:
+The foundational architecture is composed of the following components:
 
 -   **Architectural diagram.** The diagram shows the reference
     architecture used for the blueprint and the example use case scenario.
@@ -73,19 +76,19 @@ The foundational architecture is comprised of the following components:
     setup.
 
 -   **Automated deployment scripts**. These scripts help deploy the
-    end-to-end solution. The scripts consist of:
+     solution. The scripts consist of:
 
 
 -   A module installation and [global
     administrator](https://docs.microsoft.com/en-us/azure/active-directory/active-directory-assign-admin-roles-azure-portal)
     setup script is used to install and verify that required PowerShell
     modules and global administrator roles are configured correctly. 
--   An installation PowerShell script is used to deploy the end-to-end
-    solution, provided via a .zip file file that contain a pre-built
+-   An installation PowerShell script is used to deploy the 
+    solution, provided via a .zip file that contains a pre-built
     demo functions. 
 
 
--   **Threat model.** A comprehensive threat model is provided in .tm7
+-   **Threat model.** A comprehensive threat model is provided in tm7
     format for use with the [Microsoft Threat Modeling
     Tool](https://www.microsoft.com/en-us/download/details.aspx?id=49168),
     showing the components of the solution, the data flows between them,
@@ -127,7 +130,7 @@ for detailed information about RBAC, roles, and permissions.
 
 
 The site administrator is responsible for the customer's Azure
-subscription. They control the overall ecosystem, but have no access to
+subscription. They control the overall deployment, but have no access to
 patient records.
 
 -   Default role assignments:
@@ -213,7 +216,7 @@ analytics on health data in the cloud. Contosoclinic is a small
 hospital located in the United States. The hospital network
 administrators want to use Azure Machine Learning to better predict the
 length of a patient's stay at the time of admittance, in order to
-increase operational workload efficiency and enhance the quality of care
+increase operational workload efficiency, and enhance the quality of care
 it can provide.
 
 ### Predicting length of stay
@@ -239,7 +242,7 @@ Alex's job is to evaluate technologies that can reduce the burden of
 managing an on-premise network and reduce costs for management. Alex has
 been evaluating Azure for some time but has struggled to configure the
 services that he needs to meet the HiTrust compliance requirements to
-store Patient Data in the cloud. Alex has just selected the Azure
+store Patient Data in the cloud. Alex has selected the Azure
 Health AI to deploy a compliance-ready health
 solution, which has addressed the requirements to meet the customer
 requirements for HiTrust.
@@ -263,9 +266,9 @@ with Azure SQL Database.
 
 **Chief Medical Information Officer -- Caroline**
 
-Caroline will be working with Chris the Care Line Manager, and Debra the
+Caroline is working with Chris the Care Line Manager, and Debra the
 Data Scientist to determine what factors impact patient length of stay.
-Caroline will use the predictions from the length-of-stay (LOS) solution
+Caroline uses the predictions from the length-of-stay (LOS) solution
 to determine if resources are being allocated appropriately in the
 hospital network. For example, using the dashboard provided in this
 solution.
@@ -275,7 +278,7 @@ solution.
 *Email: Chris\_CareLineManager*
 
 As the individual directly responsible for managing patient admission,
-and discharges at Contosoclinic, Chris will use the predictions
+and discharges at Contosoclinic, Chris will uses the predictions
 generated by the LOS solution to ensure that adequate staff are
 available to provide care to patients while they are staying in the
 facility.
@@ -285,8 +288,8 @@ facility.
 *Email: Han\_Auditor*
 
 Han is a certified auditor who has experience auditing for ISO, SOC, and
-HiTrust. He was hired to review Contosoclinc's network. Han will
-interview the staff and review the Customer Responsibility Matrix
+HiTrust. Han was hired to review Contosoclinc's network. Han can
+ review the Customer Responsibility Matrix
 provided with the solution to ensure that the blueprint and LOS solution
 can be used to store, process, and display sensitive personal data.
 
@@ -338,11 +341,11 @@ built into the Azure Health Data & AI Blueprint outlined to:
     (12 characters minimum with at least one Upper/Lower letter, number,
     and special character) are required.
 
--   Multi-factor authentication is supported if the -enableMFA switch is
-    set during deployment.
+-   Multi-factor authentication is supported when the -enableMFA switch is
+    enabled during deployment.
 
--   Passwords expire after 60 days if the -enableADDomainPasswordPolicy
-    switch is set during deployment.
+-   Passwords expire after 60 days when the -enableADDomainPasswordPolicy
+    switch is enabled during deployment.
 
 **Roles:**
 
@@ -376,7 +379,7 @@ built into the Azure Health Data & AI Blueprint outlined to:
 -   Diagnostics logs for Key Vault are enabled with a retention period
     of at least 365 days.
 -   Permitted cryptographic operations for keys are restricted to the
-    ones actually required
+    ones required
 
 ## COLLECT 
 
@@ -385,15 +388,15 @@ The solution was designed to  use [Azure Functions](https://docs.microsoft.com/e
 
 **1. Bulk import of customer data ephi data**
 
-When using the demo script. .\\HealthcareDemo.ps1 with the **BulkPatientAdmission** switch as outlined in **Deploying and running the demo** it will execute the following processing pipeline:
+When using the demo script. .\\HealthcareDemo.ps1 with the **BulkPatientAdmission** switch as outlined in **Deploying and running the demo** it executes the following processing pipeline:
 1. **Azure Blob Storage** - Patient data .csv file sample uploaded to storage
 2. **Event Grid** - Event Publishes data to Azure Function (Bulk import - blob event)
-3. **Azure Function** - Performs the processing and stores the data into SQL Storage using the secure function - event(type;blob\_url)
+3. **Azure Function** - Performs the processing and stores the data into SQL Storage using the secure function - event(type;blob url)
 4. **SQL DB** - The database store for Patient Data using tags for classification, and the ML process is kicked off to do the training experiment.
 
 ![](images/dataflow.png)
 
-Additionally the azure function was designed to read and protect designated sensitve data in the sample data set using the following tags.
+Additionally the azure function was designed to read and protect designated sensitive data in the sample data set using the following tags:
 - dataProfile => “ePHI”
 - owner => \<Site Admin UPN\>
 - environment => “Pilot”
@@ -404,9 +407,9 @@ The tagging was applied to the sample data set where patient 'names' was identif
 
 When using the demo script. .\\HealthcareDemo.ps1 with the **BulkPatientadmission** switch as outlined in **Deploying and running the demo** it will execute the following processing pipeline:
 ![](images/securetransact.png)
-**1. Azure Function** triggered and the function will request for a [bearer token](https://docs.microsoft.com/en-us/rest/api/) from Azure Active directory.
+**1. Azure Function** triggered and the function requests for a [bearer token](https://docs.microsoft.com/en-us/rest/api/) from Azure Active directory.
 
-**2. Key Vault** requested for a secret that will be associated to the requested token.
+**2. Key Vault** requested for a secret that is associated to the requested token.
 
 **3. Azure Roles** validate the request, and authorizes access request to the Key Vault.
 
@@ -414,13 +417,13 @@ When using the demo script. .\\HealthcareDemo.ps1 with the **BulkPatientadmissio
 
 **5. Azure Function** uses the connection string to securely connect to SQL Database and continues further processing to store ePHI data.
 
-To achive the storage of the data, a common API schema was implemented  following Fast Healthcare Interoperability Resources (FHIR, pronounced fire). The function was provided the following FHIR exchange elements:
+To achieve the storage of the data, a common API schema was implemented  following Fast Healthcare Interoperability Resources (FHIR, pronounced fire). The function was provided the following FHIR exchange elements:
 
 -   [Patient schema](https://www.hl7.org/fhir/patient.html) covers the "who" information about a patient.
 
 -   [Observation schema](https://www.hl7.org/fhir/observation.html)  covers the central element in healthcare, used to support diagnosis, monitor progress, determine baselines and patterns and even capture demographic characteristics. 
 
--   [Encounter schema](https://www.hl7.org/fhir/encounter.html) covers the types of encouters such as ambulatory, emergency, home health, inpatient and virtual encounters.
+-   [Encounter schema](https://www.hl7.org/fhir/encounter.html) covers the types of encounters such as ambulatory, emergency, home health, inpatient, and virtual encounters.
 
 -   [Condition schema](https://www.hl7.org/fhir/condition.html) covers detailed information about a condition, problem, diagnosis, or other event, situation, issue, or clinical concept that has risen to a level of concern.  
 
@@ -449,7 +452,7 @@ routing of all events from any source to any destination, providing:
 
 -   [Transparent Data Encryption
     (TDE)](https://docs.microsoft.com/en-us/sql/relational-databases/security/encryption/transparent-data-encryption-azure-sql)
-    provides real-time encryption and decryption of data stored in the
+    provides real time encryption and decryption of data stored in the
     Azure SQL Database, using a key stored in Azure Key Vault.
 
 -   [SQL Vulnerability
@@ -465,7 +468,7 @@ routing of all events from any source to any destination, providing:
     Auditing](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-auditing)
     is enabled.
 
--   [SQL Database metrics and diagnostics
+-   [SQL Database metrics and diagnostic
     logging](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-metrics-diag-logging)
     is enabled.
 
@@ -476,7 +479,7 @@ routing of all events from any source to any destination, providing:
 -   [Always Encrypted
     columns](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-always-encrypted-azure-key-vault)
     are used to protect patient first, middle, and last names.
-    Additionally, the database column encryption also uses Azure AD to
+    Additionally, the database column encryption also uses Azure Active Directory (AD) to
     authenticate the application to Azure SQL Database.
 
 -   Access to SQL Database and SQL Server is configured according to the
@@ -509,7 +512,7 @@ routing of all events from any source to any destination, providing:
 -   [Logging is
     enabled](https://docs.microsoft.com/en-us/azure/machine-learning/studio/web-services-logging)
     for Machine Learning web services.
-- using [Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/preview/experimentation-service-configuration) workbench requires the development of experiments, that will provide the ability to provide preditions to a solution set. [Integrating the workbench](https://docs.microsoft.com/en-us/azure/machine-learning/preview/using-git-ml-project) can help streamline management of experiments.
+- using [Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/preview/experimentation-service-configuration) workbench requires the development of experiments, that provides the ability to predict to a solution set. [Integrating the workbench](https://docs.microsoft.com/en-us/azure/machine-learning/preview/using-git-ml-project) can help streamline management of experiments.
 
 ## SECURITY
 
@@ -519,10 +522,10 @@ routing of all events from any source to any destination, providing:
 - [Azure Advisor](https://docs.microsoft.com/en-us/azure/advisor/advisor-overview) is a personalized cloud consultant that helps you follow best practices to optimize your Azure deployments. It analyzes your resource configuration and usage telemetry and then recommends solutions that can help you improve the cost effectiveness, performance, high availability, and security of your Azure resources.
 
 ### Application Insights
-- [Application Insights](https://docs.microsoft.com/en-us/azure/application-insights/app-insights-overview) is an extensible Application Performance Management (APM) service for web developers on multiple platforms. Use it to monitor your live web application. It will automatically detect performance anomalies. It includes powerful analytics tools to help you diagnose issues and to understand what users actually do with your app. It's designed to help you continuously improve performance and usability.
+- [Application Insights](https://docs.microsoft.com/en-us/azure/application-insights/app-insights-overview) is an extensible Application Performance Management (APM) service for web developers on multiple platforms. Use it to monitor your live web application. It will detect performance anomalies. It includes powerful analytics tools to help you diagnose issues and to understand what users actually do with your app. It's designed to help you continuously improve performance and usability.
 
 ### Azure Alerts
-- [Alerts](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitoring-overview-alerts) offer a method of monitoring Azure services and allows you to configure conditions over data. Alerts also provide notifications when a alert conditions matches the monitoring data.
+- [Alerts](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitoring-overview-alerts) offer a method of monitoring Azure services and allows you to configure conditions over data. Alerts also provide notifications when a alert condition matches the monitoring data.
 
 ### Operations Management Suite (OMS)
 [Operations Management Suite (also known as OMS)](https://docs.microsoft.com/en-us/azure/operations-management-suite/operations-management-suite-overview) is a collection of management services.
@@ -564,7 +567,7 @@ The components for deploying the solution can be downloaded from the
 integration with PowerShell it is necessary to have [Git for Windows](https://git-scm.com/download/win)
 installed.
 
-- *CAUTION* The scripts adds domain users to the Azure AD tenant that you specify. We recommend creating a new Azure AD tenant to test this solution.
+- *CAUTION* The script adds domain users to the Azure Active Directory (AD) tenant that you specify. We recommend creating a new Azure Active Directory (AD) tenant to test this solution.
 - *CAUTION* It is recommended you use a [clean Windows 10](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal) (or similar) VM to deploy the solution to ensure that the correct PowerShell modules get loaded. 
 
 
@@ -573,7 +576,7 @@ If you encounter any issues during the deployment, see [FAQ and troubleshooting]
 
 ## Deploy the solution
 
-You will need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the respository. Once you have a copy of the Azure Health Data & AI Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that will deploy or manages the Azure Health Data & AI Blueprint.
+You will need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the repository. Once you have a copy of the Azure Health Data & AI Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that deploys or manages the Azure Health Data & AI Blueprint.
 
 
 Once the repository has been copied, or cloned change your working directory to
@@ -588,12 +591,12 @@ cd  .\\Deployment\\
 ```
 .\\deploy.ps1 -installModules
 ```
-- It is recommended that if any errors are flagged that they be resolved prior to proceeding.
+- It is recommended that if an error is flagged during deployment, that the errors be resolved prior to proceeding.
 
 3.  Once the modules are installed, run **deploy.ps1** again to deploy
     the solution. For detailed usage instructions, see **deploy.ps1 usage**
 
-- NOTE: The script will ask you to supply a value for the
+- NOTE: The script asks you to supply a value for the
 **globalAdminPassword** parameter; enter the password for the
 administrative account you are using for the **-globalAdminUsername**
 parameter. The script then deploys the solution, which may take some
@@ -609,7 +612,7 @@ Deploys or manages the Azure Solution for Healthcare.
             .\deploy.ps1 -installModules
 ```
 
-This command will validate or install any missing PowerShell modules
+This command validates, and installs missing PowerShell modules
 that the solution requires.
 
 **Example 2: Deploying the solution in a test environment**
@@ -653,14 +656,14 @@ principles, AD applications, and AD users.
 -deploymentPassword *\<password\>*
 ```
 If this parameter is set, all of the passwords used within the solution
-will be set to the supplied value. The deploymentPassword parameter is
+is set to the supplied value. The deploymentPassword parameter is
 intended for testing purposes, and should not be used in a production
-environment. If this parameter is not used, the script will generate and
-display 15-character strong passwords for every role.
+environment. If this parameter is not used, the script generates and
+displays 15-character strong passwords for every role.
 ```
 -deploymentPrefix *\<prefix\>*
 ```
-A string of 1 to 5 alphanumeric characters that will be used to create
+A string of 1 to 5 alphanumeric characters that is used to create
 distinct resource group names. If you run the script multiple times, you
 must choose a different prefix each time to avoid conflicts with other
 resources.
@@ -737,15 +740,15 @@ Subscriptions such as BizSpark, where there is a spending limits, the use of opt
 
 4.  Click **Required permissions**.
 
-5.  Click **Grant Permissions** at top. You will be asked if you want to
+5.  Click **Grant Permissions** at top. Select
     grant permissions for all accounts in the current directory. Click
     **Yes**.
 
 ![](images/image3.PNG)
 
-When deployment is complete, you will find an output json file located
+When deployment is complete, an output json file is located
 in .\\output called *\<deployment-prefix\>*-deploymentOutput.json. It
-will list all the components installed. The demo will require this file.
+ lists all the components installed. The demo script require this file to continue.
 
 ## Integrate Application Insights
 
@@ -791,33 +794,33 @@ principles, AD applications, and AD users.
 
 ## Deploying and running the demo
 
-**NOTE** Ensure that permissions have been set correctly; see "Grant
+For more information to configure permissions correctly; see "Grant
 permissions in Azure Active Directory" in the deployment documentation
 for more information. The Azure Health Data & AI Blueprint was
-designed to provide you a sample use example. This will consist of the
+designed to provide you a sample use example. the demo consist of the
 following steps:
 
 1.  Import and Train a Machine Learning experiment using the applet
     .\\HealthcareDemo.ps1. The sample data located in the
     Blueprint\\Deployment\\trainingdata directory, contains
     100,000 sample, anonymized medical records. This data
-    will be imported, and secured using the sample functions, at the
-    same time the data will be used to train a sample
+   is imported, and secured using the sample functions, at the
+    same time the data is used to train a sample
     [R-function](https://docs.microsoft.com/en-us/azure/machine-learning/studio/r-quickstart)
     Machine Learning experiment created in [Azure Machine Learning
     Studio](https://docs.microsoft.com/en-us/azure/machine-learning/studio/what-is-ml-studio).
-    The experiment was designed to predict the duration a patient would
+    The experiment was designed to predicted the duration a patient would
     likely stay in the hospital based on the health conditions collected
     in the sample data.
 
 2.  Once the Experiment in Azure Machine Learning studio is trained, the
-    sample applet .\\HealthcareDemo.ps1 will be used to admit 10 new
+    sample applet .\\HealthcareDemo.ps1 is used to admit 10 new
     patients (.\\Blueprint\\Deployment\\scripts\\demoscripts\\admit) by
-    the care line manager (health provider). This data will be stored
-    securely, logged, and the Experiment will provide a predicted length
+    the care line manager (health provider). This data is stored
+    securely, logged, and the Experiment provides a predicted length
     of stay for each patient.
 
-3.  The careline manager will discharge 6 of the patients as the last
+3.  The care line manager discharges 6 of the 10 admited patients as the last
     step of the demo experiment.
 
 More information [about data
@@ -861,8 +864,8 @@ run the following query:
   FROM [dbo].[PatientData]
 ```
 
-This displays the first 100 rows from the table. Note that the first,
-middle, and last names of each patient are encrypted at rest in the
+Will displays the first 100 rows from the table. You can observe that the first,
+middle, and last names of each patient are now encrypted at rest in the
 database.
 
 ## Patient admission (Care Line Manager role)
@@ -879,10 +882,10 @@ and run the following script:
 ```
 .\HealthcareDemo.ps1 -deploymentPrefix <deployment-prefix> -Operation BulkPatientAdmission
 ```
-A browser window will appear asking for credentials. Log in using the
+A browser window appears asking for credentials. Log in using the
 credentials for the Chris\_CareLineManager account. The PowerShell
-window will show the progress of the upload. (If permissions have not
-been set correctly, this step will result in an error. See "Grant
+window shows the progress of the upload. (If permissions are not
+set correctly, this step will result in an error. For more information see "Grant
 permissions in Azure Active Directory" in the deployment documentation
 for more information.
 
@@ -921,7 +924,7 @@ SELECT TOP 20 *
   ORDER BY EId DESC
 ```
 
-It should show that the 6 most recently admitted patients have all been
+It will show that the 6 most recently admitted patients have been
 discharged.
 
 ## Machine learning (Data Scientist role)
@@ -955,7 +958,7 @@ prefix) is selected under **Workspace**. Two experiments will display.
     that are close to it.
 
 You can modify these experiments and create new ones to explore new
-machine learning possibilities. See the [Azure Machine Learning preview
+machine learning possibilities. For more information see [Azure Machine Learning preview
 documentation](https://docs.microsoft.com/en-us/azure/machine-learning/preview/)
 for more information about Machine Learning Studio and working with
 experiments.
@@ -965,8 +968,8 @@ experiments.
 
 The solution provides a simple Microsoft PowerBI visualization of the
 solution. [Microsoft
-PowerBI](https://powerbi.microsoft.com/en-us/downloads/) will be
-required to open the sample report located (Using PowerBi free edition will work for this demo, but will not allow for reports to be shared)
+PowerBI](https://powerbi.microsoft.com/en-us/downloads/) is
+required to open the sample report located (Using PowerBi free edition works for this demo, but will not allow for reports to be shared)
 Blueprint\\Deployment\\Reports\\Healthcare-CLM,CMIO Report.pbix
 
 > ![](images/image7.png)
@@ -993,7 +996,7 @@ your live data source:
 
 6.  Click **OK**, and then click **Close**.
 
-7.  In the Ribbon, click **Refresh**. Data will be loaded from the
+7.  In the Ribbon, click **Refresh**. Data is loaded from the
     database.
 
 If you receive an error saying that your IP is not allowed, you will
@@ -1023,10 +1026,10 @@ Customers may copy and use this document for internal reference purposes.
 
 Certain recommendations in this material may result in increased data, network, or compute resource usage in Azure, and may increase a customer’s Azure license or subscription costs.
 
-The solution in this document is intended as a architecture and must not be used as-is for production purposes. Achieving Health compliance (such as HIPAA, or HITRUST) requires that customers consult with compliance or audit office.  
+The solution in this document is intended as an architecture and must not be used as-is for production purposes. Achieving Health compliance (such as HIPAA, or HITRUST) requires that customers consult with compliance or audit office.  
 
 All customer names, transaction records, and any related data on this page are fictitious, created for the purpose of this architecture and provided for illustration only. No real association or connection is intended, and none should be inferred.
-This solution was designed by Microsoft with development support from Avyan Consulting The work in it's entirety, or parts is available under the [MIT License](https://opensource.org/licenses/MIT).
+This solution was designed by Microsoft with development support from Avyan Consulting. The work in its entirety, or parts is available under the [MIT License](https://opensource.org/licenses/MIT).
 This solution has been reviewed by Coalfire, a Microsoft auditor. The HIPAA, and HITRUST Compliance Review provides an independent, third-party review of the solution, and components that need to be addressed.
 
 # Document authors
