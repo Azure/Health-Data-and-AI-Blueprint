@@ -1029,6 +1029,7 @@ All customer names, transaction records, and any related data on this page are f
 This solution was designed by Microsoft with development support from Avyan Consulting. The work in its entirety, or parts are available under the [MIT License](https://opensource.org/licenses/MIT).
 This solution has been reviewed by Coalfire, a Microsoft auditor. The HIPAA, and HITRUST Compliance Review provides an independent, third-party review of the solution, and components that need to be addressed.
 
-# Document authors
+# Solution Team
 
-Frank Simorjay (Microsoft)
+John Doyle (WW Health Industry Microsoft)
+Frank Simorjay (Global Ecosystem Microsoft)
