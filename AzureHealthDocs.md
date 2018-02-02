@@ -62,7 +62,8 @@ explaining and demonstrating its deployment.
 
 ## Deploying the auotmation
 
-To deploy the solution follow the instructions provided in the [deployment guidance](deploy.md)
+- To deploy the solution follow the instructions provided in the [deployment guidance](deployment.md).
+- Frequently asked question can be found in the [FAQ](faq.md) guidance.
 
 
 ## Solution components
