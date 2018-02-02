@@ -152,7 +152,7 @@ Subscriptions such as BizSpark, where there is a spending limits, the use of opt
 ```
 
 # Disclaimer and acknowledgments
-February 2017
+February 2018
 
 This document is for informational purposes only. MICROSOFT AND AVYAN MAKE NO WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY, AS TO THE INFORMATION IN THIS DOCUMENT. This document is provided “as-is.” Information and views expressed in this document, including URL and other Internet website references, may change without notice. Customers reading this document bear the risk of using it.
 This document does not provide customers with any legal rights to any intellectual property in any Microsoft or Avyan product or solutions.
@@ -168,6 +168,3 @@ All customer names, transaction records, and any related data on this page are f
 This solution was designed by Microsoft with development support from Avyan Consulting The work in it's entirety, or parts is available under the [MIT License](https://opensource.org/licenses/MIT).
 This solution has been reviewed by Coalfire, a Microsoft auditor. The HIPAA, and HITRUST Compliance Review provides an independent, third-party review of the solution, and components that need to be addressed.
 
-# Document authors
-
-Frank Simorjay (Microsoft)
