@@ -16,7 +16,7 @@ If you encounter any issues during the deployment, see [FAQ and troubleshooting]
 
 ## Deploy the solution
 
-You will need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the repository. Once you have a copy of the Azure Health Data & AI Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that deploys or manages the Azure Health Data & AI Blueprint.
+You need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the repository. Once you have a copy of the Azure Health Data & AI Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that deploys or manages the Azure Health Data & AI Blueprint.
 
 
 Once the repository has been copied, or cloned change your working directory to
@@ -154,13 +154,13 @@ tenant ID is a GUID in the box labeled **Directory ID**.
 ```
 Provides the ability to select your Application Insights plan level. Default is set to 1.
 
-0 – Setup App Insights with Application Insights Basic Plan.
+0 – Set up App Insights with Application Insights Basic Plan.
 
-1 – Setup App insights with Application Insights Enterprise Plan.
+1 – Set up App insights with Application Insights Enterprise Plan.
 
 2 – Only deploys App Insights without any billing plan. 
 
-Subscriptions such as BizSpark, where there is a spending limits, the use of option "2" is required. 
+Subscriptions such as BizSpark, where there is a spending limit, the use of option "2" is required. 
 
 ```
 -appInsightsPlan 2
@@ -187,7 +187,7 @@ Subscriptions such as BizSpark, where there is a spending limits, the use of opt
 
 When deployment is complete, an output json file is located
 in .\\output called *\<deployment-prefix\>*-deploymentOutput.json. It
- lists all the components installed. The demo script require this file to continue.
+ lists all the components installed. The demo script requires this file to continue.
 
 ## Integrate Application Insights
 
@@ -236,7 +236,7 @@ principles, AD applications, and AD users.
 For more information to configure permissions correctly; see "Grant
 permissions in Azure Active Directory" in the deployment documentation
 for more information. The Azure Health Data & AI Blueprint was
-designed to provide you a sample use example. the demo consist of the
+designed to provide you a sample use example. the demo consists of the
 following steps:
 
 1.  Import and Train a Machine Learning experiment using the applet
@@ -312,7 +312,7 @@ database.
 
 Chris, the care line manager, adds newly admitted patients to the
 database by uploading their information in FHIR format. These records
-are stored in ten individual .json files, one for each patient, in the
+are stored in 10 individual .json files, one for each patient, in the
 \\Deployment\\scripts\\demoscripts\\admit
 directory.
 
@@ -324,7 +324,7 @@ and run the following script:
 A browser window appears asking for credentials. Log in using the
 credentials for the Chris\_CareLineManager account. The PowerShell
 window shows the progress of the upload. (If permissions are not
-set correctly, this step results in an error. For more information see "Grant
+set correctly, this step results in an error. For more information, see "Grant
 permissions in Azure Active Directory" in the deployment documentation
 for more information.
 
@@ -352,9 +352,9 @@ and run the following script:
 .\HealthcareDemo.ps1 -deploymentPrefix <deployment-prefix> -Operation BulkPatientDischarge
 ```
 
-A browser window will appear asking for credentials. Log in using the
+A browser window appears asking for credentials. Log in using the
 credentials for the Chris\_CareLineManager account. The PowerShell
-window will show the progress of the upload. To confirm the discharges,
+window shows the progress of the upload. To confirm the discharges,
 log into the Azure dashboard using the Danny\_DBAnalyst account. In the
 SQL query window, run the following query:
 ```
@@ -363,7 +363,7 @@ SELECT TOP 20 *
   ORDER BY EId DESC
 ```
 
-It will show that the 6 most recently admitted patients have been
+It shows that the six most recently admitted patients have been
 discharged.
 
 ## Machine learning (Data Scientist role)
@@ -380,7 +380,7 @@ website at <https://uswestcentral.studio.azureml.net/> and log in using
 the Debra\_DataScientist account. Click the server drop-down list in the
 upper right, select **West Central US** as the region, and then ensure
 that the correct resource group (the one beginning with your deployment
-prefix) is selected under **Workspace**. Two experiments will display.
+prefix) is selected under **Workspace**. Two experiments display.
 
 -   *Healthcare.Blueprint-Predicting Length of Stay in Hospitals* runs
     when the historical training data is ingested and when patients are
@@ -397,7 +397,7 @@ prefix) is selected under **Workspace**. Two experiments will display.
     that are close to it.
 
 You can modify these experiments and create new ones to explore new
-machine learning possibilities. For more information see [Azure Machine Learning preview
+machine learning possibilities. For more information, see [Azure Machine Learning preview
 documentation](https://docs.microsoft.com/en-us/azure/machine-learning/preview/)
 for more information about Machine Learning Studio and working with
 experiments.
@@ -409,7 +409,7 @@ The solution provides a simple Microsoft PowerBI visualization of the
 solution. [Microsoft
 PowerBI](https://powerbi.microsoft.com/en-us/downloads/) is
 required to open the sample report located (Using PowerBi free edition works for this demo, but will not allow for reports to be shared)
-Blueprint\\Deployment\\Reports\\Healthcare-CLM,CMIO Report.pbix
+Blueprint\\Deployment\\Reports\\Healthcare-CLM, CMIO Report.pbix
 
 > ![](images/image7.png)
 
@@ -438,8 +438,7 @@ your live data source:
 7.  In the Ribbon, click **Refresh**. Data is loaded from the
     database.
 
-If you receive an error saying that your IP is not allowed, you will
-need to grant permission for the computer that Power BI is running on to
+If you receive an error saying that your IP is not allowed, you need to grant permission for the computer that Power BI is running on to
 access the database. Log in to the Azure dashboard using the
 Danny\_DBAnalyst account, click **SQL databases** in the left column,
 select the correct database, and click **Set server firewall** in the
