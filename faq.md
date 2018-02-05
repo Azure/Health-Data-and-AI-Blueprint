@@ -8,25 +8,22 @@ ms.date: 01/23/2018
 # Azure Health Data & AI Blueprint FAQ
 
 
-**Why am I unable to login or run the PowerShell scripts with my Azure
+**Why am I unable to log in or run the PowerShell scripts with my Azure
 subscription user?**
 
 You are required to create an Azure Active Directory (AAD) administrator
-as specified in the document. This is required because a subscription
-admin does not automatically receive DS or AAD credentials. This is a
-security feature that enables RBAC and role separation in Azure.
+as specified in the document. An active directory account is required because a subscription
+admin does not automatically receive DS or AAD credentials. 
 
 **I get the following error "cannot be loaded because running scripts is
 disabled on this system. For more information, see
 about\_Execution\_Policies"**
 
-You will need to allow for the script to run by using the following
-command:
+You can correct the permissions locally by running the following command:
 ```
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
 ```
-For more information, see
-<https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-5.1>.
+For more information, see.
 
 **When I run the deployment script, it tells me that a module is
 missing**
@@ -38,21 +35,18 @@ The script requires the following PowerShell modules:
 'SqlServer' = 21.0.17199\
 'MSOnline' = 1.1.166.0
 
-The script will try to unload and load the correct scripts running
-deploy.ps1 -installmodule. However, if permissions are not set correctly
-on the local computer or if module permissions were changed, it is
-possible the script will not be able to set the correct versions of the
-modules.
+The script tries to unload and load the correct scripts running
+deploy.ps1 -installmodule. If permissions are not set correctly
+on the local computer. Or module permissions were changed. The script will not load the correct versions of the
+required modules.
 
-If a module fails and will not load the correct version, remove the
-modules in question from your PowerShell install directory, and then
+If a module fails it's recommended that you remove the modules from your PowerShell install directory, and then
 rerun the deploy.ps1 -installmodule command.
 
 **Why do I need to add my subscription administrator to the AAD Admin
 role?**
 
-Role-based access control requires that an administrator be granted
-administrative rights in AAD. For a detailed explanation, see:
+Role-based access control requires that the deployment use administrator rights in AAD. For a detailed explanation, see:
 
 -   [Delegating Admin Rights in Microsoft
     Azure](https://www.petri.com/delegating-admin-rights-in-microsoft-azure)
@@ -64,8 +58,7 @@ administrative rights in AAD. For a detailed explanation, see:
 Healthcare HIPAA / HITRUST compliance?**
 
 Third-party products can help with continuous compliance efforts.
-Examples of the products available in the Azure marketplace are listed
-below.
+Examples of the products available in the Azure marketplace:
 
 - **Continuous Compliance Monitoring**       [Cloudneeti - - Cybersecurity & Compliance Assurance](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/cloudneeti.cloudneeti_enterpise?tab=Overview)
 - **Network Security and Management**        [Azure Marketplace: Network Security](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/category/networking?page=1)
@@ -80,25 +73,21 @@ Some monitoring capabilities do not offer hooks to automate at this
 time. See the deployment guidance documents for instructions for
 enabling the features manually.
 
-**Why does the ARM template fail to run because of my password
+**Why does the Resource Manager template fail to run because of my password
 complexity?**
 
-Strong passwords (minimum 15 characters, with upper and lower-case
-letters, at least 1 number, and 1 special character) are recommended
-throughout the solution.
+Strong passwords are recommended
+throughout the solution, for example, 15 characters, with upper and lower-case
+letters, at least 1 number, and 1 special character. 
 
 **How do I use this solution in my production deployment environment?**
 
 This solution (including the scripts, template, and documentation) is
 designed to help you build a pilot or demo site. Using this solution
-does not provide a ready-to-production solution for customers; it only
-illustrates the components required to build a more secure end-to-end
-solution. For example, virtual network address spacing, NSG routing,
-existing Storage and databases, existing enterprise-wide OMS workspaces
-and solutions, Azure Key Vault rotation policies, usage of existing AD
-admins and RBAC roles, and usage of existing AD applications and service
-principals will require customization to meet the requirements of your
-custom solution in production.
+does not provide a ready-to-production solution.
+This solution illustrates the components required to build a more secure end-to-end
+solution. 
+
 
 **What else should I consider once the solution is installed?**
 
@@ -111,8 +100,7 @@ Set-MsolUserPassword -userPrincipalName *\<youradmin@yourdomain\>*-NewPassword *
 **When I Run .\\HealthcareDemo.ps1 -deploymentPrefix prefix -Operation
 Ingestion I get a permission error.**
 
-This is because you did not provide permissions to the application
-during the installation. To grant permissions in Azure Active Directory:
+The script was not provided the correct permissions. To grant permissions in Azure Active Directory:
 
 1.  In the Azure portal, click **Azure Active Directory** in the
     sidebar.
@@ -123,24 +111,25 @@ during the installation. To grant permissions in Azure Active Directory:
 
 4.  Click **Required permissions**.
 
-5.  Click **Grant Permissions** at top. You will be asked if you want to
+5.  Click **Grant Permissions** at top. You are asked if you want to
     grant permissions for all accounts in the current directory. Click
     **Yes**.
 	
 **I redeploy the solution after an error... and it fails due to a 'cache' error, such as a token is duplicate**
 
-Due to PowerShell's limitations on caching users information it's recommended if your script fails, to close and reopen your PowerShell session to clear any local caches. 
+Due to PowerShell's limitations, caching users information may at times cause errors. It's recommended you close and reopen your PowerShell session to clear any local caches. 
 
-**I get an error durring deployment at 'appInsights' step that relates to /CurrentBillingFeatures**
+**I get an error while deployment at 'appInsights' step of the script. I noticed the error is related to a /CurrentBillingFeatures**
 ![](images/OMSlicense.png)
-This is due to the license of your OMS/appInsights you have currently sign-up for. You can correct this by adding an enterprise plan in Azure Portal, or changing the deployment:
-0 – Setup App Insights with Application Insights Basic Plan.
 
-1 – Setup App insights with Application Insights Enterprise Plan.
+The error is due to the licensing model of your OMS/appInsights. You can correct the script by adding an enterprise plan in Azure Portal, or changing the deployment method:
+0 – Set up App Insights with Application Insights Basic Plan.
+
+1 – Set up App insights with Application Insights Enterprise Plan.
 
 2 –  Only deploys App Insights without any billing plan. 
 
-Subscriptions such as BizSpark, where there is a spending limits, the use of option "2" is required. 
+Subscriptions such as BizSpark, where there is a spending limit, the use of option "2" is required. 
 ```
 .\deploy.ps1 -deploymentPrefix <1-5-length-prefix> `
              -tenantId <tenant-id> `
@@ -160,11 +149,11 @@ Customers may copy and use this document for internal reference purposes.
 
 **Note**
 
-Certain recommendations in this material may result in increased data, network, or compute resource usage in Azure, and may increase a customer’s Azure license or subscription costs.
+Certain recommendations in this solution may result in increased data, network, or compute resource usage in Azure. The solution may increase a customer’s Azure license or subscription costs.
 
-The solution in this document is intended as a architecture and must not be used as-is for production purposes. Achieving Health compliance (such as HIPAA, or HITRUST) requires that customers consult with compliance or audit office.  
+The solution in this document is intended as an architecture and must not be used as-is for production purposes. Achieving Health compliance (such as HIPAA, or HITRUST) requires that customers consult with compliance or audit office.  
 
-All customer names, transaction records, and any related data on this page are fictitious, created for the purpose of this architecture and provided for illustration only. No real association or connection is intended, and none should be inferred.
-This solution was designed by Microsoft with development support from Avyan Consulting The work in it's entirety, or parts is available under the [MIT License](https://opensource.org/licenses/MIT).
+All customer names, transaction records, and any related data on this page are fictitious, created for the purpose of this architecture, and provided for illustration only. No real association or connection is intended, and none should be inferred.
+This solution was designed by Microsoft with development support from Avyan Consulting The work in its entirety, or parts is available under the [MIT License](https://opensource.org/licenses/MIT).
 This solution has been reviewed by Coalfire, a Microsoft auditor. The HIPAA, and HITRUST Compliance Review provides an independent, third-party review of the solution, and components that need to be addressed.
 
