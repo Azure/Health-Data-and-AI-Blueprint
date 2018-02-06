@@ -9,6 +9,8 @@ Updated 2/5/2018 Public Preview
 # PUBLIC PREVIEW 
 ## HEALTH DATA AND AI BLUEPRINT FOR HIPAA/HITRUST
 
+Health organizations all over the world are leveraging the power of AI and the cloud to improve outcomes and accelerate performance.  The Azure health data & AI blueprint provides a secure end-to-end foundation for organizations to ingest, store, analyze and interact with sensitive and regulated data. The blueprint provides a Secure Technical Implementation Guide (STIG) and automation to help deploy a Health Insurance Portability and Accountability Act (HIPAA) and Health Information Trust Alliance (HITRUST) ready environment.  The blueprint includes step-by-step documentation, cybersecurity threat model, component architecture, customer responsibility matrix, external audit report and deployment scripts to automate cloud deployment.
+
 **[Solution Overview](./AzureHealthDocs.md)**
 
 **[Deployment instructions](./deployment.md)**
