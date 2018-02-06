@@ -3,21 +3,15 @@ Updated 1/23/2018 Moved documentation content to MD
 
 Updated 1/24/2018 inserted OMS switch (detail in FAQ)
 
+Updated 2/5/2018 Public Preview
 
-# Pre GA DEPLOYMENT
+
+# PUBLIC PREVIEW HEALTH DATA AND AI BLUEPRINT FOR HIPAA/HITRUST
 
 
-1. Must have a subscription where you have access and can manage the GLOBAL ADMIN. 
+ **[deployment instructions](./AzureHealthDocs.md)**
 
- **FOR MSFT EMPLOYEES - Subscriptions can be set up using ARIS - https://azuremsregistration.cloudapp.net/Request.aspx**
- 
--  You must select - External test or External Demo for access to a DS that is not associated with MSFT Domain.
-
-- ALSO NOTE THAT RUNNING THIS SCRIPT FROM HOST ON MSFT WILL FAIL, DUE TO MSFT FIREWALL RULES.
-
-2. Follow the **[deployment instructions](./AzureHealthDocs.md)**
-
-3. Read the **[FAQ](./faq.md)** if you run into any issues.
+ **[FAQ](./faq.md)** 
 
 
 
