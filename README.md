@@ -6,25 +6,19 @@ Updated 1/24/2018 inserted OMS switch (detail in FAQ)
 Updated 2/5/2018 Public Preview
 
 
-# PUBLIC PREVIEW HEALTH DATA AND AI BLUEPRINT FOR HIPAA/HITRUST
+# PUBLIC PREVIEW 
+## HEALTH DATA AND AI BLUEPRINT FOR HIPAA/HITRUST
+
+**[Solution Overview](./AzureHealthDocs.md)**
+**[Deployment instructions](./deployment.md)**
+**[FAQ](./faq.md)** 
+**[Threat model](./Compliance/Azure Health Data & AI Blueprint LengthOfStay-ThreatModel.tm7)**
 
 
- **[deployment instructions](./AzureHealthDocs.md)**
 
- **[FAQ](./faq.md)** 
+# Disclaimer
 
-
-
-
-
-# Compliance Content
-Additional content 
-- Threat model
-- HITRUST Customer Responsibility Matrix
-Supporting material for solution can be found at https://github.com/Azure/HIPAA-Healthcare-ML-LOS/tree/master/Documents/Compliance
-
-
-# Contribute
+ 
  The deployment script is designed to deploy the core elements of the Azure Health Data & AI Blueprint. The details of the solutions operation, and elements can be reviewed at aka.ms/healthcareblueprint
 Copyright (c) Microsoft Corporation and Avyan Consulting Corp. All rights reserved.
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is  furnished to do so, subject to the following conditions:
