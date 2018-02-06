@@ -124,33 +124,33 @@ Installs and updates all necessary PowerShell modules. Run the script
 with this switch before performing the main deployment to ensure that
 all necessary modules are present.
 ```
--globalAdminUsername *\<username\>*
+-globalAdminUsername <username>
 ```
 Typically, this is the username of the user performing the deployment.
 Use a valid Azure Active Directory OrgID username (example:
 "alex@contosohealthcare.onmicrosoft.com") rather than a Microsoft or
 corporate account name (example: "alex@contoso.com").
 ```
--subscriptionId *\<subscription-id\>*
+-subscriptionId <subscription-id>
 ```
 For the subscription ID, sign in to the [Subscriptions view in the Azure portal](https://portal.azure.com/#blade/Microsoft_Azure_Billing/SubscriptionsBlade).
 The subscription you are using should be listed in the table, along with
 its associated subscription ID, a GUID.
 ```
--tenantDomain *\<tenant-domain\>*
+-tenantDomain <tenant-domain>
 ```
 The tenant domain is the default directory name listed under your
 account name in the dashboard followed by ".onmicrosoft.com" (example:
 "contosohealthcare.onmicrosoft.com").
 ```
--tenantId *\<tenant-id\>*
+-tenantId <tenant-id>
 ```
 To find the Azure tenant ID, click **Azure Active Directory** in the
 dashboard sidebar, and under **Manage**, click **Properties**. The
 tenant ID is a GUID in the box labeled **Directory ID**.
 
 ```
--appInsightsPlan *\<Level number\>*
+-appInsightsPlan <level number>
 ```
 Provides the ability to select your Application Insights plan level. Default is set to 1.
 
@@ -424,7 +424,7 @@ your live data source:
 2.  Select the database and click **Change source**.
 
 3.  In the **Server** text box, change the name of the server to
-    *\<sql-server-name\>*.database.windows.net. You can find the SQL
+    <sql-server-name>.database.windows.net. You can find the SQL
     server name in the Azure dashboard. Click **OK**.
 
 4.  Click **Edit permissions**, and then click **Edit**.
