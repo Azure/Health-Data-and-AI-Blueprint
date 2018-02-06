@@ -8,7 +8,7 @@ Health organizations all over the world are leveraging the power of AI and the c
 
 **[Solution Overview](./AzureHealthDocs.md)**
 
-**[Deployment instructions](./deployment.md)**
+**[./images/deploy.png](./deployment.md)**
 
 **[FAQ](./faq.md)** 
 
