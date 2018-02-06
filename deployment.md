@@ -444,7 +444,7 @@ Danny\_DBAnalyst account, click **SQL databases** in the left column,
 select the correct database, and click **Set server firewall** in the
 bar at top right.
 
-![](images/image6.PNG)
+![](images/image6.png)
 
 If you are logged in to the Azure dashboard on the computer on which
 Power BI is running, you can click **Add client IP** to automatically
