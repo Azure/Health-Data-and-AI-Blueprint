@@ -22,14 +22,14 @@ You need to copy, or [clone](https://help.github.com/articles/cloning-a-reposito
 Once the repository has been copied, or cloned change your working directory to
     **Deployment**:
 ```
-cd  .\\Deployment\\
+cd  .\Deployment\
 ```
 
 
 2.  Run **deploy.ps1** with the **installModules** switch to install and verify all
     necessary modules are ready:
 ```
-.\\deploy.ps1 -installModules
+.\deploy.ps1 -installModules
 ```
 - It is recommended that if an error is flagged during deployment, that the errors be resolved prior to proceeding.
 
@@ -93,7 +93,7 @@ present to successfully run the script.
 Uninstalls the solution, removing all resource groups, service
 principles, AD applications, and AD users.
 ```
--deploymentPassword *\<password\>*
+-deploymentPassword <password>
 ```
 If this parameter is set, all of the passwords used within the solution
 are set to the supplied value. The deploymentPassword parameter is
@@ -101,7 +101,7 @@ intended for testing purposes, and should not be used in a production
 environment. If this parameter is not used, the script generates and
 displays 15-character strong passwords for every role.
 ```
--deploymentPrefix *\<prefix\>*
+-deploymentPrefix <prefix>
 ```
 A string of 1 to 5 alphanumeric characters that is used to create
 distinct resource group names. If you run the script multiple times, you
@@ -183,7 +183,7 @@ Subscriptions such as BizSpark, where there is a spending limit, the use of opti
     grant permissions for all accounts in the current directory. Click
     **Yes**.
 
-![](images/image3.PNG)
+![](images/image3.png)
 
 When deployment is complete, an output json file is located
 in .\\output called *\<deployment-prefix\>*-deploymentOutput.json. It
