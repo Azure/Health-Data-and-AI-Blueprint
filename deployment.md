@@ -22,14 +22,14 @@ You need to copy, or [clone](https://help.github.com/articles/cloning-a-reposito
 Once the repository has been copied, or cloned change your working directory to
     **Deployment**:
 ```
-cd  .\Deployment\
+cd  .\\Deployment\\
 ```
 
 
 2.  Run **deploy.ps1** with the **installModules** switch to install and verify all
     necessary modules are ready:
 ```
-.\deploy.ps1 -installModules
+.\\deploy.ps1 -installModules
 ```
 - It is recommended that if an error is flagged during deployment, that the errors be resolved prior to proceeding.
 
@@ -93,7 +93,7 @@ present to successfully run the script.
 Uninstalls the solution, removing all resource groups, service
 principles, AD applications, and AD users.
 ```
--deploymentPassword <password>
+-deploymentPassword *\<password\>*
 ```
 If this parameter is set, all of the passwords used within the solution
 are set to the supplied value. The deploymentPassword parameter is
@@ -101,7 +101,7 @@ intended for testing purposes, and should not be used in a production
 environment. If this parameter is not used, the script generates and
 displays 15-character strong passwords for every role.
 ```
--deploymentPrefix <prefix>
+-deploymentPrefix *\<prefix\>*
 ```
 A string of 1 to 5 alphanumeric characters that is used to create
 distinct resource group names. If you run the script multiple times, you
@@ -124,33 +124,33 @@ Installs and updates all necessary PowerShell modules. Run the script
 with this switch before performing the main deployment to ensure that
 all necessary modules are present.
 ```
--globalAdminUsername <username>
+-globalAdminUsername *\<username\>*
 ```
 Typically, this is the username of the user performing the deployment.
 Use a valid Azure Active Directory OrgID username (example:
 "alex@contosohealthcare.onmicrosoft.com") rather than a Microsoft or
 corporate account name (example: "alex@contoso.com").
 ```
--subscriptionId <subscription-id>
+-subscriptionId *\<subscription-id\>*
 ```
 For the subscription ID, sign in to the [Subscriptions view in the Azure portal](https://portal.azure.com/#blade/Microsoft_Azure_Billing/SubscriptionsBlade).
 The subscription you are using should be listed in the table, along with
 its associated subscription ID, a GUID.
 ```
--tenantDomain <tenant-domain>
+-tenantDomain *\<tenant-domain\>*
 ```
 The tenant domain is the default directory name listed under your
 account name in the dashboard followed by ".onmicrosoft.com" (example:
 "contosohealthcare.onmicrosoft.com").
 ```
--tenantId <tenant-id>
+-tenantId *\<tenant-id\>*
 ```
 To find the Azure tenant ID, click **Azure Active Directory** in the
 dashboard sidebar, and under **Manage**, click **Properties**. The
 tenant ID is a GUID in the box labeled **Directory ID**.
 
 ```
--appInsightsPlan <Level number>
+-appInsightsPlan *\<Level number\>*
 ```
 Provides the ability to select your Application Insights plan level. Default is set to 1.
 
