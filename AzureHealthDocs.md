@@ -62,7 +62,9 @@ explaining and demonstrating its deployment.
 
 ## Deploying the auotmation
 
-- To deploy the solution follow the instructions provided in the deployment guidance. [![](./images/deploy.png)](./deployment.md)
+- To deploy the solution follow the instructions provided in the deployment guidance. 
+
+[![](./images/deploy.png)](./deployment.md)
 
 - Frequently asked question can be found in the [FAQ](faq.md) guidance.
 
