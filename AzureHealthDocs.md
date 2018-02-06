@@ -387,7 +387,7 @@ built into the Azure Health Data & AI Blueprint outlined to:
 -   Permitted cryptographic operations for keys are restricted to the
     ones required
 
-## COLLECT 
+## INGEST 
 
 ### Azure Functions
 The solution was designed to  use [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/) to process the sample length of stay data used in the analytics demo. Three capabilities in the functions have been created.
@@ -451,7 +451,7 @@ routing of all events from any source to any destination, providing:
 
 -   Auditing
 
-## STORAGE 
+## STORE 
 
 ### SQL Database and Server 
 
