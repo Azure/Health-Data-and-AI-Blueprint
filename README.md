@@ -15,7 +15,11 @@ Updated 2/5/2018 Public Preview
 
 **[FAQ](./faq.md)** 
 
-**[Threat model](./Compliance/Azure Health Data & AI Blueprint LengthOfStay-ThreatModel.tm7)**
+**[Threat model](./Compliance/AzureHealthDataAIBlueprint-ThreatModel.tm7)**
+
+
+
+
 
 
 
