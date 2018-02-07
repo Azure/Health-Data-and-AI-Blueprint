@@ -5,7 +5,7 @@ author: Simorjay | Doyle
 ms.date: 01/26/2018
 ---
 
-# Azure Health Data & AI Blueprint for HIPAA/HITRUST
+# Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI
 
 ## Overview
 
