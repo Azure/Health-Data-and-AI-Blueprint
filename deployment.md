@@ -1,10 +1,10 @@
-# Azure Health Data & AI Blueprint for HIPAA/HITRUST
+# Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI
 
 
 ## Deployment guide
 
 The components for deploying the solution can be downloaded from the
-[Azure Health Data & AI Blueprint repository on Github.](http://aka.ms/healthblueprint)  For integration with PowerShell, it is necessary to have [Git for Windows](https://git-scm.com/download/win)
+[Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI repository on Github.](http://aka.ms/healthblueprint)  For integration with PowerShell, it is necessary to have [Git for Windows](https://git-scm.com/download/win)
 installed.
 
 - *CAUTION* The script adds domain users to the Azure Active Directory (AD) tenant that you specify. We recommend creating a new Azure Active Directory (AD) tenant to test this solution.
@@ -16,7 +16,7 @@ If you encounter any issues during the deployment, see [FAQ and troubleshooting]
 
 ## Deploy the solution
 
-You need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the repository. Once you have a copy of the Azure Health Data & AI Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that deploys or manages the Azure Health Data & AI Blueprint.
+You need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the repository. Once you have a copy of the  Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that deploys or manages the  Blueprint.
 
 
 Once the repository has been copied, or cloned change your working directory to
@@ -235,7 +235,7 @@ principles, AD applications, and AD users.
 
 For more information to configure permissions correctly; see "Grant
 permissions in Azure Active Directory" in the deployment documentation
-for more information. The Azure Health Data & AI Blueprint was
+for more information. The Blueprint was
 designed to provide you a sample use example. the demo consists of the
 following steps:
 
@@ -271,7 +271,7 @@ Learning](https://docs.microsoft.com/en-us/azure/machine-learning/studio/what-is
 ## Import and Train a Machine Learning experiment (Database Analyst role)
 
 
-After deploying the Azure Health Data & AI Blueprint, the first step in
+After deploying the Blueprint, the first step in
 running the length-of-stay (LOS) demonstration project is for the user created by the deployment script called 'Danny, the
 database analyst', to input the sample historical patient data into the
 solution.
@@ -473,7 +473,7 @@ This solution has been reviewed by Coalfire, a Microsoft auditor. The HIPAA, and
 # Disclaimer
 
  
- The deployment script is designed to deploy the core elements of the Azure Health Data & AI Blueprint. The details of the solutions operation, and elements can be reviewed at aka.ms/healthcareblueprint
+ The deployment script is designed to deploy the core elements of the  Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI. The details of the solutions operation, and elements can be reviewed at aka.ms/healthcareblueprint
 Copyright (c) Microsoft Corporation and Avyan Consulting Corp. All rights reserved.
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is  furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.

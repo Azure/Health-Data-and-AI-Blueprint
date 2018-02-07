@@ -1,10 +1,10 @@
 
 
  
-# HEALTH DATA AND AI BLUEPRINT FOR HIPAA/HITRUST
+# Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI  
 ## PUBLIC PREVIEW
 
-Health organizations all over the world are leveraging the power of AI and the cloud to improve outcomes and accelerate performance.  The Azure health data & AI blueprint provides a secure end-to-end foundation for organizations to ingest, store, analyze and interact with sensitive and regulated data. The blueprint provides a Secure Technical Implementation Guide (STIG) and automation to help deploy a Health Insurance Portability and Accountability Act (HIPAA) and Health Information Trust Alliance (HITRUST) ready environment.  The blueprint includes step-by-step documentation, cybersecurity threat model, component architecture, customer responsibility matrix, external audit report and deployment scripts to automate cloud deployment.
+Health organizations all over the world are leveraging the power of AI and the cloud to improve outcomes and accelerate performance.  The blueprint provides a secure end-to-end foundation for organizations to ingest, store, analyze and interact with sensitive and regulated data. The blueprint provides a Secure Technical Implementation Guide (STIG) and automation to help deploy a Health Insurance Portability and Accountability Act (HIPAA) and Health Information Trust Alliance (HITRUST) ready environment.  The blueprint includes step-by-step documentation, cybersecurity threat model, component architecture, customer responsibility matrix, external audit report and deployment scripts to automate cloud deployment.
 
 **[Solution Overview](./AzureHealthDocs.md)**
 
@@ -20,7 +20,7 @@ Health organizations all over the world are leveraging the power of AI and the c
 # Disclaimer
 
 
- The deployment script is designed to deploy the core elements of the Azure Health Data & AI Blueprint. The details of the solutions operation, and elements can be reviewed at aka.ms/healthcareblueprint
+ The deployment script is designed to deploy the core elements of the Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI. The details of the solutions operation, and elements can be reviewed at aka.ms/healthcareblueprint
 Copyright (c) Microsoft Corporation and Avyan Consulting Corp. All rights reserved.
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is  furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.

@@ -1,5 +1,5 @@
 ---
-title: Azure Health Data & AI Blueprint
+title: Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI
 description: Guidance for deploying a HIPAA/HITRUST Health Data & AI Blueprint
 author: Simorjay | Doyle
 ms.date: 01/26/2018
@@ -10,13 +10,13 @@ ms.date: 01/26/2018
 ## Overview
 
 
-**The Azure Health Data & AI Blueprint offers a turn-key deployment of
+**The Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI offers a turn-key deployment of
 an Azure PaaS solution to demonstrate how to securely ingest, store, 
 analyze, and interact with health data while being able to meet industry
 compliance requirements. The blueprint helps accelerate cloud adoption
 and utilization for customers with data that is regulated.**
 
-The Azure Health Data & AI Blueprint provides tools and guidance to help
+The Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI Blueprint provides tools and guidance to help
 deploy a secure,  Health Insurance Portability and Accountability Act (HIPAA), and Health Information Trust Alliance (HITRUST) ready platform-as-a-service
 (PaaS) environment for ingesting, storing, analyzing and interacting
 with personal and non-personal medical records in a secure,
@@ -219,7 +219,7 @@ access to the network.
 
 
 The example use case included with this blueprint illustrates how the 
-Azure Health Data & AI Blueprint can be used to enable machine learning and
+ Blueprint can be used to enable machine learning and
 analytics on health data in the cloud. Contosoclinic is a small
 hospital located in the United States. The hospital network
 administrators want to use Azure Machine Learning to better predict the
@@ -306,7 +306,7 @@ can be used to store, process, and display sensitive personal data.
 
 
 This section details the default configurations and security measures
-built into the Azure Health Data & AI Blueprint outlined to:
+built into the Blueprint outlined to:
 
 - **INGEST** data raw sources including FHIR data source
 - **STORE**  sensitive information
