@@ -84,7 +84,7 @@ The foundational architecture is composed of the following components:
     into Microsoft Azure by specifying configuration parameters during
     setup.
 
--   **Automated deployment scripts**. These scripts help deploy the
+-   **[Automated deployment scripts](https://aka.ms/healthblueprint)**. These scripts help deploy the
      solution. The scripts consist of:
 
 
@@ -94,10 +94,10 @@ The foundational architecture is composed of the following components:
     modules and global administrator roles are configured correctly. 
 -   An installation PowerShell script is used to deploy the 
     solution, provided via a .zip file that contains a pre-built
-    demo functions. 
+    demo functions.
 
 
--   **Threat model.** A comprehensive threat model is provided in tm7
+-   **[Threat model](https://aka.ms/healththreatmodel)** A comprehensive threat model is provided in tm7
     format for use with the [Microsoft Threat Modeling
     Tool](https://www.microsoft.com/en-us/download/details.aspx?id=49168),
     showing the components of the solution, the data flows between them,
@@ -105,11 +105,11 @@ The foundational architecture is composed of the following components:
     the points of potential risk in the system infrastructure when
     developing machine learning components or other modifications.
 
--   **Customer responsibility matrix.** A Microsoft Excel workbook lists
+-   **[Customer responsibility matrix](https://aka.ms/healthcrmblueprint)** A Microsoft Excel workbook lists
     the relevant HITRUST requirements and explains how Microsoft and the
     customer are responsible for meeting each one.
 
--   **Health compliance review.** The solution was reviewed by
+-   **[Health compliance review](https://aka.ms/healthreviewpaper)** The solution was reviewed by
     Coalfire systems, Inc. The Health Compliance (HIPAA, and HITRIUST)
     Review and guidance for implementation provides an auditor\'s review
     of the solution, and considerations for transforming the blueprint
