@@ -64,9 +64,9 @@ explaining and demonstrating its deployment.
 
 - To deploy the solution follow the instructions provided in the deployment guidance. 
 
-[![](./images/deploy.png)](./deployment.md)
+[![](./images/deploy.png)](https://aka.ms/healthblueprintdeploy)
 
-- Frequently asked question can be found in the [FAQ](faq.md) guidance.
+- Frequently asked question can be found in the [FAQ](https://aka.ms/healthblueprintfaq) guidance.
 
 
 ## Solution components
@@ -84,7 +84,7 @@ The foundational architecture is composed of the following components:
     into Microsoft Azure by specifying configuration parameters during
     setup.
 
--   **[Automated deployment scripts](https://aka.ms/healthblueprint)**. These scripts help deploy the
+-   **[Automated deployment scripts](https://aka.ms/healthblueprintdeploy)**. These scripts help deploy the
      solution. The scripts consist of:
 
 
