@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <FunctionsZipName>HealthCareWorkflow.zip</FunctionsZipName>
+    <DropFolderName>drop</DropFolderName>
+    <FunctionSrcFolder>bin\$(Configuration)\net461</FunctionSrcFolder>
+    <FunctionDestFolder>$(SolutionDir)\Deployment\functions</FunctionDestFolder>
+    <SwaggerSrcFolder>Swagger</SwaggerSrcFolder>
+    <SwaggerDestFolder>$(FunctionSrcFolder)\.azurefunctions\swagger</SwaggerDestFolder>
+  </PropertyGroup>
+  <ItemGroup>    
+    <PackageReference Include="Microsoft.Azure.ActiveDirectory.GraphClient" Version="2.1.1" />    
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="3.17.0" />    
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.2" />    
+    <PackageReference Include="MSBuildTasks" Version="1.5.0.235" />    
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HIPAA.Platform.Core\HIPAA.Platform.Core.csproj" />
+    <ProjectReference Include="..\HIPAA.Platform.Function.Common\HIPAA.Platform.Function.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Swagger\" />
+  </ItemGroup>
+  <ItemGroup>
+    <SwaggerDef Include="Swagger\swagger.json" />
+  </ItemGroup>
+  <UsingTask TaskName="Zip" TaskFactory="CodeTaskFactory" AssemblyName="Microsoft.Build.Tasks.Core">
+    <ParameterGroup>
+      <Src ParameterType="System.String" Required="true" />
+      <Dest ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.IO.Compression.FileSystem" />
+      <Reference Include="System.Threading" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          System.IO.Compression.ZipFile.CreateFromDirectory(Src, Dest);
+      ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+    <Target Name="ZipFunctions" AfterTargets="_GenerateFunctionsPostBuild">
+      <Message Text="Zip Functions" />
+      <Zip Src="$(FunctionSrcFolder)" Dest="$(FunctionDestFolder)\$(FunctionsZipName)" />
+    </Target>
+  <Target Name="CopySwagger" BeforeTargets="_GenerateFunctionsPostBuild">
+    <Message Text="Copy Swagger Definition" />
+  <Copy SourceFiles="@(SwaggerDef)" DestinationFolder="$(SwaggerDestFolder)" />
+  </Target>
+  <Target Name="ClearFunctions" BeforeTargets="Build">
+    <Message Text="Delete Existing Functions" />
+    <Delete Files="$(FunctionDestFolder)\$(FunctionsZipName)" Condition="Exists('$(FunctionDestFolder)\$(FunctionsZipName)')" />
+  </Target>
+</Project>

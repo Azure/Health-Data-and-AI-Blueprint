@@ -1,0 +1,340 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "MS Health Solution FHIR API",
+      "version": "1.0.0"
+    },
+    "host": "ms-hipaa-solution.azurewebsites.net",
+    "basePath": "/",
+    "schemes": [
+      "https"
+    ],
+    "paths": {
+      "/api/PatientAdmissionFun": {
+        "post": {
+            "tags": [
+                "FHIR",
+                "admission"
+            ],
+            "operationId": "/api/PatientAdmissionFun/post",
+            "produces": [
+                "void"
+            ],
+            "consumes": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "in": "body",
+                    "name": "body",
+                    "description": "The admission data",
+                    "required": true,
+                    "schema": {
+                      "$ref": "#/definitions/Admission"
+                    }        
+                }
+            ],
+            "description": "FHIR API for submitting patient information during admission",
+            "responses": {
+                "200": {
+                "description": "Admission successful"
+                }
+            },
+            "security": [
+                {
+                    "apikeyQuery": []
+                }
+            ]
+            }
+        },
+        "/api/PatientDischargeFun": {
+            "put": {
+                "tags": [
+                    "FHIR",
+                    "discharge"
+                ],
+                "operationId": "/api/PatientDischargeFun/put",
+                "produces": [
+                    "void"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The discharge data",
+                        "required": true,
+                        "schema": {
+                          "$ref": "#/definitions/Discharge"
+                        }        
+                    }    
+                ],
+                "description": "Replace with Operation Object #http://swagger.io/specification/#operationObject",
+                "responses": {
+                    "200": {
+                        "description": "Discharge successful"
+                    }
+                },
+                "security": [
+                    {
+                    "apikeyQuery": []
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "EncounterClass": {
+            "type": "object",
+            "properties": {
+                "system": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "display": {
+                    "type": "string"
+                }
+            }
+        },
+        "Name": {
+            "type": "object",
+            "properties": {
+                "use": {
+                    "type": "string"
+                },
+                "family": {
+                    "type": "string"
+                },
+                "given": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "ObservationCode": {
+            "type": "object",
+            "properties": {
+                "system": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "display": {
+                    "type": "string"
+                }
+            }
+        },
+        "Period": {
+            "type": "object",
+            "properties": {
+                "start": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "end": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "ServiceProvider": {
+            "type": "object",
+            "properties": {
+                "reference": {
+                    "type": "string"
+                },
+                "display": {
+                    "type": "string"
+                }                
+            }
+        },
+        "Subject": {
+            "type": "object",
+            "properties": {
+                "reference": {
+                    "type": "string"
+                },
+                "display": {
+                    "type": "string"
+                }
+            }
+        },
+        "ValueQuantity": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "unit": {
+                    "type": "string"
+                },
+                "system": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                }
+            }
+        },
+        "Code": {
+            "type": "object",
+            "properties": {
+                "coding": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ObservationCode"
+                    }
+                }
+            }
+        },
+        "Condition": {
+            "type": "object",
+            "properties": {
+                "resourceType": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "clinicalStatus": {
+                    "type": "string"
+                },
+                "verificationStatus": {
+                    "type": "string"
+                },
+                "code": {
+                    "$ref": "#/definitions/Code"
+                },
+                "subject": {
+                    "$ref": "#/definitions/Subject"
+                }
+            }
+        },
+        "Encounter": {
+            "type": "object",
+            "properties": {
+                "resourceType": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "returnCount": {
+                    "type": "string"
+                },
+                "class": {
+                    "$ref": "#/definitions/EncounterClass"
+                },
+                "period": {
+                    "$ref": "#/definitions/Period"
+                },
+                "subject": {
+                    "$ref": "#/definitions/Subject"
+                },
+                "serviceProvider": {
+                    "$ref": "#/definitions/ServiceProvider"
+                }
+            }
+        },
+        "InPatient": {
+            "type": "object",
+            "properties": {
+                "resourceType": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Name"
+                    }
+                }
+            }
+        },
+        "Observation": {
+            "type": "object",
+            "properties": {
+                "resourceType": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "code": {
+                    "$ref": "#/definitions/Code"
+                },
+                "subject": {
+                    "$ref": "#/definitions/Subject"
+                },
+                "valueQuantity": {
+                    "$ref": "#/definitions/ValueQuantity"
+                }
+            }
+        },
+        "Admission": {
+            "type": "object",
+            "properties": {
+                "patient": {
+                    "$ref": "#/definitions/InPatient"
+                },
+                "encounter": {
+                    "$ref": "#/definitions/Encounter"
+                },
+                "conditions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Condition"
+                    }
+                },
+                "observations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Observation"
+                    }
+                }
+            }
+        },
+        "Discharge": {
+            "type": "object",
+            "properties": {
+                "patient": {
+                    "$ref": "#/definitions/InPatient"
+                },
+                "encounter": {
+                    "$ref": "#/definitions/Encounter"
+                }                
+            }
+        }
+    },
+    "securityDefinitions": {
+      "apikeyQuery": {
+        "type": "apiKey",
+        "name": "code",
+        "in": "header"
+      }
+    }
+  }
