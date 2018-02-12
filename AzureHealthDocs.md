@@ -40,7 +40,7 @@ patient's stay in a hospital facility.
 
 This blueprint is intended to serve as a modular foundation for customers 
 to adjust to their specific requirements, developing new Azure Machine 
-learning experiments to solve both clincal and operational use case scenarios. 
+learning experiments to solve both clinical and operational use case scenarios. 
 It is designed to be secure and compliant when deployed; however, customers are responsible for
 configuring roles correctly and implementing any modifications. Please
 note the following:
