@@ -110,7 +110,7 @@ The foundational architecture is composed of the following components:
     customer are responsible for meeting each one.
 
 -   **[Health compliance review](https://aka.ms/healthreviewpaper)** The solution was reviewed by
-    Coalfire systems, Inc. The Health Compliance (HIPAA, and HITRIUST)
+    Coalfire systems, Inc. The Health Compliance (HIPAA, and HITRUST)
     Review and guidance for implementation provides an auditor\'s review
     of the solution, and considerations for transforming the blueprint
     to a production-ready deployment.
