@@ -409,9 +409,18 @@ The solution provides a simple Microsoft PowerBI visualization of the
 solution. [Microsoft
 PowerBI](https://powerbi.microsoft.com/en-us/downloads/) is
 required to open the sample report located (Using PowerBi free edition works for this demo, but will not allow for reports to be shared)
-Blueprint\\Deployment\\Reports\\Healthcare-CLM, CMIO Report.pbix
+Blueprint\\Deployment\\Reports\\
+
+
 
 > ![](images/image7.png)
+
+To use the report, you will be required to download a local copy of both fils located in the reports folder.
+- Healthcare-CLM,CMIO Report.pbix
+- Microsoft_DIM.xlsx
+
+The xlsx file provides local look up of data to help create additonal dimention to the results.
+
 
 The PBIX file contains cached data when first opened. To connect it to
 your live data source:
@@ -421,7 +430,9 @@ your live data source:
 
 > ![](images/image5.png)
 
-2.  Select the database and click **Change source**.
+2.  Select the database and click **Change source**. This will be required for the the Microsoft_DIM.xlsx file as well.
+> ![](images/powerbidatasource.PNG)
+
 
 3.  In the **Server** text box, change the name of the server to
     <sql-server-name>.database.windows.net. You can find the SQL
@@ -434,6 +445,8 @@ your live data source:
     Click **Save**.
 
 6.  Click **OK**, and then click **Close**.
+
+7. Repeat the process and update the source location of the **Microsoft_DIM.xlsx** file.
 
 7.  In the Ribbon, click **Refresh**. Data is loaded from the
     database.
