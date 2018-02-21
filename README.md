@@ -12,7 +12,7 @@ Health organizations all over the world are leveraging the power of AI and the c
 
 **[FAQ](./faq.md)** 
 
-**[Threat model](./Compliance/)**
+**[Threat model, Compliance Reports, Customer Responsibility Matrix](./Compliance/)**
 
 
 

@@ -1,9 +1,3 @@
----
-title: Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI FAQ
-description: Guidance for deploying a Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI
-author: simorjay
-ms.date: 01/23/2018
----
 
 # Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI FAQ
 
@@ -159,10 +153,10 @@ take up to five minutes for this change to take effect.
 ```
 
 This error happens if you are:
-•	Behind Organization NAT devices, 
-•	Using Dynamic IPs 
-•	Tried running the deployment scripts through Azure CloudShell
-•	using IPV6 addresses only
+-	Behind Organization NAT devices, 
+-	Using Dynamic IPs 
+-	Tried running the deployment scripts through Azure CloudShell
+-	using IPV6 addresses only
 
 To correct, you can customize the scripts to have an IP range block updated to the SQL Server firewall. Or you can look up your IP addresses using https://ipinfo.io/json and Follow the following steps for [Azure SQL Database server-level and database-level firewall rules](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-firewall-configure)  to manage your IP address range.
 
@@ -173,8 +167,8 @@ The blueprint enables SQL Server Auditing and all the databases contained will i
 
 It's important to note that you should avoid enabling both server blob auditing and database blob auditing together, unless:
 
-o    You want to use a different storage account or retention period for a specific database.
-o    You want to audit event types or categories for a specific database that differ from the rest of the databases on the server. 
+-   You want to use a different storage account or retention period for a specific database.
+-   You want to audit event types or categories for a specific database that differ from the rest of the databases on the server. 
 
 **How can I enable KeyVault SoftDelete?**
 
