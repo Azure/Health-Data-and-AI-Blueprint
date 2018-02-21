@@ -211,6 +211,14 @@ tool.
 
 ![](images/image4.png)
 
+
+## Enable Key Vault soft-delete
+
+
+Azure Key Vault's [soft delete](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-soft-delete-powershell) feature allows recovery of deleted vaults and vault objects.  
+
+Soft-delete recovery option can be enabled, whereby deleted keys, secrets, and even entire vault instances are recoverable within ninety (90) days of deletion. The option effectively retains the deleted items in non-deallocated memory for the recovery period, with automatic deallocation (i.e., permanent deletion) once the items have exceeded the period. 
+
 ## Uninstall solution and clean up deployment resources
 
 
