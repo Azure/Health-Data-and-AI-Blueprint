@@ -35,10 +35,8 @@ The script requires the following PowerShell modules:
 'SqlServer' = 21.0.17199\
 'MSOnline' = 1.1.166.0
 
-The script tries to unload and load the correct scripts running
-deploy.ps1 -installmodule. If permissions are not set correctly
-on the local computer. Or module permissions were changed. The script will not load the correct versions of the
-required modules.
+The script tries to unload and load the correct scripts running deploy.ps1 -installmodule. This will happen if permissions are not set correctly
+on the local computer, or module permissions were changed. 
 
 If a module fails it's recommended that you remove the modules from your PowerShell install directory, and then
 rerun the deploy.ps1 -installmodule command.
@@ -70,8 +68,8 @@ Examples of the products available in the Azure marketplace:
 ingestion manually?**
 
 Some monitoring capabilities do not offer hooks to automate at this
-time. See the deployment guidance documents for instructions for
-enabling the features manually.
+time. See the deployment guidance documents for instructions to
+enable the features manually.
 
 **Why does the Resource Manager template fail to run because of my password
 complexity?**
@@ -139,6 +137,59 @@ Subscriptions such as BizSpark, where there is a spending limit, the use of opti
              -deploymentPassword Hcbnt54%kQoNs62`
              -appInsightsPlan 2            
 ```
+
+**Since we have different groups managing our AAD and Subscriptions would I need to do something different to deploy the solution?**
+
+Organization that has separate team for managing AAD and Subscription will need to some additional modifications before running this solution. This solution currently assumes both AAD and Subscription are managed by single entity (Alex_SiteAdmin). 
+
+**How do I reset the Administrator password?**
+
+Review this guide to [Reset your administrator password](https://docs.microsoft.com/en-us/azure/active-directory/active-directory-passwords-update-your-own-password#change-my-password) 
+
+**How do I solve my connection error Invoke-Sqlcmd: Cannot open server 'XXXX-los-sql-dev' requested by the login.**
+
+To make the deployment simple, the blueprint enroles your deployment device IP to the SQL Server firewall.
+If you are getting deployment error, then likely that the deployment is not recognizing your local IP.
+
+```
+Invoke-Sqlcmd : Cannot open server 'XXXX-los-sql-dev' requested by the login. Client with IP address ‘xxx’
+is not allowed to access the server.  To enable access, use the Windows Azure Management Portal or run
+sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may
+take up to five minutes for this change to take effect.
+```
+
+This error happens if you are:
+•	Behind Organization NAT devices, 
+•	Using Dynamic IPs 
+•	Tried running the deployment scripts through Azure CloudShell
+•	using IPV6 addresses only
+
+To correct, you can customize the scripts to have an IP range block updated to the SQL Server firewall. Or you can look up your IP addresses using https://ipinfo.io/json and Follow the following steps for [Azure SQL Database server-level and database-level firewall rules](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-firewall-configure)  to manage your IP address range.
+
+
+**Can I enable additional SQL auditing?**
+
+The blueprint enables SQL Server Auditing and all the databases contained will inherit the auditing profile. The script does not enable SQL DB auditing to avoid double logging and  additional costs. Refer the [SQL article](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-auditing#subheading-8) 
+
+It's important to note that you should avoid enabling both server blob auditing and database blob auditing together, unless:
+
+o    You want to use a different storage account or retention period for a specific database.
+o    You want to audit event types or categories for a specific database that differ from the rest of the databases on the server. 
+
+**How can I enable KeyVault SoftDelete?**
+
+The Blueprint  ships without the enableSoftDelete flag enabled, to address PHI handling outlined in HITRUST disposal requirements. 
+Soft-delete recovery option can be enabled, where deleted keys, secrets, and even entire vault instances are recoverable within ninety (90) days of deletion. The option effectively retains the deleted items in non-deallocated memory for the recovery period, with automatic deallocation (that is, permanent deletion) once the items have exceeded the period. To enable softdelete review [Keyvault Azure Key Vault Recovery Options using Powershell](https://blogs.technet.microsoft.com/kv/2017/05/10/azure-key-vault-recovery-options/) and [Azure Resource Manager Keyvault Schema](https://github.com/Azure/azure-resource-manager-schemas/blob/master/schemas/2016-10-01/Microsoft.KeyVault.json) - review the enableSoftDelete section.
+
+**How do I deploy the solution to another region?**
+
+The solution is set up to deploy in the West Central US. region. You can modify the scripts to deploy to other supported regions. It's important to verify that the region you pick has all the listed solution services [availible](https://azure.microsoft.com/en-us/regions/services/). 
+
+
+
+
+
+
 
 # Disclaimer and acknowledgments
 February 2018
