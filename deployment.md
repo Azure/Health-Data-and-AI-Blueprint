@@ -489,7 +489,7 @@ The solution in this document is intended as an architecture and must not be use
 
 All customer names, transaction records, and any related data on this page are fictitious, created for the purpose of this architecture, and provided for illustration only. No real association or connection is intended, and none should be inferred.
 This solution was designed by Microsoft with development support from Avyan Consulting. The work in its entirety, or parts are available under the [MIT License](https://opensource.org/licenses/MIT).
-This solution has been reviewed by Coalfire, a Microsoft auditor. The HIPAA, and HITRUST Compliance Review provides an independent, third-party review of the solution, and components that need to be addressed.
+This solution has been reviewed by Coalfire, a Microsoft auditor. The HIPAA, and HITRUST Review provides an independent, third-party review of the solution, and components that need to be addressed.
 
 # Disclaimer
 
