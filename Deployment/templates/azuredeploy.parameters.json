@@ -47,7 +47,10 @@
             "tags": {
               "tier": "Application",
               "serviceName": "learn"
-            }
+            },
+            "sku": "Standard",
+            "skuCode": "S1",
+            "workerSize": 0
           },
           {
             "name": "HealthCareWorkflow",
@@ -56,7 +59,10 @@
             "tags": {
               "tier": "Application",
               "serviceName": "admission-discharge"
-            }
+            },
+            "sku": "Standard",
+            "skuCode": "S1",
+            "workerSize": 0            
           }
         ],
         "sql": {

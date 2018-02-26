@@ -34,20 +34,33 @@
         },        
         "tags": {
             "type": "object"
+        },
+        "sku": {
+            "type": "string"
+        },
+        "skuCode": {
+            "type": "string"
+        },
+        "workerSize": {
+            "type": "int"
         }
     },
     "resources": [
         {
-            "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2015-04-01",
+            "apiVersion": "2016-09-01",
             "name": "[parameters('hostingPlanName')]",
-            "location": "[resourceGroup().location]",
+            "type": "Microsoft.Web/serverfarms",
+            "location": "[parameters('location')]",
             "properties": {
                 "name": "[parameters('hostingPlanName')]",
-                "computeMode": "Dynamic",
-                "sku": "Dynamic"
+                "workerSizeId": "[parameters('workerSize')]",
+                "reserved": false,
+                "numberOfWorkers": "1"
             },
-            "tags": "[parameters('tags')]"
+            "sku": {
+                "Tier": "[parameters('sku')]",
+                "Name": "[parameters('skuCode')]"
+            }
         },
         {
             "apiVersion": "2016-03-01",
@@ -61,6 +74,7 @@
             "tags": "[parameters('tags')]",
             "properties": {
                 "name": "[parameters('functionAppName')]",
+                "clientAffinityEnabled": false,
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
                 "siteConfig": {
                     "appSettings": [
@@ -108,7 +122,8 @@
                             "name": "TenantName",
                             "value": "[parameters('tenantDomain')]"
                         }                        
-                    ]
+                    ],
+                    "alwaysOn": true
                 }
             }
         }

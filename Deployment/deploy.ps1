@@ -244,14 +244,16 @@ $actors = @('Alex_SiteAdmin','Danny_DBAnalyst','Caroline_ChiefMedicalInformation
 $credential = New-Object System.Management.Automation.PSCredential ($globalAdminUsername, $globalAdminPassword)
 
 log "Connecting to the Global Administrator Account for Subscription $subscriptionId."
-$globalAdminContext = Login-AzureRmAccount -Credential $credential -Subscription $subscriptionId -ErrorAction SilentlyContinue
-if($globalAdminContext -ne $null){
+try {
+    Login-AzureRmAccount -Credential $credential -Subscription $subscriptionId
     log "Established connection to Global Administrator Account." Green
+    $manualLogin = 0
 }
-Else{
-    logerror
-    log "Failed to connect to the Global Administrator Account. Run 'Login-AzureRmAccount -Subscription $subscriptionId' to manually troubleshoot." Red
-    Break
+catch {
+    log "$($Error[0].Exception.Message)" Red
+    log "Failed to connect to the Global Administrator Account. Please login manually when prompted." Cyan
+    Login-AzureRmAccount -Subscription $subscriptionId
+    $manualLogin = 1    
 }
 
 if ($clearDeployment) {
@@ -435,7 +437,12 @@ else {
     {
         log "Initialising powershell session to create user accounts. NOTE: Configure-AADUsers.ps1 will open a powershell window that you must close when completed."
         # In order to avoid AD connect clobbering AzureRM session, a new powershell session is required.
-        Start-Process Powershell -ArgumentList "-NoExit", "-WindowStyle Normal", "-ExecutionPolicy UnRestricted", ".\Configure-AADUsers.ps1 -tenantId $tenantId -subscriptionId $subscriptionId -tenantDomain $tenantDomain -globalAdminUsername $globalAdminUsername -globalAdminPassword $plainServiceAdminPassword -deploymentPassword '$deploymentPassword'" -WorkingDirectory "$scriptRoot\scripts\pshscripts"
+        if($manualLogin){
+            Start-Process Powershell -ArgumentList "-NoExit", "-WindowStyle Normal", "-ExecutionPolicy UnRestricted", ".\Configure-AADUsers.ps1 -tenantId $tenantId -subscriptionId $subscriptionId -tenantDomain $tenantDomain -deploymentPassword '$deploymentPassword'" -WorkingDirectory "$scriptRoot\scripts\pshscripts"
+        }
+        else {
+            Start-Process Powershell -ArgumentList "-NoExit", "-WindowStyle Normal", "-ExecutionPolicy UnRestricted", ".\Configure-AADUsers.ps1 -tenantId $tenantId -subscriptionId $subscriptionId -tenantDomain $tenantDomain -globalAdminUsername $globalAdminUsername -globalAdminPassword $plainServiceAdminPassword -deploymentPassword '$deploymentPassword'" -WorkingDirectory "$scriptRoot\scripts\pshscripts"            
+        }
     }
     catch [System.Exception]
     {
@@ -443,8 +450,15 @@ else {
         Break
     }
 
-    log "Provisioning users. Launching Configure-AADUsers.ps1, waiting 40 seconds for provisioning to complete." Cyan
-    Start-Sleep -Seconds 40
+    if ($manualLogin) {
+        log "Provisioning users. Launching Configure-AADUsers.ps1." Cyan
+        Write-Host "`nPress 'Enter' once user provisioning is complete on another session." -ForegroundColor Green
+        Read-Host
+    }
+    else {
+        log "Provisioning users. Launching Configure-AADUsers.ps1, waiting 40 seconds for provisioning to complete." Cyan
+        Start-Sleep -Seconds 40
+    }
 
     ### Several resource providers are not auto-registered. Registering Resource provider to ensure that script runs correctly.
     log "Registering resource providers."
@@ -495,17 +509,16 @@ else {
 
     ### Connect to AzureRM using SiteAdmin
     log "Connecting to subscription $subscriptionId using Alex_SiteAdmin Account."
-    $siteAdminContext = Login-AzureRmAccount -SubscriptionId $subscriptionId -TenantId $tenantId -Credential $siteAdmincredential -ErrorAction SilentlyContinue
-    
-    if($siteAdminContext -ne $null){
-        log "Established connection to Alex_SiteAdmin Account." Green
+    try {
+        Login-AzureRmAccount -SubscriptionId $subscriptionId -TenantId $tenantId -Credential $siteAdmincredential
     }
-    Else{
-        logerror
-        log "Failed to connect to Alex_SiteAdmin Account. Run 'Login-AzureRmAccount -Subscription $subscriptionId' to manually troubleshoot." Red
-        break
+    catch {
+        log "$($Error[0].Exception.Message)" Red
+        log "Failed to connect to Alex_SiteAdmin Account. Please login manually when prompted." Cyan
+        Write-Host "`nUse deployment password - $deploymentPassword to login using $siteAdminUserName Account." -ForegroundColor Green
+        Login-AzureRmAccount        
     }
-    Start-Sleep 10
+    Start-Sleep 5
 
     ########### Create Azure Active Directory apps, setting up application key in AAD ###########
     try {
@@ -534,7 +547,16 @@ else {
         }
 
         #Connecting to Azure Active Directory Services.
-        Connect-AzureAD -TenantId $tenantId -Credential $siteAdmincredential
+        try {
+            Connect-AzureAD -TenantId $tenantId -Credential $siteAdmincredential
+        }
+        catch {
+            log "$($Error[0].Exception.Message)" Red
+            log "Failed to establish session to Azure AD. Please login manually when prompted." Cyan
+            Write-Host "`nUse deployment password - $deploymentPassword to login using $siteAdminUserName Account." -ForegroundColor Green
+            Connect-AzureAD -TenantId $tenantId
+        }
+
         $replyUrl =  ('https://', $deploymentPrefix ,'-admission-discharge-fapp-', $environment ,'.azurewebsites.net/.auth/login/done') -join ''
         $ServicePrincipalId = (Get-AzureADServicePrincipal -SearchString $displayName).ObjectId.ToString()
         if ($ServicePrincipalId) {
@@ -797,10 +819,19 @@ else {
         try {
             Get-AzureKeyVaultKey -VaultName $workloadOutputArray[32] -KeyName 'SQLTDEKEY'
             Break
-        } catch {
+        } 
+        catch {
             log "Keyvault was unable to retrieve the key to be used for SQL TDE encryption $cnt of 3 tries."
             log "If Keyvault fails 3 times, the Azure resource has been exhausted. It is recommended that you wait for short time and re-run the deploy.ps1." Red
-            Login-AzureRmAccount -SubscriptionId $subscriptionId -TenantId $tenantId -Credential $siteAdmincredential -ErrorAction SilentlyContinue
+            $siteAdminContext = Login-AzureRmAccount -SubscriptionId $subscriptionId -TenantId $tenantId -Credential $siteAdmincredential -ErrorAction SilentlyContinue
+            if($siteAdminContext -ne $null){
+                log "Established connection to Alex_SiteAdmin Account." Green
+            }
+            Else{
+                log "$($Error[0].Exception.Message)" Red
+                log "Failed to connect to the Alex_SiteAdmin Account. Please login manually when prompted." Cyan
+                Login-AzureRmAccount
+            }
         }
         Start-Sleep 30
     } while ($cnt -lt 3)

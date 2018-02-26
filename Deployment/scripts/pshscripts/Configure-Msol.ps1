@@ -120,17 +120,28 @@ try {
     # The following will setup the usecase users that will be used throughout the Blueprint.
     $users = @('Alex_SiteAdmin','Danny_DBAnalyst','Caroline_ChiefMedicalInformationOfficer','Chris_CareLineManager','Han_Auditor','Debra_DataScientist')
 
-    ### Create PSCredential Object
-    $password = ConvertTo-SecureString -String $globalAdminPassword -AsPlainText -Force
-    $credential = New-Object System.Management.Automation.PSCredential ($globalAdminUsername,$password)
+    try {
+        ### Create PSCredential Object
+        $password = ConvertTo-SecureString -String $globalAdminPassword -AsPlainText -Force
+        $credential = New-Object System.Management.Automation.PSCredential ($globalAdminUsername,$password)
 
-    # Connecting to MSOL Service
-    Write-Host -ForegroundColor Yellow "Establishing connection to MS Online (MSOL) Service for setting up password policy."
-    Write-Host -ForegroundColor Yellow "Connecting to MSOL service."
-    Connect-MsolService -Credential $credential | Out-null
-    if(Get-MsolDomain){
+        # Connecting to MSOL Service
+        Write-Host -ForegroundColor Yellow "Establishing connection to MS Online (MSOL) Service for setting up password policy."
+        Write-Host -ForegroundColor Yellow "Connecting to MSOL service."
+        Connect-MsolService -Credential $credential
+    }
+    catch {
+        Connect-MsolService
+    }
+
+    try {
+        Get-MsolDomain
         Write-Host -ForegroundColor Green "Connection to MSOL Service established."
     }
+    catch {
+        Throw $_
+    }
+
     if ($enableADDomainPasswordPolicy){
         Write-Host -ForegroundColor Yellow "Setting up password policy for $tenantDomain domain"
         Set-MsolPasswordPolicy -ValidityPeriod 60 -NotificationDays 14 -DomainName "$tenantDomain"

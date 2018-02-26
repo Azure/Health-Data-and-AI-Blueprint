@@ -397,7 +397,7 @@ function Publish-BuildingBlocksTemplates ($hash) {
 function Get-DeploymentData($hash) {
     $tmp = [System.IO.Path]::GetTempFileName()
     $deploymentName = "{0}-{1}-{2}" -f $deploymentPrefix, (Get-Date -Format MMddyyyy), $uniqueDeploymentHash
-    $localIP = Invoke-RestMethod http://ipinfo.io/json | Select-Object -exp ip
+    $localIP = Invoke-RestMethod https://ipinfo.io/json | Select-Object -exp ip
     $parametersData = Get-Content "$scriptroot\templates\azuredeploy.parameters.json" | ConvertFrom-Json
     $parametersData.parameters.environmentReference.value.env = $env
     $parametersData.parameters.environmentReference.value.prefix = $resourceGroupPrefix

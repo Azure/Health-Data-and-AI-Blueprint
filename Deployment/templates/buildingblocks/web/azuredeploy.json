@@ -19,19 +19,19 @@
             "defaultValue": "dev",
             "type": "string"
         },
-        "location":{
+        "location": {
             "type": "string"
         },
         "appInsightServiceName": {
             "type": "string"
         },
-        "adAppClientId":{
+        "adAppClientId": {
             "type": "string"
         },
-        "adAppClientPassword":{
+        "adAppClientPassword": {
             "type": "securestring"
         },
-        "keyVaultUri":{
+        "keyVaultUri": {
             "type": "string"
         },
         "tags": {
@@ -54,24 +54,24 @@
             "name": "fapp-storage",
             "type": "Microsoft.Resources/deployments",
             "properties": {
-              "mode": "Incremental",
-              "templateLink": {
-                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.storage/storage-encrypt-httpsonly.json')]"
-              },
-              "parameters": {
-                "storageAccountName": {
-                  "value": "[concat(replace(toLower(concat(parameters('uniquePrefix'),'-fapp-',parameters('environment'))),'-',''),'stg')]"
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.storage/storage-encrypt-httpsonly.json')]"
                 },
-                "sku": {
-                  "value": "Standard_LRS"
-                },
-                "location": {
-                    "value": "[parameters('location')]"
-                },
-                "tags": {
-                    "value": "[parameters('tags')]"
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[concat(replace(toLower(concat(parameters('uniquePrefix'),'-fapp-',parameters('environment'))),'-',''),'stg')]"
+                    },
+                    "sku": {
+                        "value": "Standard_LRS"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "tags": {
+                        "value": "[parameters('tags')]"
+                    }
                 }
-              }
             }
         },
         {
@@ -81,50 +81,59 @@
             "dependsOn": [
                 "fapp-storage"
             ],
-            "copy": { 
-                "name": "copy-functionapp", 
+            "copy": {
+                "name": "copy-functionapp",
                 "count": "[length(parameters('functions'))]"
             },
             "properties": {
-              "mode": "Incremental",
-              "templateLink": {
-                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.web/functionapp.json')]"
-            },
-              "parameters": {
-                "hostingPlanName": {
-                    "value": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('functions')[copyIndex()].hostingPlanServiceName,'-appsvcplan-',parameters('environment')))]"
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.web/functionapp.json')]"
                 },
-                "functionAppName": {
-                  "value": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('functions')[copyIndex()].serviceName,'-fapp-',parameters('environment')))]"
-                },
-                "location": {
-                    "value": "[parameters('location')]"
-                },
-                "storageAccountName":{
-                    "value": "[concat(replace(toLower(concat(parameters('uniquePrefix'),'-fapp-',parameters('environment'))),'-',''),'stg')]"
-                },
-                "appInsightsName":{
-                    "value": "[variables('appInsightName')]"
-                },
-                "appInsightsResourceGroup":{
-                    "value": "[variables('appInsightsResourceGroup')]"
-                },
-                "adAppClientId":{
-                    "value": "[parameters('adAppClientId')]"
-                },
-                "adAppClientPassword":{
-                    "value": "[parameters('adAppClientPassword')]"
-                },
-                "keyVaultUri":{
-                    "value": "[parameters('keyVaultUri')]"
-                },
-                "tenantDomain":{
-                    "value": "[parameters('tenantDomain')]"
-                },
-                "tags": {
-                    "value": "[union(parameters('tags'), parameters('functions')[copyIndex()].tags)]"
+                "parameters": {
+                    "hostingPlanName": {
+                        "value": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('functions')[copyIndex()].hostingPlanServiceName,'-appsvcplan-',parameters('environment')))]"
+                    },
+                    "functionAppName": {
+                        "value": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('functions')[copyIndex()].serviceName,'-fapp-',parameters('environment')))]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "storageAccountName": {
+                        "value": "[concat(replace(toLower(concat(parameters('uniquePrefix'),'-fapp-',parameters('environment'))),'-',''),'stg')]"
+                    },
+                    "appInsightsName": {
+                        "value": "[variables('appInsightName')]"
+                    },
+                    "appInsightsResourceGroup": {
+                        "value": "[variables('appInsightsResourceGroup')]"
+                    },
+                    "adAppClientId": {
+                        "value": "[parameters('adAppClientId')]"
+                    },
+                    "adAppClientPassword": {
+                        "value": "[parameters('adAppClientPassword')]"
+                    },
+                    "keyVaultUri": {
+                        "value": "[parameters('keyVaultUri')]"
+                    },
+                    "tenantDomain": {
+                        "value": "[parameters('tenantDomain')]"
+                    },
+                    "tags": {
+                        "value": "[union(parameters('tags'), parameters('functions')[copyIndex()].tags)]"
+                    },
+                    "sku": {
+                        "value": "[parameters('functions')[copyIndex()].sku]"
+                    },
+                    "skuCode": {
+                        "value": "[parameters('functions')[copyIndex()].skuCode]"
+                    },
+                    "workerSize": {
+                        "value": "[parameters('functions')[copyIndex()].workerSize]"
+                    }
                 }
-              }
             }
         },
         {
@@ -134,29 +143,29 @@
             "dependsOn": [
                 "[parameters('functions')[copyIndex()].name]"
             ],
-            "copy": { 
-                "name": "copy-functionapp-package", 
+            "copy": {
+                "name": "copy-functionapp-package",
                 "count": "[length(parameters('functions'))]"
             },
             "properties": {
-              "mode": "Incremental",
-              "templateLink": {
-                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.web/function.package.json')]"
-              },
-              "parameters": {
-                "functionAppName": {
-                    "value": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('functions')[copyIndex()].serviceName,'-fapp-',parameters('environment')))]"
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.web/function.package.json')]"
                 },
-                "location": {
-                    "value": "[parameters('location')]"
-                },
-                "packageUri":{
-                    "value":"[concat(parameters('_artifactsLocation'),'functions/',parameters('functions')[copyIndex()].name,'.zip')]"
-                },
-                "tags": {
-                    "value": "[union(parameters('tags'), parameters('functions')[copyIndex()].tags)]"
+                "parameters": {
+                    "functionAppName": {
+                        "value": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('functions')[copyIndex()].serviceName,'-fapp-',parameters('environment')))]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "packageUri": {
+                        "value": "[concat(parameters('_artifactsLocation'),'functions/',parameters('functions')[copyIndex()].name,'.zip')]"
+                    },
+                    "tags": {
+                        "value": "[union(parameters('tags'), parameters('functions')[copyIndex()].tags)]"
+                    }
                 }
-              }
             }
         },
         {
@@ -166,36 +175,34 @@
             "dependsOn": [
                 "[concat(parameters('functions')[copyIndex(1)].name,'-package')]"
             ],
-            "copy": { 
-                "name": "copy-functionapp-authSettings", 
+            "copy": {
+                "name": "copy-functionapp-authSettings",
                 "count": 1
             },
             "properties": {
-              "mode": "Incremental",
-              "templateLink": {
-                "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.web/function.authsettings.json')]"
-              },
-              "parameters": {
-                "functionAppName": {
-                    "value": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('functions')[copyIndex(1)].serviceName,'-fapp-',parameters('environment')))]"
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('_artifactsLocation'),'templates/resources/microsoft.web/function.authsettings.json')]"
                 },
-                "location": {
-                    "value": "[parameters('location')]"
-                },
-                "tenantId":{
-                    "value":"[parameters('tenantId')]"
-                },
-                "adAppClientId":{
-                    "value": "[parameters('adAppClientId')]"
-                },
-                "adAppClientPassword":{
-                    "value": "[parameters('adAppClientPassword')]"
+                "parameters": {
+                    "functionAppName": {
+                        "value": "[toLower(concat(parameters('uniquePrefix'),'-',parameters('functions')[copyIndex(1)].serviceName,'-fapp-',parameters('environment')))]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "tenantId": {
+                        "value": "[parameters('tenantId')]"
+                    },
+                    "adAppClientId": {
+                        "value": "[parameters('adAppClientId')]"
+                    },
+                    "adAppClientPassword": {
+                        "value": "[parameters('adAppClientPassword')]"
+                    }
                 }
-              }
             }
         }
     ],
-    "outputs": {
-
-    }
+    "outputs": {}
 }

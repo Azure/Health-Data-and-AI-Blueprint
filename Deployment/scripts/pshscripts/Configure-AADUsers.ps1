@@ -26,10 +26,10 @@ param
     [guid]$subscriptionId,
     [Parameter(Mandatory = $true)]
     [string]$tenantDomain,
-    [Parameter(Mandatory = $true)]
-    [string]$globalAdminUsername,
-    [Parameter(Mandatory = $true)]
-    [string]$globalAdminPassword,
+    [Parameter(Mandatory = $false)]
+    [string]$globalAdminUsername = 'null',
+    [Parameter(Mandatory = $false)]
+    [string]$globalAdminPassword = 'null',
     [Parameter(Mandatory = $true)]
     [string]$deploymentPassword
 )
@@ -39,13 +39,22 @@ $Host.UI.RawUI.WindowTitle = "HealthCare - Configure AAD Users"
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 3
 
-### Create PSCredential Object
-$password = ConvertTo-SecureString -String $globalAdminPassword -AsPlainText -Force
-$credential = New-Object System.Management.Automation.PSCredential ($globalAdminUsername,$password)
-
 ### Connect AzureAD
 Import-Module AzureAD
-Connect-AzureAD -Credential $credential -TenantId $tenantId
+
+### Connect to AzureAD
+if ($globalAdminUsername -eq 'null') {
+    Write-Host "`nYou will be prompted for manual login. Enter your credentials to continue.`n" -ForegroundColor Cyan
+    Connect-AzureAD -TenantId $tenantId
+}
+else {
+    ### Create PSCredential Object
+    $password = ConvertTo-SecureString -String $globalAdminPassword -AsPlainText -Force
+    $credential = New-Object System.Management.Automation.PSCredential ($globalAdminUsername,$password)
+    Connect-AzureAD -Credential $credential -TenantId $tenantId
+}
+
+### Create user password profile.
 $passwordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
 $passwordProfile.Password = $deploymentPassword
 $passwordProfile.ForceChangePasswordNextLogin = $false
@@ -79,4 +88,4 @@ foreach ($user in $actors) {
         Get-AzureADUser -SearchString $upn | Set-AzureADUser -PasswordProfile $passwordProfile
     }
 }
-Write-Host -ForegroundColor Cyan "AAD Users provisioned. Powershell window can be closed."
+Write-Host -ForegroundColor Cyan "`nAAD Users provisioned. Powershell window can be closed."

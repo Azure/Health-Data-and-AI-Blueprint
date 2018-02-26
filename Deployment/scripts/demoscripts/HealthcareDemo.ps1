@@ -54,6 +54,7 @@ param
 )
 
 # global variables
+$ErrorActionPreference = 'Stop'
 
 #script path
 $scriptPath = Split-Path $MyInvocation.MyCommand.Path
@@ -91,14 +92,17 @@ switch($Operation){
                 $password = ConvertTo-SecureString -String $deploymentOutput.DeploymentPassword -AsPlainText -Force
                 $credential = New-Object System.Management.Automation.PSCredential ($deploymentOutput.UPN_DataScientistUser, $password)
                 Write-Host -ForegroundColor Yellow "`nConnecting to AzureRM Subscription using $($deploymentOutput.UPN_DataScientistUser) Account."
-                $azureRMContext = Login-AzureRmAccount -Credential $credential -ErrorAction SilentlyContinue
-                if($azureRMContext-ne $null){
-                    Write-Host -ForegroundColor Green "`nConnected." 
-                }
-                Else{
-                    Write-Host -ForegroundColor Red "`nConnection failed." 
-                    break
-                }
+				Write-Host "Connecting to the Debra_DataScientist Account." -ForegroundColor Yellow
+				try {
+					Login-AzureRmAccount -Credential $credential
+					Write-Host "Established connection to Debra_DataScientist Account." -ForegroundColor Green
+				}
+				catch {
+					Write-Host "$($Error[0].Exception.Message)" -ForegroundColor Red
+					Write-Host -ForegroundColor Cyan "`nEnter Debra_DataScientist credentials manually. Please refer deploymentOutput.json for deployment password."
+					Login-AzureRmAccount
+				}
+
                 try {
                     Write-Host -ForegroundColor Yellow "`nRetrieving StorageAccessKey for Storage Account - $($deploymentOutput.BlobStorageAccountName)"
                     $storageAccessKey = (Get-AzureRmStorageAccount | Where-Object StorageAccountName -eq $deploymentOutput.BlobStorageAccountName | Get-AzureRmStorageAccountKey)[0].Value
@@ -162,7 +166,7 @@ switch($Operation){
 
                 Write-Host "Retrieving installation configuration from deploymentoutput.json" -Foregroundcolor Yellow
                 $deploymentOutput = Get-Content -Path "$scriptroot\output\$($deploymentPrefix)-deploymentOutput.json" | ConvertFrom-Json
-			
+				
 				Write-Host "Reading \scripts\jsonscripts\input_discharge.json" -Foregroundcolor Yellow
 				$patientInput = 
 					Get-Content -Path $scriptroot\scripts\jsonscripts\input_discharge.json | ConvertFrom-Json
