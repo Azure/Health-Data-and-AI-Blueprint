@@ -33,6 +33,7 @@ cd  .\Deployment\
 .\deploy.ps1 -installModules
 ```
 - It is recommended that if an error is flagged during deployment, that the errors be resolved prior to proceeding.
+- Time to deploy the solution will be approximately 25 minutes.
 
 3.  Once the modules are installed, run **deploy.ps1** again to deploy
     the solution. For detailed usage instructions, see **deploy.ps1 usage**

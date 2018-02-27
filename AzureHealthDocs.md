@@ -566,3 +566,8 @@ routing of all events from any source to any destination, providing:
     analytics](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-activity)
     is enabled
 
+    ## Solution Estimated pricing
+
+This blueprint has a monthly fee structure and a usage cost per hour which must be considered when sizing the solution. These costs can be estimated using the Azure costing calculator. As of February 2018, the estimated monthly cost for this solution is ~$250 . These costs will vary based on the usage amount and are subject to change. It is incumbent on the customer to [calculate their estimated monthly costs](https://azure.microsoft.com/en-us/pricing/calculator/) at the time of deployment for a more accurate estimate. 
+
+
