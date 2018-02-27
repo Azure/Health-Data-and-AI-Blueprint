@@ -12,7 +12,10 @@ installed.
 ![](images/Warning-sign.png) **CAUTION** It is recommended you use a [clean Windows 10](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal) (or similar) VM to deploy the solution to ensure that the correct PowerShell modules get loaded. 
 
 
-![](images/Warning-sign.png) **CAUTION**   If you encounter any issues during the deployment, see [FAQ and troubleshooting](faq.md).
+![](images/Warning-sign.png) **CAUTION**   If you encounter any issues during the deployment, see [FAQ and troubleshooting](faq.md)
+
+
+![](images/Warning-sign.png) **CAUTION**   Deployment script must be monitored while the deployment is running. You will be prompted for the global admin username/password during the deployment since the solution does not cache global administrators username and passwords as a security design.
 
 
 ## Deploy the solution
