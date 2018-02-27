@@ -2,7 +2,7 @@
 title: Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI
 description: Guidance for deploying a HIPAA/HITRUST Health Data & AI Blueprint
 author: Simorjay | Doyle
-ms.date: 01/26/2018
+ms.date: 02/27/2018
 ---
 
 # Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI
@@ -18,7 +18,7 @@ and utilization for customers with data that is regulated.**
 
 The Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI Blueprint provides tools and guidance to help
 deploy a secure,  Health Insurance Portability and Accountability Act (HIPAA), and Health Information Trust Alliance (HITRUST) ready platform-as-a-service
-(PaaS) environment for ingesting, storing, analyzing and interacting
+(PaaS) environment for ingesting, storing, analyzing, and interacting
 with personal and non-personal medical records in a secure,
 multi-tier cloud environment, deployed as an end-to-end solution. It
 showcases a common reference architecture and is designed to simplify
@@ -35,15 +35,14 @@ secure manner. Customers can then use Azure Machine Learning to take
 advantage of powerful business intelligence tools and analytics to
 review predictions made on the sample data. As an example of the kind of
 experiment Azure Machine Learning can facilitate, the blueprint includes
-a sample dataset, scripts and tools for predicting the length of a 
+a sample dataset, scripts, and tools for predicting the length of a 
 patient's stay in a hospital facility. 
 
 This blueprint is intended to serve as a modular foundation for customers 
 to adjust to their specific requirements, developing new Azure Machine 
 learning experiments to solve both clinical and operational use case scenarios. 
 It is designed to be secure and compliant when deployed; however, customers are responsible for
-configuring roles correctly and implementing any modifications. Please
-note the following:
+configuring roles correctly and implementing any modifications. Note the following:
 
 -   This blueprint provides a baseline to help customers use Microsoft
     Azure in a HITRUST, and HIPAA environment.
@@ -60,9 +59,9 @@ HIPAA and HITRUST (through the Common Security Framework
 For a quick overview of how this solution works, watch this [video](https://aka.ms/healthblueprintvideo) 
 explaining and demonstrating its deployment.
 
-## Deploying the auotmation
+## Deploying the automation
 
-- To deploy the solution follow the instructions provided in the deployment guidance. 
+- To deploy the solution, follow the instructions provided in the deployment guidance. 
 
 [![](./images/deploy.png)](https://aka.ms/healthblueprintdeploy)
 
@@ -109,7 +108,7 @@ The foundational architecture is composed of the following components:
     the relevant HITRUST requirements and explains how Microsoft and the
     customer are responsible for meeting each one.
 
--   **[Health review](https://aka.ms/healthreviewpaper)** The solution was reviewed by
+-   **[Health review. The solution was reviewed by
     Coalfire systems, Inc. The Health Compliance (HIPAA, and HITRUST)
     Review and guidance for implementation provides an auditor\'s review
     of the solution, and considerations for transforming the blueprint
@@ -395,7 +394,7 @@ built into the Blueprint outlined to:
 ### Azure Functions
 The solution was designed to  use [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/) to process the sample length of stay data used in the analytics demo. Three capabilities in the functions have been created.
 
-**1. Bulk import of customer data ephi data**
+**1. Bulk import of customer data phi data**
 
 When using the demo script. .\\HealthcareDemo.ps1 with the **BulkPatientAdmission** switch as outlined in **Deploying and running the demo** it executes the following processing pipeline:
 1. **Azure Blob Storage** - Patient data .csv file sample uploaded to storage
