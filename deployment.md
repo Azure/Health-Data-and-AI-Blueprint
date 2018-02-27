@@ -69,7 +69,7 @@ This command deploys the solution and sets a single common password for all solu
 
 **Example 3: Uninstall the solution**
 ```
-.\deploy.ps1 -deploymentPrefix <deployment-prefix> 
+.\deploy.ps1 -clearDeploymentPrefix <deployment-prefix> 
              -tenantId <tenant-id>
              -subscriptionId <subscription-id>
              -tenantDomain <tenant-domain>
@@ -91,7 +91,15 @@ present to successfully run the script.
 -clearDeployment
 ```
 Uninstalls the solution, removing all resource groups, service
-principles, AD applications, and AD users.
+principles, AD applications, and AD users. Must be used with the -clearDeploymentPrefix switch
+
+```
+-clearDeploymentPrefix <deployment-prefix> 
+```
+Uninstalls the solution, removing all resource groups, service
+principles, AD applications, and AD users. Must be used with -cleardeployment switch
+
+
 ```
 -deploymentPassword <password>
 ```
