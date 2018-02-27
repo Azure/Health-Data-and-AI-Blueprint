@@ -7,11 +7,12 @@ The components for deploying the solution can be downloaded from the
 [Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI repository on Github.](http://aka.ms/healthblueprint)  For integration with PowerShell, it is necessary to have [Git for Windows](https://git-scm.com/download/win)
 installed.
 
-- *CAUTION* The script adds domain users to the Azure Active Directory (AD) tenant that you specify. We recommend creating a new Azure Active Directory (AD) tenant to test this solution.
-- *CAUTION* It is recommended you use a [clean Windows 10](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal) (or similar) VM to deploy the solution to ensure that the correct PowerShell modules get loaded. 
+![](images/Warning-sign.png) **CAUTION** The script adds domain users to the Azure Active Directory (AD) tenant that you specify. We recommend creating a new Azure Active Directory (AD) tenant to test this solution.
+
+![](images/Warning-sign.png) **CAUTION** It is recommended you use a [clean Windows 10](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal) (or similar) VM to deploy the solution to ensure that the correct PowerShell modules get loaded. 
 
 
-If you encounter any issues during the deployment, see [FAQ and troubleshooting](faq.md).
+![](images/Warning-sign.png) **CAUTION**   If you encounter any issues during the deployment, see [FAQ and troubleshooting](faq.md).
 
 
 ## Deploy the solution
