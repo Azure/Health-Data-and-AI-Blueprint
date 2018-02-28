@@ -98,7 +98,7 @@ switch($Operation){
 					Write-Host "Established connection to Debra_DataScientist Account." -ForegroundColor Green
 				}
 				catch {
-					Write-Host "$($Error[0].Exception.Message)" -ForegroundColor Red
+					Write-Host "$($Error[0].Exception.Message)" -ForegroundColor Yellow
 					Write-Host -ForegroundColor Cyan "`nEnter Debra_DataScientist credentials manually. Please refer deploymentOutput.json for deployment password."
 					Login-AzureRmAccount
 				}

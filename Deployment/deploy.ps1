@@ -206,9 +206,6 @@ if ($installModules) {
     Break
 }
 
-log "Removing all stale credentials, account, and subscription from prior installation."
-Clear-AzureRmContext -Scope CurrentUser -Force
-
 ### Converting deployment prefix to lowercase
 if($deploymentprefix) {
     $deploymentprefix = $deploymentprefix.ToLower()
@@ -237,6 +234,9 @@ catch {
     Break
 }
 
+log "Removing all stale credentials, account, and subscription from prior installation."
+Clear-AzureRmContext -Scope CurrentUser -Force
+
 ### Deployment actors are users defined in Blueprint scnario documentation. 
 $actors = @('Alex_SiteAdmin','Danny_DBAnalyst','Caroline_ChiefMedicalInformationOfficer','Chris_CareLineManager','Han_Auditor','Debra_DataScientist')
 
@@ -250,7 +250,7 @@ try {
     $manualLogin = 0
 }
 catch {
-    log "$($Error[0].Exception.Message)" Red
+    log "$($Error[0].Exception.Message)" Yellow
     log "Failed to connect to the Global Administrator Account. Please login manually when prompted." Cyan
     Login-AzureRmAccount -Subscription $subscriptionId
     $manualLogin = 1    
@@ -513,7 +513,7 @@ else {
         Login-AzureRmAccount -SubscriptionId $subscriptionId -TenantId $tenantId -Credential $siteAdmincredential
     }
     catch {
-        log "$($Error[0].Exception.Message)" Red
+        log "$($Error[0].Exception.Message)" Yellow
         log "Failed to connect to Alex_SiteAdmin Account. Please login manually when prompted." Cyan
         Write-Host "`nUse deployment password - $deploymentPassword to login using $siteAdminUserName Account." -ForegroundColor Green
         Login-AzureRmAccount        
@@ -551,7 +551,7 @@ else {
             Connect-AzureAD -TenantId $tenantId -Credential $siteAdmincredential
         }
         catch {
-            log "$($Error[0].Exception.Message)" Red
+            log "$($Error[0].Exception.Message)" Yellow
             log "Failed to establish session to Azure AD. Please login manually when prompted." Cyan
             Write-Host "`nUse deployment password - $deploymentPassword to login using $siteAdminUserName Account." -ForegroundColor Green
             Connect-AzureAD -TenantId $tenantId
@@ -828,7 +828,7 @@ else {
                 log "Established connection to Alex_SiteAdmin Account." Green
             }
             Else{
-                log "$($Error[0].Exception.Message)" Red
+                log "$($Error[0].Exception.Message)" Yellow
                 log "Failed to connect to the Alex_SiteAdmin Account. Please login manually when prompted." Cyan
                 Login-AzureRmAccount
             }
