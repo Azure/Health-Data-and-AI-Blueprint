@@ -56,8 +56,7 @@ HIPAA and HITRUST (through the Common Security Framework
     compliance reviews of any solution built using this foundational
     architecture.
 
-For a quick overview of how this solution works, watch this [video](https://aka.ms/healthblueprintvideo) 
-explaining and demonstrating its deployment.
+
 
 ## Deploying the automation
 
@@ -65,13 +64,10 @@ explaining and demonstrating its deployment.
 
 [![](./images/deploy.png)](https://aka.ms/healthblueprintdeploy)
 
+For a quick overview of how this solution works, watch this [video](https://aka.ms/healthblueprintvideo) 
+explaining and demonstrating its deployment.
+
 - Frequently asked question can be found in the [FAQ](https://aka.ms/healthblueprintfaq) guidance.
-
-
-## Solution components
-
-
-The foundational architecture is composed of the following components:
 
 -   **Architectural diagram.** The diagram shows the reference
     architecture used for the blueprint and the example use case scenario.
@@ -95,6 +91,13 @@ The foundational architecture is composed of the following components:
     solution, provided via a .zip file that contains a pre-built
     demo functions.
 
+## Solution components
+
+
+The foundational architecture is composed of the following components:
+
+
+
 
 -   **[Threat model](https://aka.ms/healththreatmodel)** A comprehensive threat model is provided in tm7
     format for use with the [Microsoft Threat Modeling
@@ -108,8 +111,7 @@ The foundational architecture is composed of the following components:
     the relevant HITRUST requirements and explains how Microsoft and the
     customer are responsible for meeting each one.
 
--   **[Health review. The solution was reviewed by
-    Coalfire systems, Inc. The Health Compliance (HIPAA, and HITRUST)
+-   **[Health review.](https://aka.ms/healthreviewpaper)** The solution was reviewed by Coalfire systems, Inc. The Health Compliance (HIPAA, and HITRUST)
     Review and guidance for implementation provides an auditor\'s review
     of the solution, and considerations for transforming the blueprint
     to a production-ready deployment.
