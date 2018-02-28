@@ -129,7 +129,11 @@ policy to 60 days at the Domain level.
 -enableMFA
 ```
 Include this switch when deploying the solution to enable multi-factor
-authentication for solution users.
+authentication for solution users. 
+
+![](./images/Warning-sign.png) This is an advanced feature, only use if you are familiar with [Azure MFA](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/multi-factor-authentication-whats-next).
+
+
 ```
 -installModules
 ```

@@ -17,7 +17,33 @@ You can correct the permissions locally by running the following command:
 ```
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
 ```
-For more information, see.
+
+**I enabled MFA, and the demo does not run?**
+
+![](./images/Warning-sign.png) MFA is an advanced feature. This feature will make the deployment process require attention to how [Azure MFA](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/multi-factor-authentication-whats-next) operates. 
+
+Once -mfa is enabled the deployment WILL - 
+1.	Enforce MFA for global AD admins
+2.	Enforce a separation between AD Administrator and Subscription Administrator (Owner/Constributor)
+3.	Enforcing MFA at the user level 
+
+- Note that rerunning the deployment after MFA is enabled will result in failure, unless MFA users are manually removed. 
+
+ - MFA will block/fail the re-deployment process as it attempts to login with the Site-Admin credentials with the credentials provided
+- 	Unable to perform Ingestion after enabling MFA. (Demo requires hands on changes to run with MFA enabled) To mitigate the -mfa switch – You will need to manually upload blob using Azure Portal or Storage explorer. Make sure you use Debra_DataScientist account to login and upload a training data – LengthOfStay.csv (blob).
+
+https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-portal#upload-a-block-blob 
+
+**Over the Phone (OTP) call back failed for MFA?**
+
+If you did not receive you OTP try resending the request in MFA.
+![](./images/OTP1.png)
+
+Select the appropriate call back
+
+![](./images/OTP2.png)
+
+
 
 **When I run the deployment script, it tells me that a module is
 missing**
