@@ -107,7 +107,7 @@ The foundational architecture is composed of the following components:
     the points of potential risk in the system infrastructure when
     developing machine learning components or other modifications.
 
--   **[Customer responsibility matrix](https://aka.ms/healthcrmblueprint)** A Microsoft Excel workbook lists
+-   **[Customer implementation matrix](https://aka.ms/healthcrmblueprint)** A Microsoft Excel workbook lists
     the relevant HITRUST requirements and explains how Microsoft and the
     customer are responsible for meeting each one.
 
