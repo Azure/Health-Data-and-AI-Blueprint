@@ -45,7 +45,9 @@ cd  .\Deployment\
 **globalAdminPassword** parameter; enter the password for the
 administrative account you are using for the **-globalAdminUsername**
 parameter. The script then deploys the solution, which may take some
-time.
+time, monitoring the 30 minute deployment is recommended, since during the deployment Global username, and Password pop up dialog windows will appear.
+
+- The script will be complete when the results of the **\\deployment\\output\\\<deployment-prefix\>-deploymentOutput.json** displayed onscreen.
 
 ##  deploy.ps1 usage
 
@@ -192,11 +194,15 @@ Subscriptions such as BizSpark, where there is a spending limit, the use of opti
 
 2.  Click **App registrations**.
 
-3.  Click *\<deployment-prefix\>* **Azure HIPAA LOS Sample**.
+![](images/appreg.png)
 
-4.  Click **Required permissions**.
+3. Select dropdown and change **My apps**, to **All apps**.
 
-5.  Click **Grant Permissions** at top. Select
+4.  Click *\<deployment-prefix\>* **Azure HIPAA LOS Sample**.
+
+5.  Click **Required permissions**.
+
+6.  Click **Grant Permissions** at top. Select
     grant permissions for all accounts in the current directory. Click
     **Yes**.
 
@@ -217,24 +223,25 @@ into the [Log
 Analytics](https://azure.microsoft.com/en-us/services/log-analytics/)
 tool.
 
-1.  In the portal, click the Settings icon at the top of the page. Click
+1. In the Azure portal,  select **Log Analytics** 
+
+2.  Click *\<deployment-prefix\>* **-los-analytics-dev**.
+
+3. Click **OMS Portal**
+
+![](images/omsopen.png)
+
+ 1. In the OMS portal, click the Settings icon at the top of the page. Click
     **Data** on the left, and then click **Application Insights**.
 
 2.  Under **Select a subscription**, select a subscription that has
     Application Insights resources, and then under **Application Name**,
-    select one or more applications.
+    select one *\<deployment-prefix\>* **-los-insights-dev**.
 
 3.  Click **Save**.
 
 ![](images/image4.png)
 
-
-## Enable Key Vault soft-delete
-
-
-Azure Key Vault's [soft delete](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-soft-delete-powershell) feature allows recovery of deleted vaults and vault objects.  
-
-Soft-delete recovery option can be enabled, whereby deleted keys, secrets, and even entire vault instances are recoverable within ninety (90) days of deletion. The option effectively retains the deleted items in non-deallocated memory for the recovery period, with automatic deallocation (i.e., permanent deletion) once the items have exceeded the period. 
 
 ## Uninstall solution and clean up deployment resources
 
@@ -256,18 +263,23 @@ administrative account you are using for the **-globalAdminUsername**
 parameter. The script then removes all resource groups, service
 principles, AD applications, and AD users.
 
-## Deploying and running the demo
+## Deploying and running the demo OVERVIEW
 
-For more information to configure permissions correctly; see "Grant
-permissions in Azure Active Directory" in the deployment documentation
-for more information. The Blueprint was
-designed to provide you a sample use example. the demo consists of the
-following steps:
+The following overview will provide you understanding on the provided demonstration of the blueprint. 
 
-1.  Import and Train a Machine Learning experiment using the applet
-    .\\HealthcareDemo.ps1. The sample data located in the
-    Blueprint\\Deployment\\trainingdata directory, contains
-    100,000 sample, anonymized medical records. This data
+The Blueprint was designed to provide you a demonstration that will:
+- **INGEST** data raw sources including FHIR data source
+- **STORE**  sensitive information
+- **ANALYZE** and predict outcomes
+- **INTERACT** with the results and perditions
+- **IDENTITY** management of solution
+- **SECURITY** enabled features 
+
+Upon completion deploying the solution, **IDENTITY, SECURITY** enabled features are available to be used in your **Azure Portal**. The remainder of the demonstration steps are as follows:  
+
+- The sample dataset used throughout this demonstration can be reviewed in **Blueprint\\Deployment\\trainingdata**. 
+
+1. **INGEST, STORE, ANALYZE (Import and Train a Machine Learning experiment)** The sample data  contains 100,000 sample, anonymized medical records. This data
    is imported, and secured using the sample functions, at the
     same time the data is used to train a sample
     [R-function](https://docs.microsoft.com/en-us/azure/machine-learning/studio/r-quickstart)
@@ -276,16 +288,21 @@ following steps:
     The experiment was designed to predicted the duration a patient would
     likely stay in the hospital based on the health conditions collected
     in the sample data.
+![](images/bulkin.png)
 
-2.  Once the Experiment in Azure Machine Learning studio is trained, the
-    sample applet .\\HealthcareDemo.ps1 is used to admit 10 new
-    patients (.\\Blueprint\\Deployment\\scripts\\demoscripts\\admit) by
+
+2. **INGEST, STORE, ANALYZE (patients admission)** Once the Experiment in Azure Machine Learning studio is trained, the
+    sample applet is used to admit 10 new
+    patients **.\\Deployment\\scripts\\demoscripts\\admit** by
     the care line manager (health provider). This data is stored
     securely, logged, and the Experiment provides a predicted length
     of stay for each patient.
 
-3.  The care line manager discharges 6 of the 10 admitted patients as the last
-    step of the demo experiment.
+![](images/otherin.png)
+
+3. **INTERACT** (Data visualization) using PowerBi reflects the last step of the demonstration.
+
+> ![](images/image7.png)
 
 More information [about data
 science](https://docs.microsoft.com/en-us/azure/machine-learning/studio/data-science-for-beginners-the-5-questions-data-science-answers)
@@ -293,7 +310,13 @@ and Azure Machine Learning can be found on in Azure documentation on
 [Azure Machine
 Learning](https://docs.microsoft.com/en-us/azure/machine-learning/studio/what-is-machine-learning).
 
-## Import and Train a Machine Learning experiment (Database Analyst role)
+
+# Deploying and running the demo STEPS # 
+
+**NOTE** Do not proceed with running the demo before following the previous instruction to configure permissions correctly; "Grant
+permissions in Azure Active Directory".
+
+## STEP 1 - Import and Train a Machine Learning experiment (Database Analyst role)
 
 
 After deploying the Blueprint, the first step in
@@ -332,7 +355,7 @@ Will displays the first 100 rows from the table. You can observe that the first,
 middle, and last names of each patient are now encrypted at rest in the
 database.
 
-## Patient admission (Care Line Manager role)
+## STEP 2 - Patient admission (Care Line Manager role)
 
 
 Chris, the care line manager, adds newly admitted patients to the
@@ -427,7 +450,7 @@ documentation](https://docs.microsoft.com/en-us/azure/machine-learning/preview/)
 for more information about Machine Learning Studio and working with
 experiments.
 
-## Data visualization (Chief Medical Information Officer and Care Line Manager roles)
+## STEP 3 - Data visualization (Chief Medical Information Officer and Care Line Manager roles)
 
 
 The solution provides a simple Microsoft PowerBI visualization of the
