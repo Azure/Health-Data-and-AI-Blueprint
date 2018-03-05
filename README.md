@@ -14,9 +14,9 @@ Health organizations all over the world are leveraging the power of AI and the c
 
 **[Threat model](https://aka.ms/healththreatmodel)**
 
-**[Solution review](https://aka.ms/healthcrmblueprint)**
+**[Solution review](https://aka.ms/healthreviewpaper)**
 
-**[Customer Responsibility Matrix](./Compliance/)**
+**[Customer Responsibility Matrix](https://aka.ms/healthcrmblueprint)**
 
 
 
