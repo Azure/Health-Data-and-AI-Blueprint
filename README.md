@@ -6,7 +6,8 @@
 
 Health organizations all over the world are leveraging the power of AI and the cloud to improve outcomes and accelerate performance.  The blueprint provides a secure end-to-end foundation for organizations to ingest, store, analyze and interact with sensitive and regulated data. The blueprint provides a Implementation and automation to help deploy a Health Insurance Portability and Accountability Act (HIPAA) and Health Information Trust Alliance (HITRUST) ready environment.  The blueprint includes step-by-step documentation, cybersecurity threat model, component architecture, customer responsibility matrix, external audit report and deployment scripts to automate cloud deployment.
 
-**[Solution Overview](https://aka.ms/healthblueprint)**
+**[Solution Overview](https://aka.ms/healthblueprint)** 
+\(Redirect to docs.microsoft.com/azure/security/blueprints/azure-health\)
 
 [![](./images/deploy.png)](./deployment.md)
 
