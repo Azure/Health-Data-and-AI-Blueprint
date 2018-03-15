@@ -1,9 +1,11 @@
 # Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI
 
 
-## Deployment overview
+## Deployment guide
 
-The solution components for deployment can be cloned, or downloaded from this site. A basic understanding of GIT, and Powershell is required. You can use the integrated git with PowerShell, using [Git for Windows](https://git-scm.com/download/win).
+The components for deploying the solution can be downloaded from the
+[Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI repository on Github.](http://aka.ms/healthblueprint)  For integration with PowerShell, it is necessary to have [Git for Windows](https://git-scm.com/download/win)
+installed.
 
 ![](images/Warning-sign.png) **CAUTION** The script adds domain users to the Azure Active Directory (AD) tenant that you specify. We recommend creating a new Azure Active Directory (AD) tenant to test this solution.
 
@@ -15,10 +17,11 @@ The solution components for deployment can be cloned, or downloaded from this si
 
 ![](images/Warning-sign.png) **CAUTION**   Deployment script must be monitored while the deployment is running. You will be prompted for the global admin username/password during the deployment since the solution does not cache global administrators username and passwords as a security design.
 
+![](images/Warning-sign.png) **CAUTION**   To add enhanced protection of the deployment, it is highlight recommended that MFA be used on ALL deployments. 
 
 ## Deploy the solution
 
-You need to downlaod, or [clone](https://github.com/Azure/Health-Data-and-AI-Blueprint/) the repository. Once you have a copy of the  Blueprint site, you can deploy the solution by using the  **deploy.ps1** PowerShell script that deploys or manages the  Blueprint.
+You need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the repository. Once you have a copy of the  Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that deploys or manages the  Blueprint.
 
 
 Once the repository has been copied, or cloned change your working directory to
@@ -68,6 +71,7 @@ that the solution requires.
              -subscriptionId <subscription-id>
              -globalAdminUsername <username>
              -deploymentPassword <password>
+             -enableMFA
 
 ```
 This command deploys the solution and sets a single common password for all solution users, for testing purposes.
@@ -131,7 +135,9 @@ policy to 60 days at the Domain level.
 Include this switch when deploying the solution to enable multi-factor
 authentication for solution users. 
 
-![](./images/Warning-sign.png) This is an advanced feature, only use if you are familiar with [Azure MFA](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/multi-factor-authentication-whats-next).
+![](./images/Warning-sign.png) This feature - is optional - but highly recommended. Enabling MFA will require additional configurations outlined in the following [Azure MFA](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/multi-factor-authentication-whats-next) documentation. 
+
+Using MFA for all administrators, including global administrators is highly recommended to prevent unauthorized use of the subscription [Global Admin MFA](https://docs.microsoft.com/en-us/microsoft-365/enterprise/identity-designate-protect-admin-accounts)
 
 
 ```
