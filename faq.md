@@ -198,7 +198,7 @@ It's important to note that you should avoid enabling both server blob auditing 
 
 **How can I enable KeyVault SoftDelete?**
 
-The Blueprint  ships without the enableSoftDelete flag enabled, to address PHI handling outlined in HITRUST disposal requirements. 
+The Blueprint  ships the enableSoftDelete flag enabled as of April 9th.
 Soft-delete recovery option can be enabled, where deleted keys, secrets, and even entire vault instances are recoverable within ninety (90) days of deletion. The option effectively retains the deleted items in non-deallocated memory for the recovery period, with automatic deallocation (that is, permanent deletion) once the items have exceeded the period. To enable softdelete review [Keyvault Azure Key Vault Recovery Options using Powershell](https://blogs.technet.microsoft.com/kv/2017/05/10/azure-key-vault-recovery-options/) and [Azure Resource Manager Keyvault Schema](https://github.com/Azure/azure-resource-manager-schemas/blob/master/schemas/2016-10-01/Microsoft.KeyVault.json) - review the enableSoftDelete section.
 
 
