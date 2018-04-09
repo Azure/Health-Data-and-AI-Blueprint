@@ -21,6 +21,7 @@
 namespace HIPAA.Platform.Workflow
 {
     using System;
+    using System.Linq;
     using System.Net;
     using Newtonsoft.Json;
     using System.Net.Http;
@@ -33,6 +34,8 @@ namespace HIPAA.Platform.Workflow
     using System.Collections.Generic;
     using HIPAA.Platform.Function.Common;
     using HIPAA.Platform.Core.Helper;
+    using Microsoft.Azure.EventGrid.Models;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// PatientDataBulkImportFun is triggered on blob storage event,
@@ -53,11 +56,25 @@ namespace HIPAA.Platform.Workflow
                 {
                     string jsonContent = await req.Content.ReadAsStringAsync();
 
-                    StorageEvent[] message = JsonConvert.DeserializeObject<StorageEvent[]>(jsonContent);
-                    string patientDataBlobUrl = message[0].Data.url;
+                    EventGridEvent[] message = JsonConvert.DeserializeObject<EventGridEvent[]>(jsonContent);
+
 
                     patientTelemetry.Request(nameof(PatientDataBulkImportFunc));
 
+
+                    // If the request is for subscription validation, send back the validation code.
+
+                    if (string.Equals((string)message[0].EventType, CommonConstants.SubscriptionValidationEvent,
+                        StringComparison.OrdinalIgnoreCase))
+                    {
+                        JObject dataObject = message[0].Data as JObject;
+                        var eventData = dataObject.ToObject<SubscriptionValidationEventData>();
+                        var responseData = new SubscriptionValidationResponseData();
+                        responseData.ValidationResponse = eventData.ValidationCode;
+                        return req.CreateResponse(HttpStatusCode.OK, responseData);
+
+                    }
+                
                     //filter event type
                     if (message[0].EventType != Events.BlobCreatedEvent)
                     {
@@ -69,9 +86,12 @@ namespace HIPAA.Platform.Workflow
                         });
                     }
 
+                    JObject blobObject = message[0].Data as JObject;
+
                     //get resouces from key vault
                     var appResources = await Settings.GetAppResources();
-
+                    var storageEvent = blobObject.ToObject<BlobData>();
+                    string patientDataBlobUrl = storageEvent.url;
                     new SqlEncryptionHelper();
 
                     patientTelemetry.IngestionStarted();
@@ -98,7 +118,7 @@ namespace HIPAA.Platform.Workflow
                 catch (Exception ex)
                 {
                     patientTelemetry.Error(ex);
-                   
+
                     return req.CreateResponse(HttpStatusCode.InternalServerError, new
                     {
                         result = "failed"

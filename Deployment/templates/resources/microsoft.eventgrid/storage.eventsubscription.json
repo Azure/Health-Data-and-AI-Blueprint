@@ -37,7 +37,7 @@
         {
             "type": "Microsoft.Storage/StorageAccounts/providers/eventSubscriptions",
             "name": "[concat(concat(parameters('publisherName'), '/Microsoft.EventGrid/'), parameters('name'))]",
-            "apiVersion": "2017-06-15-preview",
+            "apiVersion": "2018-01-01",
             "properties": {
                 "destination": {
                     "endpointType": "[parameters('endpointType')]",

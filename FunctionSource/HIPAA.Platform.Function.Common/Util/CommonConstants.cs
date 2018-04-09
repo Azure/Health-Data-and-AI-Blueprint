@@ -54,5 +54,7 @@ namespace HIPAA.Platform.Function.Common
         public static string FunctionappClientSecret = "AppClientSecret";
 
         public static string TenantName = "TenantName";
+
+        public static string SubscriptionValidationEvent = "Microsoft.EventGrid.SubscriptionValidationEvent";
     }
 }

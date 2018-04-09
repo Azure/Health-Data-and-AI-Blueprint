@@ -75,7 +75,8 @@
                 "enabledForDeployment": "[parameters('enabledForDeployment')]",
                 "enabledForDiskEncryption": "[parameters('enabledForDiskEncryption')]",
                 "enabledForTemplateDeployment": "[parameters('enabledForTemplateDeployment')]",
-                "createMode": "[parameters('createMode')]"
+                "createMode": "[parameters('createMode')]",
+                "enableSoftDelete": true
             },
             "resources": [
                 {
