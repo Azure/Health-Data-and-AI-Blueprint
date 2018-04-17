@@ -73,7 +73,7 @@ Role-based access control requires that the deployment use administrator rights 
     Account](http://stackoverflow.com/questions/29485364/powershell-connecting-to-azure-active-directory-using-microsoft-account)
 
 **Are there third-party solutions that can help achieve or manage
-Healthcare HIPAA / HITRUST compliance?**
+Healthcare HIPAA  compliance?**
 
 Third-party products can help with continuous compliance efforts.
 Examples of the products available in the Azure marketplace:
