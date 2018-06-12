@@ -44,49 +44,49 @@ param
 (
     #Azure AD Tenant Id.
     [Parameter(Mandatory = $true,
-    ParameterSetName = "Deployment",
-    Position = 1)]
+        ParameterSetName = "Deployment",
+        Position = 1)]
     [guid]$tenantId,
 
     #Azure Subscription Id.
     [Parameter(Mandatory = $true,
-    ParameterSetName = "Deployment",
-    Position = 2)]
-	[Alias("subId")]
+        ParameterSetName = "Deployment",
+        Position = 2)]
+    [Alias("subId")]
     [guid]$subscriptionId,
 
     #Azure Tenant Domain name.
     [Parameter(Mandatory = $true,
-    ParameterSetName = "Deployment",
-    Position = 3)]
+        ParameterSetName = "Deployment",
+        Position = 3)]
     [Alias("domain")]
     [ValidatePattern("[.]")]
     [string]$tenantDomain,
 
     #Subcription GlobalAdministrator Username.
     [Parameter(Mandatory = $true,
-    ParameterSetName = "Deployment",
-    Position = 4)]
-	[Alias("userName")]
+        ParameterSetName = "Deployment",
+        Position = 4)]
+    [Alias("userName")]
     [string]$globalAdminUsername,
 
     #GlobalAdministrator Password in a plain text.
     [Parameter(Mandatory = $true,
-    ParameterSetName = "Deployment",
-    Position = 5)]
-	[Alias("password")]
+        ParameterSetName = "Deployment",
+        Position = 5)]
+    [Alias("password")]
     [string]$globalAdminPassword,
 
     #Switch enables password policy to expire after 60 days at domain level.
     [Parameter(Mandatory = $false,
-    ParameterSetName = "Deployment",
-    Position = 7)]
+        ParameterSetName = "Deployment",
+        Position = 7)]
     [switch]$enableADDomainPasswordPolicy,
     
     #Switch enables multi-factor authentication for deployed user accounts.
     [Parameter(Mandatory = $false,
-    ParameterSetName = "Deployment",
-    Position = 8)]
+        ParameterSetName = "Deployment",
+        Position = 8)]
     [switch]$enableMFA
 
 )
@@ -96,16 +96,27 @@ try {
     $Host.UI.RawUI.WindowTitle = "HealthCare - Configure MSOL"
     $ErrorActionPreference = 'Stop'
     Set-StrictMode -Version 3
-    
+    $deploymentFolderPath = Split-Path(Split-Path -Path $PSScriptRoot)
+
+    ### Create Output folder to store logs, deployment files.
+    if (! (Test-Path -Path "$deploymentFolderPath\output")) {
+        New-Item -Path $deploymentFolderPath -Name 'output' -ItemType Directory
+    }
+    $outputFolderPath = "$deploymentFolderPath\output"
+
+    # Configure transcript
+    Write-Host "Initiating transcript to log session."
+    Start-Transcript -OutputDirectory $outputFolderPath -Force
+
     ### Verifying required powershell modules for enabling password policies and MFA.
-    $requiredModules=@{
-        'AzureRM' = '4.4.0';
-        'AzureAD' = '2.0.0.131';
+    $requiredModules = @{
+        'AzureRM'  = '4.4.0';
+        'AzureAD'  = '2.0.0.131';
         'MSOnline' = '1.1.166.0'
     }
     $modules = $requiredModules.Keys
     try {
-        foreach ($module in $modules){
+        foreach ($module in $modules) {
             Write-Host -ForegroundColor Yellow "Importing module - $module."
             Import-Module -Name $module -RequiredVersion $requiredModules[$module]
             if (Get-Module -Name $module) {
@@ -118,12 +129,12 @@ try {
         Break
     }
     # The following will setup the usecase users that will be used throughout the Blueprint.
-    $users = @('Alex_SiteAdmin','Danny_DBAnalyst','Caroline_ChiefMedicalInformationOfficer','Chris_CareLineManager','Han_Auditor','Debra_DataScientist')
+    $users = @('Alex_SiteAdmin', 'Danny_DBAnalyst', 'Caroline_ChiefMedicalInformationOfficer', 'Chris_CareLineManager', 'Han_Auditor', 'Debra_DataScientist')
 
     try {
         ### Create PSCredential Object
         $password = ConvertTo-SecureString -String $globalAdminPassword -AsPlainText -Force
-        $credential = New-Object System.Management.Automation.PSCredential ($globalAdminUsername,$password)
+        $credential = New-Object System.Management.Automation.PSCredential ($globalAdminUsername, $password)
 
         # Connecting to MSOL Service
         Write-Host -ForegroundColor Yellow "Establishing connection to MS Online (MSOL) Service for setting up password policy."
@@ -142,27 +153,25 @@ try {
         Throw $_
     }
 
-    if ($enableADDomainPasswordPolicy){
+    if ($enableADDomainPasswordPolicy) {
         Write-Host -ForegroundColor Yellow "Setting up password policy for $tenantDomain domain"
         Set-MsolPasswordPolicy -ValidityPeriod 60 -NotificationDays 14 -DomainName "$tenantDomain"
         if ((Get-MsolPasswordPolicy -DomainName $tenantDomain).ValidityPeriod -eq 60 ) {
             Write-Host -ForegroundColor Green "Password policy has been set to expire in 60 Days."
         }
-        else
-        {
+        else {
             Write-Host -ForegroundColor Red "Failed to set password policy."
         }
     }
-    if ($enableMFA){
-        foreach ($user in $users) 
-        {
+    if ($enableMFA) {
+        foreach ($user in $users) {
             $upn = $user + '@' + $tenantDomain
-                $strongAuthObj = New-Object -TypeName Microsoft.Online.Administration.StrongAuthenticationRequirement 
-                $strongAuthObj.RelyingParty = "*" 
-                $strongAuthObj.State = 'Enabled' 
-                Write-Host -ForegroundColor Yellow "Enabling Multi-Factor Authentication for $upn"
-                Set-MsolUser -UserPrincipalName $upn -StrongAuthenticationRequirements $strongAuthObj
-                Write-Host -ForegroundColor Yellow "Multi-Factor Authentication enabled."
+            $strongAuthObj = New-Object -TypeName Microsoft.Online.Administration.StrongAuthenticationRequirement 
+            $strongAuthObj.RelyingParty = "*" 
+            $strongAuthObj.State = 'Enabled' 
+            Write-Host -ForegroundColor Yellow "Enabling Multi-Factor Authentication for $upn"
+            Set-MsolUser -UserPrincipalName $upn -StrongAuthenticationRequirements $strongAuthObj
+            Write-Host -ForegroundColor Yellow "Multi-Factor Authentication enabled."
         }
     }
 }

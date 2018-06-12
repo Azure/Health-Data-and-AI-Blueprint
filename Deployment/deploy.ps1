@@ -186,6 +186,10 @@ if(! (Test-Path -Path "$(Split-Path $MyInvocation.MyCommand.Path)\output")) {
 }
 $outputFolderPath = "$(Split-Path $MyInvocation.MyCommand.Path)\output"
 
+# Configure transcript
+Write-Host "Initiating transcript to log session."
+Start-Transcript -OutputDirectory $outputFolderPath -Force
+
 ### Importing custom powershell functions.
 . $scriptroot\scripts\pshscripts\PshFunctions.ps1
 log "Imported custom powershell modules (scripts\pshscripts\PshFunctions.ps1)."
@@ -679,6 +683,11 @@ else {
     {
         Get-ARMDeploymentStatus -jobName '2-create'
         Start-Sleep 10
+		$webAppName = "-learn-fapp-dev"
+		$webAppName = $deploymentPrefix + $webAppName
+		log "Waiting 60 seconds for restarting function app"
+		Get-AzureRmWebApp -ResourceGroupName $newDeploymentResourceGroupName $webAppName | Restart-AzureRmWebApp 
+		Start-Sleep 60
         log "Collect Workload deployment Output."
         $workloadDeploymentOutput = Get-AzureRmResourceGroupDeployment -ResourceGroupName $newDeploymentResourceGroupName -Name $newDeploymentName
     }

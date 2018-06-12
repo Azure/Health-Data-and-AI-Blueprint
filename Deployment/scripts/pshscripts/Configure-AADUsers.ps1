@@ -38,6 +38,17 @@ param
 $Host.UI.RawUI.WindowTitle = "HealthCare - Configure AAD Users"
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 3
+$deploymentFolderPath = Split-Path(Split-Path -Path $PSScriptRoot)
+
+### Create Output folder to store logs, deployment files.
+if (! (Test-Path -Path "$deploymentFolderPath\output")) {
+    New-Item -Path $deploymentFolderPath -Name 'output' -ItemType Directory
+}
+$outputFolderPath = "$deploymentFolderPath\output"
+
+# Configure transcript
+Write-Host "Initiating transcript to log session."
+Start-Transcript -OutputDirectory $outputFolderPath -Force
 
 ### Connect AzureAD
 Import-Module AzureAD

@@ -192,21 +192,22 @@ Subscriptions such as BizSpark, where there is a spending limit, the use of opti
 
 ## Grant permissions in Azure Active Directory
 
+1.  Log in to Azure portal using **Alex_SiteAdmin**
 
-1.  In the Azure portal, click **Azure Active Directory** in the
+2.  In the Azure portal, click **Azure Active Directory** in the
     sidebar.
 
-2.  Click **App registrations**.
+3.  Click **App registrations**.
 
 ![](images/appreg.png)
 
-3. Select dropdown and change **My apps**, to **All apps**.
+4. Select dropdown and change **My apps**, to **All apps**.
 
-4.  Click *\<deployment-prefix\>* **Azure HIPAA LOS Sample**.
+5.  Click *\<deployment-prefix\>* **Azure HIPAA LOS Sample**.
 
-5.  Click **Required permissions**.
+6.  Click **Required permissions**.
 
-6.  Click **Grant Permissions** at top. Select
+7.  Click **Grant Permissions** at top. Select
     grant permissions for all accounts in the current directory. Click
     **Yes**.
 
