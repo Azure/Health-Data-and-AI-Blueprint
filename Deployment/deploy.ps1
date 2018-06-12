@@ -101,7 +101,7 @@ param
 	[Alias("userName")]
     [string]$globalAdminUsername,
 
-    #GlobalAdministrator Password in a plain text.
+    # Global administrator password in secure string.
     [Parameter(Mandatory = $true,
     ParameterSetName = "Deployment",
     Position = 6)]
