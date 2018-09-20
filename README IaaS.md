@@ -52,7 +52,7 @@ The Deploy the Health data and AI - Extension solution will require the configur
 
 ## Setting up the PaaS based health data and AI solution ##
 
-Deploy the [Azure Security and Compliance Data and AI Health Blueprint](https://github.com/Azure/Azure-Health-Extension) which will install the core elements of the PaaS solution. This includes all of the platform-as-a-service (PaaS) environment for ingesting, storing, analyzing, and interacting with personal and non-personal medical records in a secure, multi-tier cloud environment, deployed as an end-to-end solution. It showcases a common reference architecture and is designed to simplify adoption of Microsoft Azure.
+Deploy the [Azure Security and Compliance Data and AI Health Blueprint](./deployment.md) which will install the core elements of the PaaS solution. This includes all of the platform-as-a-service (PaaS) environment for ingesting, storing, analyzing, and interacting with personal and non-personal medical records in a secure, multi-tier cloud environment, deployed as an end-to-end solution. It showcases a common reference architecture and is designed to simplify adoption of Microsoft Azure.
 Details to the solution can be found at the [Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI](https://docs.microsoft.com/en-us/azure/security/blueprints/azure-health) resource.
 
 ## Deploy the IaaS lockdown configurations ##
@@ -100,19 +100,19 @@ The script moves 10,000 patient records to the SQL Server 2017 on the VM. This i
 It is essential the data ingestion process from the Health blueprint be run first, as the scripts in the extension build on the databse and content provided in the base blueprint.
 
 View revised data in PowerBI (PowerBI dashboard will be updated)
-The solution provides a simple Microsoft PowerBI visualization of the solution data. Microsoft PowerBI is required to open the sample report located at [Blueprint/Deployment/Reports](https://github.com/RajeevRangappa/Azure-Health-Extension/tree/master/Reports). Using the PowerBI free edition works for this demo but will not allow for reports to be shared. 
+The solution provides a simple Microsoft PowerBI visualization of the solution data. Microsoft PowerBI is required to open the sample report located at [Blueprint/Deployment/Reports](https://github.com/RajeevRangappa/Health-Data-and-AI-Blueprint/tree/master/Reports). Using the PowerBI free edition works for this demo but will not allow for reports to be shared. 
 
 
 # Deploying the automation
- 1. To deploy the solution, follow the instructions provided in the [deployment guidance](https://github.com/RajeevRangappa/Azure-Health-Extension/blob/master/deployment.md).
+ 1. To deploy the solution, follow the instructions provided in the [deployment guidance](https://github.com/RajeevRangappa/Health-Data-and-AI-Blueprint/blob/master/deployment.md).
 
 
 
-2. Frequently asked questions can be found in the [FAQ](https://github.com/RajeevRangappa/Azure-Health-Extension/blob/master/faq.md) guidance.
+2. Frequently asked questions can be found in the [FAQ](https://github.com/RajeevRangappa/Health-Data-and-AI-Blueprint/blob/master/faq.md) guidance.
 
-3. [Threat Model](https://github.com/Azure/Azure-Health-Extension/tree/master/Files) A comprehensive threat model is provided in tm7 format for use with the [Microsoft Threat Modeling Tool](https://www.microsoft.com/en-us/download/details.aspx?id=49168), showing the components of the solution, the data flows between them, and the trust boundaries. The model can help customers understand the points of potential risk in the system infrastructure when developing Machine Learning Studio components or other modifications.
+3. [Threat Model](https://github.com/Azure/Health-Data-and-AI-Blueprint/tree/master/Files) A comprehensive threat model is provided in tm7 format for use with the [Microsoft Threat Modeling Tool](https://www.microsoft.com/en-us/download/details.aspx?id=49168), showing the components of the solution, the data flows between them, and the trust boundaries. The model can help customers understand the points of potential risk in the system infrastructure when developing Machine Learning Studio components or other modifications.
 
-4. [Customer implementation matrix](https://github.com/Azure/Azure-Health-Extension/tree/master/Files) A Microsoft Excel workbook lists the relevant HITRUST requirements and explains how Microsoft and the customer are responsible for meeting each one.
+4. [Customer implementation matrix](https://github.com/Azure/Health-Data-and-AI-Blueprint/tree/master/Files) A Microsoft Excel workbook lists the relevant HITRUST requirements and explains how Microsoft and the customer are responsible for meeting each one.
 
 
 # Disclaimer
