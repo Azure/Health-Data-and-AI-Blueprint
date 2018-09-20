@@ -1,0 +1,756 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual machine name selected during deployment."
+      }
+    },
+    "adminUserName": {
+      "type": "string",
+      "metadata": {
+        "description": "Local administrator username selected during deployment."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Virtual Machine."
+      }
+    },
+    "sqlAutobackupEncryptionPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Enter strong and unique password to use for SQL server backups."
+      }
+    },
+    "sqlaadApplicationServiceId": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter your SQL AAD Application Service principal Id."
+      }
+    },
+    "sqlaadApplicationId": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter your SQL AAD Application Id for KeyVault access."
+      }
+    },
+    "sqlaadClientSecret": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Enter your SQL AAD Application credential for KeyVault access."
+      }
+    },
+    "sqlBackupStorageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter your SQL Backup Storage Account Name."
+      }
+    },
+    "currentUserObjectId": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter the ID of the user to grant CREATE key permissions to SQL keyvault."
+      }
+    },
+    "omsWorkSpaceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter your Operational Insights workspace name."
+      }
+    },
+    "omsServiceTier": {
+      "type": "string",
+      "defaultValue": "PerNode",
+      "allowedValues": [
+        "Free",
+        "Standalone",
+        "PerNode",
+        "PerGB2018"
+      ],
+      "metadata": {
+        "description": "Service Tier: Free, Standard, or Premium"
+      }
+    },
+    "omslocation": {
+      "type": "string",
+      "defaultValue": "East US",
+      "allowedValues": [
+        "East US",
+        "West Europe",
+        "Southeast Asia",
+        "Australia Southeast",
+        "westcentralus",
+        "japaneast",
+        "uksouth",
+        "centralindia",
+        "canadacentral"
+      ]
+    },
+    "windowsOSVersion": {
+      "type": "string",
+      "defaultValue": "SQLDEV",
+      "allowedValues": [
+        "Enterprise",
+        "Express",
+        "SQLDEV",
+        "Standard",
+        "Web"
+      ],
+      "metadata": {
+        "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version."
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2_v3",
+      "allowedValues": [
+        "Standard_D2_v3",
+        "Standard_DS2_v2",
+        "Standard_A4_v2"
+      ],
+      "metadata": {
+        "description": "The Windows virtual machine size."
+      }
+    }
+  },
+  "variables": {
+    "imagePublisher": "MicrosoftSqlServer",
+    "imageOffer": "SQL2017-WS2016",
+    "nicName": "[concat(parameters('vmName'), '-NIC')]",
+    "addressPrefix": "10.0.0.0/16",
+    "subnetName": "SQLSubnet",
+    "subnetPrefix": "10.0.0.0/24",
+    "vhdStorageType": "Standard_LRS",
+    "publicIPAddressName": "[concat(parameters('vmName'), '-PublicIP')]",
+    "publicIPAddressType": "Dynamic",
+    "virtualNetworkName": "[concat(parameters('vmName'), '-VNet')]",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+    "networkSecurityGroupName": "[concat(parameters('vmName'), '-NSG')]",
+    "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnetName'))]",
+    "diagnosticsStorageAccountName": "[concat(resourceGroup().name, 'diag', substring(uniqueString(resourceGroup().id),0,12))]",
+    "accountid": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/',resourceGroup().name, '/providers/','Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName'))]",
+    "wadlogs": "<WadCfg> <DiagnosticMonitorConfiguration overallQuotaInMB=\"4096\" xmlns=\"http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration\"> <DiagnosticInfrastructureLogs scheduledTransferLogLevelFilter=\"Error\"/> <WindowsEventLog scheduledTransferPeriod=\"PT1M\" > <DataSource name=\"Application!*[System[(Level = 1 or Level = 2)]]\" /> <DataSource name=\"Security!*[System[(band(Keywords,13510798882111488))]]\" /> <DataSource name=\"System!*[System[(Level = 1 or Level = 2)]]\" /></WindowsEventLog>",
+    "wadperfcounters1": "<PerformanceCounters scheduledTransferPeriod=\"PT1M\"><PerformanceCounterConfiguration counterSpecifier=\"\\Processor(_Total)\\% Processor Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"CPU utilization\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Processor(_Total)\\% Privileged Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"CPU privileged time\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Processor(_Total)\\% User Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"CPU user time\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Processor Information(_Total)\\Processor Frequency\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"CPU frequency\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\System\\Processes\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"Processes\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Process(_Total)\\Thread Count\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"Threads\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Process(_Total)\\Handle Count\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"Handles\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\% Committed Bytes In Use\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"Memory usage\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Available Bytes\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\"Memory available\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Committed Bytes\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\"Memory committed\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Commit Limit\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\"Memory commit limit\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\% Disk Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"Disk active time\" locale=\"en-us\"/></PerformanceCounterConfiguration>",
+    "wadperfcounters2": "<PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\% Disk Read Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"Disk active read time\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\% Disk Write Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"Disk active write time\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\Disk Transfers/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Disk operations\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\Disk Reads/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Disk read operations\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\Disk Writes/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Disk write operations\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\Disk Bytes/sec\" sampleRate=\"PT15S\" unit=\"BytesPerSecond\"><annotation displayName=\"Disk speed\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\Disk Read Bytes/sec\" sampleRate=\"PT15S\" unit=\"BytesPerSecond\"><annotation displayName=\"Disk read speed\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\Disk Write Bytes/sec\" sampleRate=\"PT15S\" unit=\"BytesPerSecond\"><annotation displayName=\"Disk write speed\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\LogicalDisk(_Total)\\% Free Space\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"Disk free space (percentage)\" locale=\"en-us\"/></PerformanceCounterConfiguration></PerformanceCounters>",
+    "wadcfgxstart": "[concat(variables('wadlogs'), variables('wadperfcounters1'), variables('wadperfcounters2'), '<Metrics resourceId=\"')]",
+    "wadmetricsresourceid": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name , '/providers/', 'Microsoft.Compute/virtualMachines/')]",
+    "wadcfgxend": "\"><MetricAggregation scheduledTransferPeriod=\"PT1H\"/><MetricAggregation scheduledTransferPeriod=\"PT1M\"/></Metrics></DiagnosticMonitorConfiguration></WadCfg>",
+    "adekeyVaultName": "[concat(resourceGroup().name, '-ade-kv')]",
+    "adekeyVaultURL": "[concat('https://', variables('adekeyVaultName'), '.vault.azure.net/')]",
+    "adekeyVaultResourceID": "[concat(subscription().id,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.KeyVault/vaults/', variables('adekeyVaultName'))]",
+    "sqlkeyVaultName": "[concat(resourceGroup().name, '-sql-kv')]",
+    "sqlkeyVaultURL": "[concat('https://', variables('sqlkeyVaultName'), '.vault.azure.net/')]",
+    "sqlkeyVaultResourceID": "[concat(subscription().id,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.KeyVault/vaults/', variables('sqlkeyVaultName'))]"
+  },
+  "resources": [
+
+    {
+      "apiVersion": "2017-03-15-preview",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "name": "[parameters('omsWorkSpaceName')]",
+      "location": "[parameters('omslocation')]",
+      "properties": {
+        "sku": {
+          "Name": "[parameters('omsServiceTier')]"
+        },
+        "retention": "365"
+      }
+    },
+
+    {
+      "apiVersion": "2017-08-01-preview",
+      "type": "Microsoft.Security/pricings",
+      "name": "[resourceGroup().name]",
+      "properties": {
+        "pricingTier": "Standard"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName'))]"
+      ]
+    },
+
+    {
+      "name": "[variables('adekeyVaultName')]",
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2016-10-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "tenantId": "[subscription().tenantId]",
+        "sku": {
+          "family": "A",
+          "name": "premium"
+        },
+        "accessPolicies": [],
+        "enabledForDeployment": false,
+        "enabledForDiskEncryption": true,
+        "enabledForTemplateDeployment": false,
+        "createMode": "default",
+        "enableSoftDelete": true,
+        "enablePurgeProtection": true
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Security/pricings/', resourceGroup().name)]"
+      ]
+    },
+
+    {
+      "name": "[variables('sqlkeyVaultName')]",
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2016-10-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "tenantId": "[subscription().tenantId]",
+        "sku": {
+          "family": "A",
+          "name": "premium"
+        },
+        "accessPolicies": [
+          {
+            "tenantId": "[subscription().tenantId]",
+            "objectId": "[parameters('sqlaadApplicationServiceId')]",
+            "permissions": {
+              "keys": [ "get", "list", "wrapKey", "unwrapKey" ]
+            }
+          },
+          {
+            "tenantId": "[subscription().tenantId]",
+            "objectId": "[parameters('currentUserObjectId')]",
+            "permissions": {
+              "keys": [ "create" ]
+            }
+          }
+        ],
+        "enabledForDeployment": false,
+        "enabledForDiskEncryption": false,
+        "enabledForTemplateDeployment": false,
+        "createMode": "default",
+        "enableSoftDelete": true,
+        "enablePurgeProtection": true
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Security/pricings/', resourceGroup().name)]"
+      ]
+    },
+
+    {
+      "type": "Microsoft.KeyVault/vaults/providers/diagnosticsettings",
+      "name": "[concat(variables('adekeyVaultName'), '/Microsoft.Insights/service')]",
+      "apiVersion": "2016-09-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.KeyVault/vaults/', variables('adekeyVaultName'))]",
+        "[concat('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName'))]"
+      ],
+      "properties": {
+        "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('diagnosticsStorageAccountName'))]",
+        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName'))]",
+        "logs": [
+          {
+            "category": "AuditEvent",
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": true,
+              "days": "365"
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "type": "Microsoft.KeyVault/vaults/providers/diagnosticsettings",
+      "name": "[concat(variables('sqlkeyVaultName'), '/Microsoft.Insights/service')]",
+      "apiVersion": "2016-09-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.KeyVault/vaults/', variables('sqlkeyVaultName'))]",
+        "[concat('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName'))]"
+      ],
+      "properties": {
+        "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('diagnosticsStorageAccountName'))]",
+        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName'))]",
+        "logs": [
+          {
+            "category": "AuditEvent",
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": true,
+              "days": "365"
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "type": "Microsoft.Network/networkSecurityGroups/providers/diagnosticsettings",
+      "name": "[concat(variables('networkSecurityGroupName'), '/Microsoft.Insights/service')]",
+      "apiVersion": "2016-09-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]",
+        "[concat('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName'))]"
+      ],
+      "properties": {
+        "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('diagnosticsStorageAccountName'))]",
+        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName'))]",
+        "logs": [
+          {
+            "category": "NetworkSecurityGroupEvent",
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": true,
+              "days": "30"
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "[concat(subscription().id, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName'), '/datasources/', subscription().subscriptionId)]",
+      "type": "Microsoft.OperationalInsights/workspaces/datasources",
+      "kind": "AzureActivityLog",
+      "name": "[concat(parameters('omsWorkSpaceName'), '/', subscription().subscriptionId)]",
+      "apiVersion": "2015-11-01-preview",
+      "location": "[parameters('omslocation')]",
+      "dependsOn": [
+        "[concat('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName'))]"
+      ],
+      "properties": {
+        "linkedResourceId": "[concat(subscription().id, '/providers/microsoft.insights/eventTypes/management')]"
+      }
+    },
+
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[parameters('sqlBackupStorageAccountName')]",
+      "apiVersion": "2017-10-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+      ],
+      "tags": {
+        "displayName": "StorageAccount"
+      },
+      "sku": {
+        "name": "[variables('vhdStorageType')]"
+      },
+      "kind": "Storage",
+      "properties": {
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
+            },
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "networkAcls": {
+          "bypass": "None",
+          "virtualNetworkRules": [
+            {
+              "id": "[variables('subnetRef')]",
+              "action": "Allow"
+            }
+          ],
+          "defaultAction": "Deny"
+        }
+      }
+    },
+
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('diagnosticsStorageAccountName')]",
+      "apiVersion": "2017-10-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "StorageAccount"
+      },
+      "sku": {
+        "name": "[variables('vhdStorageType')]"
+      },
+      "kind": "Storage",
+      "properties": {
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
+            },
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        }
+      }
+    },
+
+
+    {
+      "apiVersion": "2016-03-30",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "[concat(parameters('vmName'), '-PublicIpAddress')]"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]"
+      }
+    },
+
+    {
+      "apiVersion": "2017-10-01",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('virtualNetworkName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]"
+      ],
+      "tags": {
+        "displayName": "VirtualNetwork"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('addressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('subnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetPrefix')]",
+              "serviceEndpoints": [
+                {
+                  "service": "Microsoft.Sql",
+                  "locations": [
+                    "resourceGroup().location]"
+                  ]
+                },
+                {
+                  "service": "Microsoft.Storage",
+                  "locations": [
+                    "resourceGroup().location]"
+                  ]
+                }
+              ],
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+              }
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "apiVersion": "2018-04-01",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "NetworkInterface"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
+              },
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+        }
+      }
+    },
+
+    {
+      "name": "[variables('networkSecurityGroupName')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2018-01-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": []
+      }
+    },
+
+    {
+      "apiVersion": "2017-12-01",
+      "type": "Microsoft.Compute/virtualMachines",
+      "identity": {
+        "type": "systemAssigned"
+      },
+      "name": "[parameters('vmName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "VirtualMachine"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName'))]",
+        "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('vmName')]",
+          "adminUsername": "[parameters('adminUserName')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[parameters('windowsOSVersion')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('diagnosticsStorageAccountName')), '2016-01-01').primaryEndpoints.blob]"
+          }
+        }
+      },
+      "resources": [
+        {
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(parameters('vmName'), '/IaaSAntimalware')]",
+          "apiVersion": "2015-06-15",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Azure.Security",
+            "type": "IaaSAntimalware",
+            "typeHandlerVersion": "1.3",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "AntimalwareEnabled": "true",
+              "Exclusions": {
+                "Paths": null,
+                "Extensions": null,
+                "Processes": null
+              },
+              "RealtimeProtectionEnabled": "true",
+              "ScheduledScanSettings": {
+                "isEnabled": "true",
+                "scanType": "Quick",
+                "day": "7",
+                "time": "120"
+              }
+            },
+            "protectedSettings": null
+          }
+        },
+
+        {
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(parameters('vmName'),'/ManagedIdentityExtensionForWindows')]",
+          "apiVersion": "2016-03-30",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.ManagedIdentity",
+            "type": "ManagedIdentityExtensionForWindows",
+            "typeHandlerVersion": "1.0",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "port": 50342
+            },
+            "protectedSettings": {}
+          }
+        },
+
+        {
+          "apiVersion": "2015-06-15",
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(parameters('vmName'),'/MicrosoftMonitoringAgent')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName'))]",
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]",
+            "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('vmName'), 'ManagedIdentityExtensionForWindows')]",
+          ],
+          "properties": {
+            "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+            "type": "MicrosoftMonitoringAgent",
+            "typeHandlerVersion": "1.0",
+            "settings": {
+              "workspaceId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName')), '2015-03-20').customerId]"
+            },
+            "protectedSettings": {
+              "workspaceKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName')), '2015-03-20').primarySharedKey]"
+            }
+          }
+        },
+
+        {
+          "name": "Microsoft.Insights.VMDiagnosticsSettings",
+          "type": "extensions",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2015-06-15",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]",
+            "[concat('Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName'))]"
+          ],
+          "tags": {
+            "displayName": "AzureDiagnostics"
+          },
+          "properties": {
+            "publisher": "Microsoft.Azure.Diagnostics",
+            "type": "IaaSDiagnostics",
+            "typeHandlerVersion": "1.5",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "xmlCfg": "[base64(concat(variables('wadcfgxstart'), variables('wadmetricsresourceid'), parameters('vmName'), variables('wadcfgxend')))]",
+              "storageAccount": "[variables('diagnosticsStorageAccountName')]"
+            },
+            "protectedSettings": {
+              "storageAccountName": "[variables('diagnosticsStorageAccountName')]",
+              "storageAccountKey": "[listkeys(variables('accountid'), '2015-05-01-preview').key1]",
+              "storageAccountEndPoint": "https://core.windows.net"
+            }
+          }
+        },
+
+        {
+          "apiVersion": "2015-06-15",
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(parameters('vmName'), '/SqlIaasExtension')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+          ],
+          "properties": {
+            "type": "SqlIaaSAgent",
+            "publisher": "Microsoft.SqlServer.Management",
+            "typeHandlerVersion": "1.2",
+            "autoUpgradeMinorVersion": "true",
+            "settings": {
+              "AutoPatchingSettings": {
+                "PatchCategory": "WindowsMandatoryUpdates",
+                "Enable": true,
+                "DayOfWeek": "Wednesday",
+                "MaintenanceWindowStartingHour": "23",
+                "MaintenanceWindowDuration": "60"
+              },
+              "AutoBackupSettings": {
+                "Enable": true,
+                "RetentionPeriod": "30",
+                "EnableEncryption": true,
+                "BackupSystemDbs": true,
+                "BackupScheduleType": "Automated"
+              },
+              "AutoTelemetrySettings": {
+                "Region": "[resourceGroup().location]"
+              }
+            },
+            "protectedSettings": {
+              "StorageUrl": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('sqlBackupStorageAccountName')), '2015-06-15').primaryEndpoints['blob']]",
+              "StorageAccessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('sqlBackupStorageAccountName')), '2015-06-15').key1]",
+              "Password": "[parameters('sqlAutobackupEncryptionPassword')]"
+            }
+          }
+        },
+     
+        {
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(parameters('vmName'),'/AzureDiskEncryption')]",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2017-03-30",
+          "dependsOn": [
+            "[concat('Microsoft.KeyVault/vaults/', variables('adekeyVaultName'))]",
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Azure.Security",
+            "type": "AzureDiskEncryption",
+            "typeHandlerVersion": "2.2",
+            "autoUpgradeMinorVersion": true,
+            "forceUpdateTag": "1.0",
+            "settings": {
+              "EncryptionOperation": "EnableEncryption",
+              "KeyVaultURL": "[reference(variables('adekeyVaultResourceId'),'2016-10-01').vaultUri]",
+              "KeyVaultResourceId": "[variables('adekeyVaultResourceID')]",
+              "KeyEncryptionKeyURL": "",
+              "KekVaultResourceId": "[variables('adekeyVaultResourceID')]",
+              "KeyEncryptionAlgorithm": "RSA-OAEP",
+              "VolumeType": "all",
+              "ResizeOSDisk": false
+            }
+          }
+        }
+
+      ]
+    }
+  ],
+  "outputs": {
+    "vmName": {
+      "type": "string",
+      "value": "[parameters('vmName')]"
+    },
+    "diagnosticsStorageAccountName": {
+      "type": "string",
+      "value": "[variables('diagnosticsStorageAccountName')]"
+    },
+    "omsWorkSpaceId": {
+      "value": "[reference(concat('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkSpaceName')), '2015-03-20').customerId]",
+      "type": "string"
+    },
+    "ade_vaultUri": {
+      "value": "[reference(variables('adekeyVaultResourceId'),'2016-10-01').vaultUri]",
+      "type": "string"
+    },
+    "sql_vaultUri": {
+      "value": "[reference(variables('sqlkeyVaultResourceId'),'2016-10-01').vaultUri]",
+      "type": "string"
+    }
+  }
+}
+

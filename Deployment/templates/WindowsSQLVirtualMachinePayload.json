@@ -1,0 +1,96 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual machine name selected during deployment."
+      }
+    },
+    "adminUserName": {
+      "type": "string",
+      "metadata": {
+        "description": "Local administrator username selected during deployment."
+      }
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "Staging storage account to receive post-build staging folder upload."
+      }
+    },
+    "_artifactsStorageKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "SAS token to access _artifactsLocation."
+      }
+    },
+    "sqlServerAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "PaaS Sql Server address."
+      }
+    },
+    "sqlCredentialName": {
+      "type": "string",
+      "metadata": {
+        "description": "Credential name associated with AAD service principal for SQL keyvault access."
+      }
+    },
+    "sqlKeyVaultKeyName": {
+      "type": "string",
+      "metadata": {
+        "description": "Key name in keyvault to support SQL AKV integration."
+      }
+    }
+  },
+  "variables": {
+    "powershellFileName": "sql-setup.ps1",
+    "payloadFileName":  "sql-setup.zip",
+    "fileURI1": "[concat(parameters('_artifactsLocation'), '/', variables('powershellFileName'), parameters('_artifactsStorageKey'))]",
+    "fileURI2":"[concat(parameters('_artifactsLocation'), '/', variables('payloadFileName'), parameters('_artifactsStorageKey'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('vmName'), '/CustomScriptExtension')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+          "displayName": "SQL-config-app"
+      },
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.9",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "[variables('fileURI1')]",
+            "[variables('fileURI2')]"
+          ]
+        },
+        "protectedSettings": {
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('powershellFileName'), ' -adminUserName ', parameters('adminUserName'), ' -payloadFileName ', variables('payloadFileName'), ' -sqlServerAddress ', parameters('sqlServerAddress'), ' -sqlCredentialName ', parameters('sqlCredentialName'), ' -sqlKeyVaultKeyName ', parameters('sqlKeyVaultKeyName'))]"
+        }
+      }
+    }
+ 
+  ],
+  "outputs": {
+    "scriptStatusResult": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions',  parameters('vmName'), 'CustomScriptExtension')).instanceView.statuses[0].message]"
+    },
+    "scriptSubstatusErrorText": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions',  parameters('vmName'), 'CustomScriptExtension')).instanceView.substatuses[1].message]"
+    },
+    "scriptSubstatusResult": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions',  parameters('vmName'), 'CustomScriptExtension')).instanceView.substatuses[0].message]"
+    }
+  }
+}
+

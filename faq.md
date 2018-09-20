@@ -1,5 +1,6 @@
 
-# Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI FAQ
+# Azure HIPAA/HITRUST Health Data and AI - with (IaaS Extension) PREVIEW
+
 
 
 **Why am I unable to log in or run the PowerShell scripts with my Azure
@@ -207,6 +208,9 @@ Soft-delete recovery option can be enabled, where deleted keys, secrets, and eve
 The solution is set up to deploy in the West Central US. region. You can modify the scripts to deploy to other supported regions. It's important to verify that the region you pick has all the listed solution services [availible](https://azure.microsoft.com/en-us/regions/services/). 
 
 
+**The sample illustrates using a new Azure Disk Encryption extension deployment feature that may result in a incorrect flag**  
+
+Azure Security Center may incorrectly flag the VM as still needing to enable disk encryption.  This will be fixed in a future update.
 
 
 

@@ -442,10 +442,10 @@ else {
         log "Initialising powershell session to create user accounts. NOTE: Configure-AADUsers.ps1 will open a powershell window that you must close when completed."
         # In order to avoid AD connect clobbering AzureRM session, a new powershell session is required.
         if($manualLogin){
-            Start-Process Powershell -ArgumentList "-NoExit", "-WindowStyle Normal", "-ExecutionPolicy UnRestricted", ".\Configure-AADUsers.ps1 -tenantId $tenantId -subscriptionId $subscriptionId -tenantDomain $tenantDomain -deploymentPassword '$deploymentPassword'" -WorkingDirectory "$scriptRoot\scripts\pshscripts"
+            Start-Process Powershell -ArgumentList "-NoExit", "-WindowStyle Normal", "-ExecutionPolicy UnRestricted", ".\Configure-AADUsers.ps1 -tenantId '$tenantId' -subscriptionId '$subscriptionId' -tenantDomain '$tenantDomain' -deploymentPassword '$deploymentPassword'" -WorkingDirectory "$scriptRoot\scripts\pshscripts"
         }
         else {
-            Start-Process Powershell -ArgumentList "-NoExit", "-WindowStyle Normal", "-ExecutionPolicy UnRestricted", ".\Configure-AADUsers.ps1 -tenantId $tenantId -subscriptionId $subscriptionId -tenantDomain $tenantDomain -globalAdminUsername $globalAdminUsername -globalAdminPassword $plainServiceAdminPassword -deploymentPassword '$deploymentPassword'" -WorkingDirectory "$scriptRoot\scripts\pshscripts"            
+            Start-Process Powershell -ArgumentList "-NoExit", "-WindowStyle Normal", "-ExecutionPolicy UnRestricted", ".\Configure-AADUsers.ps1 -tenantId '$tenantId' -subscriptionId '$subscriptionId' -tenantDomain '$tenantDomain' -globalAdminUsername '$globalAdminUsername' -globalAdminPassword '$plainServiceAdminPassword' -deploymentPassword '$deploymentPassword'" -WorkingDirectory "$scriptRoot\scripts\pshscripts" 
         }
     }
     catch [System.Exception]
