@@ -5,22 +5,22 @@
 
 
 
-The HIPAA/HITRUST Health Data and AI - IaaS Extension provides customers the ability to deploy the health blueprint and include a hybrid IaaS deployment. This helps to understand how Azure Security Center and other security technologies such as end point host protection would work in the Healthcare solution.
+The HIPAA/HITRUST Health Data and AI - IaaS Extension provides customers the ability to deploy the health blueprint and include a hybrid IaaS deployment. This helps with understanding how Azure Security Center and other security technologies such as end point host protection work in the Healthcare solution.
 
-This solution will help expose the effort to migrate an on-premises SQL based solution to Azure, and to implement a Privileged Access Workstation (PAW) to securely manage all cloud based services and solutions. The IaaS SQL Server database adds potential experimentation data into the SQL Azure PaaS service.
+This solution will demonstarte hot to migrate an on-premises SQL based solution to Azure, and to implement a Privileged Access Workstation (PAW) to securely manage cloud-based services and solutions. The IaaS SQL Server database adds potential experimentation data is imported into a SQL IaaS VM, and that VM uses MSI authenticated access to interact a SQL Azure PaaS service.
 
-This health data and AI extention is unique because it extends the PaaS Health-Data-and-AI-Blueprint, demonstrating best practices and possible approaches to address the following new points:
+This health data and AI extension is unique because it extends the PaaS Health-Data-and-AI-Blueprint, demonstrating best practices and possible approaches to address the following new points:
 
-1. Extend the existing PaaS sample to show secure co-existence between PaaS and IaaS VM workload elements.
-2. “Start Secure” – enable security capabilities and monitoring of the IaaS VM workload before any sensitive data or workload processing takes place.
+1. “Start Secure” – enable security capabilities and monitoring of the IaaS VM workload before any sensitive data or workload processing takes place.
+2. Extend the existing PaaS sample to show secure co-existence between PaaS and IaaS VM workload elements.
 3. Illustrate how to use recently introduced security and deployment capabilities.
-4. Demonstrate how to move SQL data securley from an IaaS SQL Server instance to a PaaS SQL Azure service instance.
+4. Address the need to use a clean device when connecting to managment service in Azure.
 
-The deployment of the IaaS VM includes usage of Azure Security Center, a network security group and network access lockdown, auto-update capability for patch management, usage of encryption at rest capabilities, usage of eventlog audit log collection and monitoring capabilities, usage of managed service identity, automated encrypted backup capabilities, and more.
+The deployment of the IaaS VM includes usage of Azure Security Center, a network security group and network access lockdown, auto-update capability for patch management, usage of encryption at rest capabilities, usage of event log audit log collection and monitoring capabilities, usage of managed service identity, automated encrypted backup capabilities, and more.
 
 This blueprint extension extends the current Health blueprint to:
 
-**INGEST** data including FHIR data source
+**INGEST** data including Fast Healthcare Interoperability Resource (FHIR) data source
 
 **STORE** sensitive and regulated health information (in both a Windows SQL2017 server, and Azure PaaS solution)
 
@@ -41,9 +41,9 @@ This blueprint extension extends the current Health blueprint to:
 
 ## Setting up a Privileged Access Workstation (PAW) ##
 
-It is essential that before any deployment is started a known 'good client' is configured to connect to the cloud. This can be done in varied levels of security assurance. Ideally it is recommended that a **Privileged Access Workstation** be set up and all installtion commands are executed from this machine using a machine administrator account.
+It is essential that before any deployment is started a known 'good clean client' is configured to connect to the cloud. This can be done in varied levels of security assurance. It is recommended that a **Privileged Access Workstation** be set up and all installation commands are executed from this machine using a machine administrator account.
 
-Deploy a PAW solution to ensure that management of the services is done in a secure service model. This step is recommended to ensure no access to subscription management without a isolated client host.
+Deploy a PAW solution to ensure that management of the services is done in a secure service model. This step is recommended to ensure access to subscription management occurs from a isolated client host.
 Review [Privileged Access Workstation (PAW) for details.](https://docs.microsoft.com/en-us/windows-server/identity/securing-privileged-access/privileged-access-workstations)
 
 ## Setting up Pre-Requisites and enabling services ##
@@ -53,10 +53,10 @@ The Deploy the Health data and AI - Extension solution will require the configur
 ## Setting up the PaaS based health data and AI solution ##
 
 Deploy the [Azure Security and Compliance Data and AI Health Blueprint](https://github.com/Azure/Azure-Health-Extension) which will install the core elements of the PaaS solution. This includes all of the platform-as-a-service (PaaS) environment for ingesting, storing, analyzing, and interacting with personal and non-personal medical records in a secure, multi-tier cloud environment, deployed as an end-to-end solution. It showcases a common reference architecture and is designed to simplify adoption of Microsoft Azure.
-Details to the original solution can be found at the [Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI](https://docs.microsoft.com/en-us/azure/security/blueprints/azure-health) resource.
+Details to the solution can be found at the [Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI](https://docs.microsoft.com/en-us/azure/security/blueprints/azure-health) resource.
 
 ## Deploy the IaaS lockdown configurations ##
-In this step, use of the deployIaaS.ps1 script found in the [Blueprint/Deployment](./Deployment) folder, will Deploy the Health data and AI Extension. The script will enable the following capabilities
+In this step, use the deployIaaS.ps1 script found in the [Blueprint/Deployment](./Deployment) folder, to  Deploy the Health data and AI Extension. The script will enable the following capabilities
 in three Phases:
 
 ### Phase 1:  Initial deployment and setup. ###
@@ -73,19 +73,19 @@ in three Phases:
 ### Phase 2:  Applying security policies and monitoring capabilities. ###
 1.	Enables Azure disk encryption, using new deployment model that doesn’t require a dedicated Application ID and service principal provisioning.
 2.	Enables and configures Microsoft Anti-malware.
-3.	Enables Microsoft monitoring agent, for VM eventlog and security audit log collection and retention in an Azure storage account.
+3.	Enables Microsoft monitoring agent, for VM event log and security audit log collection and retention in an Azure storage account.
 4.	Enables SQL IaaS extension: scheduled maintenance & patching window, Key Vault integration for Extensible Key Management (TDE), and automated encrypted backup support.
 5.	Enables SQL AD based administration of existing PaaS database instance.
 6.	Network security group and subnet access used to lockdown access between SQL IaaS VM and PaaS SQL instance.
-7.	Uses managed service identity, for Sql IaaS VM -> SQL PaaS authentication.
+7.	Uses managed service identity, for SQL IaaS VM -> SQL PaaS authentication.
 
 ### Phase 3: Deploying and executing payload to deployed VM. ###
 1.	Custom script extension execution illustrates “lift and shift” of on-premise exported data to the SQL IaaS VM instance, without opening internet facing ports.
 2.	Sample health data set is deployed to the IaaS VM and imported into the SQL instance.
 3.	IaaS VM to PaaS SQL database query is issued, using Virtual Machine managed service identity authentication.  
 
-NOTE - The VM will be isolated to an Azure VNet. To gain access to the IaaS VM, you will require to add and a local inbound port rule to allow 3389 for Remote Desktop (RDP) connection to the VM
- address. Additionally, the VM's password will require to be rereset.
+NOTE - The VM will be isolated to an Azure VNet. To gain access to the IaaS VM, you will need to add a local inbound port rule to allow 3389 for Remote Desktop (RDP) connection to the VM
+ address. The rule should be restricted to an appropriate range of source addresses. Additionally, the VM's password will need to be reset using the "password reset" functionality in the management portal.
  
  
  
@@ -95,11 +95,12 @@ NOTE - The VM will be isolated to an Azure VNet. To gain access to the IaaS VM, 
 
 ## INTERACT (Data visualization) using PowerBi reflects the last step of the demonstration. ##
 
-The script moves 10,000 patient records from the SQL Server 2017 on the VM, to the  SQL Azure service instance. This illustrates automated moving of data from a VM that was a result of a "Lift and Shift" operation, to a pure PaaS operation in Azure.
+The script moves 10,000 patient records to the SQL Server 2017 on the VM. This illustrates automated moving of data to a VM that was a result of a "Lift and Shift" operation, and subsequent interaction with a PaaS service in Azure.
 
+It is essential the data ingestion process from the Health blueprint be run first, as the scripts in the extension build on the databse and content provided in the base blueprint.
 
 View revised data in PowerBI (PowerBI dashboard will be updated)
-The solution provides a simple Microsoft PowerBI visualization of the solution data. Microsoft PowerBI is required to open the sample report located at [Blueprint/Deployment/Reports](https://github.com/RajeevRangappa/Azure-Health-Extension/tree/master/Reports). Using the PowerBI free edition works for this demo, but will not allow for reports to be shared. 
+The solution provides a simple Microsoft PowerBI visualization of the solution data. Microsoft PowerBI is required to open the sample report located at [Blueprint/Deployment/Reports](https://github.com/RajeevRangappa/Azure-Health-Extension/tree/master/Reports). Using the PowerBI free edition works for this demo but will not allow for reports to be shared. 
 
 
 # Deploying the automation
