@@ -110,9 +110,9 @@ The solution provides a simple Microsoft PowerBI visualization of the solution d
 
 2. Frequently asked questions can be found in the [FAQ](https://github.com/RajeevRangappa/Health-Data-and-AI-Blueprint/blob/master/faq.md) guidance.
 
-3. [Threat Model](https://github.com/Azure/Health-Data-and-AI-Blueprint/tree/master/Files) A comprehensive threat model is provided in tm7 format for use with the [Microsoft Threat Modeling Tool](https://www.microsoft.com/en-us/download/details.aspx?id=49168), showing the components of the solution, the data flows between them, and the trust boundaries. The model can help customers understand the points of potential risk in the system infrastructure when developing Machine Learning Studio components or other modifications.
+3. [Threat Model](https://github.com/RajeevRangappa/Health-Data-and-AI-Blueprint/tree/master/Files) A comprehensive threat model is provided in tm7 format for use with the [Microsoft Threat Modeling Tool](https://www.microsoft.com/en-us/download/details.aspx?id=49168), showing the components of the solution, the data flows between them, and the trust boundaries. The model can help customers understand the points of potential risk in the system infrastructure when developing Machine Learning Studio components or other modifications.
 
-4. [Customer implementation matrix](https://github.com/Azure/Health-Data-and-AI-Blueprint/tree/master/Files) A Microsoft Excel workbook lists the relevant HITRUST requirements and explains how Microsoft and the customer are responsible for meeting each one.
+4. [Customer implementation matrix](https://github.com/RajeevRangappa/Health-Data-and-AI-Blueprint/tree/master/Files) A Microsoft Excel workbook lists the relevant HITRUST requirements and explains how Microsoft and the customer are responsible for meeting each one.
 
 
 # Disclaimer
