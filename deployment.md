@@ -137,7 +137,7 @@ This command deploys the IaaS solution for testing purposes.
 6. stage\artifact\LengthOfStay-IaaSDemo.csv - Sample data set, imported to SQL IaaS instance.
 7. stage\artifact\patientdb_schema_nolos.sql - Schema associated with LengthOfStay-IaasDemo dataset.
 8. stage\artifact\sql-setup-functions.ps1 - Helper function used by sql-setup.ps1 to facilitate administrator impersonation.
-9. IaaS extension howto.txt-description of key code elements that implement the solution.
+9. [IaaS extension howto.txt](https://github.com/RajeevRangappa/Health-Data-and-AI-Blueprint/tree/master/IaaSExtensionHow.md) -description of key code elements that implement the solution.
 
 
 ## Parameters for deploy.ps1 and deployIaaS.ps1
