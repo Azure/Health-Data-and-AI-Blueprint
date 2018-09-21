@@ -125,7 +125,7 @@ This command deploys the IaaS solution for testing purposes.
              -subscriptionId <subscription-id> [XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX]
              -globalAdminUsername <username> [Pass provided Username, if any]
              
-
+```
 
 # Description of files specific to the IaaS extension
 
