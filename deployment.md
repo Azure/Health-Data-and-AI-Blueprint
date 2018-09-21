@@ -143,31 +143,44 @@ This command deploys the IaaS solution for testing purposes.
 ## Parameters for deploy.ps1 and deployIaaS.ps1
 
 At least one parameter must be present to successfully run the script.
+
 -clearDeployment
 Uninstalls the solution, removing all resource groups, service principles, AD applications, and AD users. Must be used with the -clearDeploymentPrefix switch
+
 -clearDeploymentPrefix <deployment-prefix> 
 Uninstalls the solution, removing all resource groups, service principles, AD applications, and AD users. Must be used with -cleardeployment switch
+
 -deploymentPassword <password>
 If this parameter is set, all of the passwords used within the solution are set to the supplied value. The deploymentPassword parameter is intended for testing purposes and should not be used in a production environment. If this parameter is not used, the script generates and displays strong passwords for every role/account.
+
 -deploymentPrefix <prefix>
 A string of 1 to 5 alphanumeric characters that is used to create distinct resource group names. If you run the script multiple times, you must choose a different prefix each time to avoid conflicts with other resources.
+
 -enableADDomainPasswordPolicy
 Only applicable to deploy.ps1.  Include this switch when deploying the solution to set the password policy to 60 days at the Domain level.  
+
 -enableMFA
 Only applicable to deploy.ps1.  Include this switch when deploying the solution to enable multi-factor authentication for solution users.  
   This feature - is optional - but highly recommended. Enabling MFA will require additional configurations outlined in the following Azure MFA documentation.
 Using MFA for all administrators, including global administrators is highly recommended to prevent unauthorized use of the subscription Global Admin.
+
 -installModules
 Installs and updates all necessary PowerShell modules. Run the script with this switch before performing the deployment to ensure that all necessary modules are present.
+
 -globalAdminUsername <username>
 Typically, this is the username of the user performing the deployment. Use a valid Azure Active Directory OrgID username (example: "alex@contosohealthcare.onmicrosoft.com") rather than a Microsoft or corporate account name (example: "alex@contoso.com").
+
 -subscriptionId <subscription-id>
 For the subscription ID, sign in to the Subscriptions view in the Azure portal. The subscription you are using should be listed in the table, along with its associated subscription ID, a GUID.
+
 -tenantDomain <tenant-domain>
 The tenant domain is the default directory name listed under your account name in the dashboard followed by ".onmicrosoft.com" (example: "contosohealthcare.onmicrosoft.com").
+
 -tenantId <tenant-id>
 To find the Azure tenant ID, click Azure Active Directory in the dashboard sidebar, and under Manage, click Properties. The tenant ID is a GUID in the box labeled Directory ID.
+
 -appInsightsPlan <level number>
+
 Only applicable to deploy.ps1.  Provides the ability to select your Application Insights plan level. Default is set to 1.
 0 – Set up App Insights with Application Insights Basic Plan.
 1 – Set up App insights with Application Insights Enterprise Plan.
