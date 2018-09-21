@@ -127,7 +127,7 @@ This command deploys the IaaS solution for testing purposes.
              
 ```
 
-# Description of files specific to the IaaS extension
+## Description of files specific to the IaaS extension
 
 1. deployIaaS.ps1 - Deployment script for IaaS extension.   Executed after PaaS deploy.ps1 has completed execution.  Includes code to setup resource group, service identities and AD configuration, keyvault key for SQL TDE, and ARM templates deployment.
 2. scripts\pshscripts\PshFunctionsIaaS.ps1 - Powershell deployment script helper routines:  1) Preparation of SQL VM payload artifacts (sample data set, and code to install it). 2) Code to setup MSI access to SQL PaaS instance, and configure firewall, 3) code to create azure key vault key for SQL TDE, and update SQL IaaS extension configuration.
@@ -140,7 +140,7 @@ This command deploys the IaaS solution for testing purposes.
 9. IaaS extension howto.txt-description of key code elements that implement the solution.
 
 
-#Parameters for deploy.ps1 and deployIaaS.ps1
+## Parameters for deploy.ps1 and deployIaaS.ps1
 
 At least one parameter must be present to successfully run the script.
 -clearDeployment
