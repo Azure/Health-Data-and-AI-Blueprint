@@ -1,5 +1,4 @@
-# Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI
-
+# Azure HIPAA/HITRUST Health Data and AI - with (IaaS Extension) 
 
 ## Deployment guide
 
@@ -15,16 +14,21 @@ installed.
 ![](images/Warning-sign.png) **CAUTION**   If you encounter any issues during the deployment, see [FAQ and troubleshooting](faq.md)
 
 
-![](images/Warning-sign.png) **CAUTION**   Deployment script must be monitored while the deployment is running. You will be prompted for the global admin username/password during the deployment since the solution does not cache global administrators username and passwords as a security design.
+![](images/Warning-sign.png) **CAUTION**   Deployment script must be monitored while the deployment is running. You will be prompted for the global admin username/password during the deployment.
 
 ![](images/Warning-sign.png) **CAUTION**   To add enhanced protection of the deployment, it is highlight recommended that MFA be used on ALL deployments. 
 
 ## Deploy the solution
 
-You need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the repository. Once you have a copy of the  Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script that deploys or manages the  Blueprint.
+You need to copy, or [clone](https://help.github.com/articles/cloning-a-repository/) the repository. Once you have a copy of the  Blueprint automation, you can deploy the solution by using the  **deploy.ps1** PowerShell script. Once the PaaS solution deployment has been created, you can then deploy the IaaS extension element using deployIaaS.ps1, as documented below.
 
+## Required administrator roles
 
-Once the repository has been copied, or cloned change your working directory to
+The person installing the blueprint must be in the Global Administrator role in the AAD. The installing account must be an Azure subscription administrator for the subscription being used. If the person doing the install is not in both of these role, the installation will fail.
+
+Further, the install is not designed to work with MSDN subscriptions due to the tight integration with AAD. A standard Azure account must be used. If needed, get a [free trial](https://azure.microsoft.com/en-us/free/?WT.mc_id=ms-docs-dastarr) with credit to spend for installing the blueprint solution and running its demos.
+
+1.  Once the repository has been copied, or cloned change your working directory to
     **Deployment**:
 ```
 cd  .\Deployment\
@@ -32,23 +36,23 @@ cd  .\Deployment\
 
 
 2.  Run **deploy.ps1** with the **installModules** switch to install and verify all
-    necessary modules are ready:
+    necessary powershell modules are ready:
 ```
 .\deploy.ps1 -installModules
 ```
-- It is recommended that if an error is flagged during deployment, that the errors be resolved prior to proceeding.
-- Time to deploy the solution will be approximately 25 minutes.
+  - It is recommended that if an error is flagged during deployment, that the errors be resolved prior to proceeding or retrying.
+  - Time to deploy the solution will be approximately 25 minutes.
 
 3.  Once the modules are installed, run **deploy.ps1** again to deploy
     the solution. For detailed usage instructions, see **deploy.ps1 usage**
 
-- NOTE: The script asks you to supply a value for the
+   - NOTE: The script asks you to supply a value for the
 **globalAdminPassword** parameter; enter the password for the
 administrative account you are using for the **-globalAdminUsername**
 parameter. The script then deploys the solution, which may take some
-time, monitoring the 30 minute deployment is recommended, since during the deployment Global username, and Password pop up dialog windows will appear.
+time, monitoring the 25 minute deployment is recommended, since during the deployment Global username, and Password pop up dialog windows will appear.
 
-- The script will be complete when the results of the **\\deployment\\output\\\<deployment-prefix\>-deploymentOutput.json** displayed onscreen.
+   - The script will be complete when the results of the **\\deployment\\output\\\<deployment-prefix\>-deploymentOutput.json** displayed onscreen.
 
 ##  deploy.ps1 usage
 
@@ -60,7 +64,7 @@ Deploys or manages the Azure Solution for Healthcare.
             .\deploy.ps1 -installModules
 ```
 
-This command validates, and installs missing PowerShell modules
+This command validates,and installs missing PowerShell modules
 that the solution requires.
 
 **Example 2: Deploying the solution in a test environment**
@@ -76,7 +80,9 @@ that the solution requires.
 ```
 This command deploys the solution and sets a single common password for all solution users, for testing purposes.
 
-**Example 3: Uninstall the solution**
+
+
+**Uninstall the solution**
 ```
 .\deploy.ps1 -clearDeploymentPrefix <deployment-prefix> 
              -tenantId <tenant-id>
@@ -88,106 +94,99 @@ This command deploys the solution and sets a single common password for all solu
 ``` 
 Uninstalls the solution, removing all resource groups, service principles, AD applications, and AD users.
 
+NOTE- Do not uninstall the solution if you are going to deploy the Health Extension.
+ 
+##  deployIaaS.ps1 usage (Health Extension)
+
+DeployIaaS.ps1 should be run once the deployment of the PaaS solution has completed successfully. This health extension will provide additional capabilities, including the addition of at Windows Server VM, and SQL server deployment.The purpose of the extension is to show-case best practices such as the following:
+
+1.	“Start Secure” – enable security capabilities and monitoring of the IaaS VM work-load before any sensitive data or work-load processing takes place.
+2.	Extend the existing PaaS sample to show secure co-existence between PaaS and IaaS VM work-load elements.
+3.	Illustrate recently introduced security and deployment capabilities of ASC, ARM templates, and powershell automation.
 
 
-
-
-## Parameters
-
-All parameters are optional, although at least one parameter must be
-present to successfully run the script.
 ```
+.\deployIaaS.ps1 -deploymentPrefix <prefix>
+             -tenantId <tenant-id>
+             -tenantDomain <tenant-domain>
+             -subscriptionId <subscription-id>
+             -globalAdminUsername <username>
+             -deploymentPassword <password>
+             -enableMFA
+
+```
+This command deploys the IaaS solution for testing purposes.
+
+## Extension deployment Example
+```
+.\deployIaaS.ps1 -deploymentPrefix <prefix> [Any max 5 length prefix e.g. demo1, test99, etc]
+             -tenantId <tenant-id> [“XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX”] 
+             -tenantDomain <tenant-domain> [“XXXXXXXX.com”]
+             -subscriptionId <subscription-id> [XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX]
+             -globalAdminUsername <username> [Pass provided Username, if any]
+             
+```
+
+## Description of files specific to the IaaS extension
+
+1. deployIaaS.ps1 - Deployment script for IaaS extension.   Executed after PaaS deploy.ps1 has completed execution.  Includes code to setup resource group, service identities and AD configuration, keyvault key for SQL TDE, and ARM templates deployment.
+2. scripts\pshscripts\PshFunctionsIaaS.ps1 - Powershell deployment script helper routines:  1) Preparation of SQL VM payload artifacts (sample data set, and code to install it). 2) Code to setup MSI access to SQL PaaS instance, and configure firewall, 3) code to create azure key vault key for SQL TDE, and update SQL IaaS extension configuration.
+3. templates\WindowsSqlVirtualMachine.json - ARM template which does SQL VM deployment, creates keyvaults, and configures several VM extensions.
+4. templates\WindowsSqlVirtualMachinePayload.json - ARM template which uses CustomScriptExtension to execute and report status of sql-setup.ps1, within the Sql IaaS VM.
+5. stage\sql-setup.ps1 - Powershell code that executes on the SQL VM, which resets the adminstrator credential to a new random value, and then configures SQL TDE with keyvault integration, imports sample data set, and executes query against PaaS SQL instance using managed service identity (MSI) for authentication.  See comments at the top of sql-setup.ps1 file for more info.
+6. stage\artifact\LengthOfStay-IaaSDemo.csv - Sample data set, imported to SQL IaaS instance.
+7. stage\artifact\patientdb_schema_nolos.sql - Schema associated with LengthOfStay-IaasDemo dataset.
+8. stage\artifact\sql-setup-functions.ps1 - Helper function used by sql-setup.ps1 to facilitate administrator impersonation.
+9. [IaaS extension howto.txt](https://github.com/RajeevRangappa/Health-Data-and-AI-Blueprint/tree/master/IaaSExtensionHow.md) -description of key code elements that implement the solution.
+
+
+## Parameters for deploy.ps1 and deployIaaS.ps1
+
+At least one parameter must be present to successfully run the script.
+
 -clearDeployment
-```
-Uninstalls the solution, removing all resource groups, service
-principles, AD applications, and AD users. Must be used with the -clearDeploymentPrefix switch
+Uninstalls the solution, removing all resource groups, service principles, AD applications, and AD users. Must be used with the -clearDeploymentPrefix switch
 
-```
 -clearDeploymentPrefix <deployment-prefix> 
-```
-Uninstalls the solution, removing all resource groups, service
-principles, AD applications, and AD users. Must be used with -cleardeployment switch
+Uninstalls the solution, removing all resource groups, service principles, AD applications, and AD users. Must be used with -cleardeployment switch
 
-
-```
 -deploymentPassword <password>
-```
-If this parameter is set, all of the passwords used within the solution
-are set to the supplied value. The deploymentPassword parameter is
-intended for testing purposes, and should not be used in a production
-environment. If this parameter is not used, the script generates and
-displays 15-character strong passwords for every role.
-```
+If this parameter is set, all of the passwords used within the solution are set to the supplied value. The deploymentPassword parameter is intended for testing purposes and should not be used in a production environment. If this parameter is not used, the script generates and displays strong passwords for every role/account.
+
 -deploymentPrefix <prefix>
-```
-A string of 1 to 5 alphanumeric characters that is used to create
-distinct resource group names. If you run the script multiple times, you
-must choose a different prefix each time to avoid conflicts with other
-resources.
-```
+A string of 1 to 5 alphanumeric characters that is used to create distinct resource group names. If you run the script multiple times, you must choose a different prefix each time to avoid conflicts with other resources.
+
 -enableADDomainPasswordPolicy
-```
-Include this switch when deploying the solution to set the password
-policy to 60 days at the Domain level.
-```
+Only applicable to deploy.ps1.  Include this switch when deploying the solution to set the password policy to 60 days at the Domain level.  
+
 -enableMFA
-```
-Include this switch when deploying the solution to enable multi-factor
-authentication for solution users. 
+Only applicable to deploy.ps1.  Include this switch when deploying the solution to enable multi-factor authentication for solution users.  
+  This feature - is optional - but highly recommended. Enabling MFA will require additional configurations outlined in the following Azure MFA documentation.
+Using MFA for all administrators, including global administrators is highly recommended to prevent unauthorized use of the subscription Global Admin.
 
-![](./images/Warning-sign.png) This feature - is optional - but highly recommended. Enabling MFA will require additional configurations outlined in the following [Azure MFA](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/multi-factor-authentication-whats-next) documentation. 
-
-Using MFA for all administrators, including global administrators is highly recommended to prevent unauthorized use of the subscription [Global Admin MFA](https://docs.microsoft.com/en-us/microsoft-365/enterprise/identity-designate-protect-admin-accounts)
-
-
-```
 -installModules
-```
-Installs and updates all necessary PowerShell modules. Run the script
-with this switch before performing the main deployment to ensure that
-all necessary modules are present.
-```
+Installs and updates all necessary PowerShell modules. Run the script with this switch before performing the deployment to ensure that all necessary modules are present.
+
 -globalAdminUsername <username>
-```
-Typically, this is the username of the user performing the deployment.
-Use a valid Azure Active Directory OrgID username (example:
-"alex@contosohealthcare.onmicrosoft.com") rather than a Microsoft or
-corporate account name (example: "alex@contoso.com").
-```
+Typically, this is the username of the user performing the deployment. Use a valid Azure Active Directory OrgID username (example: "alex@contosohealthcare.onmicrosoft.com") rather than a Microsoft or corporate account name (example: "alex@contoso.com").
+
 -subscriptionId <subscription-id>
-```
-For the subscription ID, sign in to the [Subscriptions view in the Azure portal](https://portal.azure.com/#blade/Microsoft_Azure_Billing/SubscriptionsBlade).
-The subscription you are using should be listed in the table, along with
-its associated subscription ID, a GUID.
-```
+For the subscription ID, sign in to the Subscriptions view in the Azure portal. The subscription you are using should be listed in the table, along with its associated subscription ID, a GUID.
+
 -tenantDomain <tenant-domain>
-```
-The tenant domain is the default directory name listed under your
-account name in the dashboard followed by ".onmicrosoft.com" (example:
-"contosohealthcare.onmicrosoft.com").
-```
+The tenant domain is the default directory name listed under your account name in the dashboard followed by ".onmicrosoft.com" (example: "contosohealthcare.onmicrosoft.com").
+
 -tenantId <tenant-id>
-```
-To find the Azure tenant ID, click **Azure Active Directory** in the
-dashboard sidebar, and under **Manage**, click **Properties**. The
-tenant ID is a GUID in the box labeled **Directory ID**.
+To find the Azure tenant ID, click Azure Active Directory in the dashboard sidebar, and under Manage, click Properties. The tenant ID is a GUID in the box labeled Directory ID.
 
-```
 -appInsightsPlan <level number>
-```
-Provides the ability to select your Application Insights plan level. Default is set to 1.
 
+Only applicable to deploy.ps1.  Provides the ability to select your Application Insights plan level. Default is set to 1.
 0 – Set up App Insights with Application Insights Basic Plan.
-
 1 – Set up App insights with Application Insights Enterprise Plan.
-
-2 – Only deploys App Insights without any billing plan. 
-
-Subscriptions such as BizSpark, where there is a spending limit, the use of option "2" is required. 
-
-```
+2 – Deploys App Insights without any billing plan.
+Subscriptions such as BizSpark, where there is a spending limit, the use of option "2" is required.
 -appInsightsPlan 2
-```
 
 
 ## Grant permissions in Azure Active Directory
@@ -261,6 +260,15 @@ following parameters:
              -globalAdminUsername <username>
              -clearDeployment
 ```
+## if deployIaaS.ps1 was used to deploy the IaaS extension, the following can be used to remove the IaaS elements:
+
+.\deployIaaS.ps1 -deploymentPrefix <deployment-prefix> 
+                 -tenantId  <tenant-id>
+                 -subscriptionId <subscription-id>
+                 -tenantDomain <tenant-domain>
+                 -globalAdminUsername <username>
+                 -clearDeployment
+
 
 The script asks you to supply a value for the
 **globalAdminPassword** parameter; enter the password for the
@@ -290,7 +298,7 @@ Upon completion deploying the solution, **IDENTITY, SECURITY** enabled features 
     [R-function](https://docs.microsoft.com/en-us/azure/machine-learning/studio/r-quickstart)
     Machine Learning experiment created in [Azure Machine Learning
     Studio](https://docs.microsoft.com/en-us/azure/machine-learning/studio/what-is-ml-studio).
-    The experiment was designed to predicted the duration a patient would
+    The experiment was designed to predict the duration a patient would
     likely stay in the hospital based on the health conditions collected
     in the sample data.
 ![](images/bulkin.png)
@@ -325,8 +333,7 @@ permissions in Azure Active Directory".
 
 
 After deploying the Blueprint, the first step in
-running the length-of-stay (LOS) demonstration project is for the user created by the deployment script called 'Danny, the
-database analyst', to input the sample historical patient data into the
+running the length-of-stay (LOS) demonstration project is for the user created by the deployment script to input the sample historical patient data into the
 solution.
 
 To input the data, navigate to the **\\Deployment\\scripts\\demoscripts\\** directory in PowerShell
@@ -468,11 +475,11 @@ Blueprint\\Deployment\\Reports\\
 
 > ![](images/image7.png)
 
-To use the report, you will be required to download a local copy of both fils located in the reports folder.
+To use the report, you will be required to download a local copy of both fills located in the reports folder.
 - Healthcare-CLM,CMIO Report.pbix
 - Microsoft_DIM.xlsx
 
-The xlsx file provides local look up of data to help create additonal dimention to the results.
+The xlsx file provides local look up of data to help create additional dimension to the results.
 
 
 The PBIX file contains cached data when first opened. To connect it to
@@ -483,7 +490,7 @@ your live data source:
 
 > ![](images/image5.png)
 
-2.  Select the database and click **Change source**. This will be required for the the Microsoft_DIM.xlsx file as well.
+2.  Select the database and click **Change source**. This will be required for the Microsoft_DIM.xlsx file as well.
 > ![](images/powerbidatasource.PNG)
 
 
@@ -520,7 +527,7 @@ the database by clicking **Refresh** again in Power BI.
 
 
 # Disclaimer and acknowledgments
-February 2018
+July 2018
 
 This document is for informational purposes only. MICROSOFT AND AVYAN MAKE NO WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY, AS TO THE INFORMATION IN THIS DOCUMENT. This document is provided “as-is.” Information and views expressed in this document, including URL and other Internet website references, may change without notice. Customers reading this document bear the risk of using it.
 This document does not provide customers with any legal rights to any intellectual property in any Microsoft or Avyan product or solutions.
@@ -549,4 +556,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 John Doyle (WW Health Industry Microsoft)
 
-Frank Simorjay (Global Ecosystem Microsoft)
+Scott Feild (Azure Core Security)
+
+Frank Simorjay (Azure Core Security)
+
+Rajeev Rangappa ( Azure Global)
+

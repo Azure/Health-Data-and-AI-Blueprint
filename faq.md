@@ -1,5 +1,6 @@
 
-# Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI FAQ
+# Azure HIPAA/HITRUST Health Data and AI - with (IaaS Extension) PREVIEW
+
 
 
 **Why am I unable to log in or run the PowerShell scripts with my Azure
@@ -22,15 +23,15 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
 
 ![](./images/Warning-sign.png) MFA is an advanced feature. This feature will make the deployment process require attention to how [Azure MFA](https://docs.microsoft.com/en-us/azure/multi-factor-authentication/multi-factor-authentication-whats-next) operates. 
 
-Once -mfa is enabled the deployment WILL - 
+Once -MFA is enabled the deployment WILL - 
 1.	Enforce MFA for global AD admins
-2.	Enforce a separation between AD Administrator and Subscription Administrator (Owner/Constributor)
+2.	Enforce a separation between AD Administrator and Subscription Administrator (Owner/Contributor)
 3.	Enforcing MFA at the user level 
 
 - Note that rerunning the deployment after MFA is enabled will result in failure, unless MFA users are manually removed. 
 
  - MFA will block/fail the re-deployment process as it attempts to login with the Site-Admin credentials with the credentials provided
-- 	Unable to perform Ingestion after enabling MFA. (Demo requires hands on changes to run with MFA enabled) To mitigate the -mfa switch – You will need to manually upload blob using Azure Portal or Storage explorer. Make sure you use Debra_DataScientist account to login and upload a training data – LengthOfStay.csv (blob).
+- 	Unable to perform Ingestion after enabling MFA. (Demo requires hands on changes to run with MFA enabled) To mitigate the -MFA switch – You will need to manually upload blob using Azure Portal or Storage explorer. Make sure you use Debra_DataScientist account to login and upload a training data – LengthOfStay.csv (blob).
 
 https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-portal#upload-a-block-blob 
 
@@ -140,7 +141,8 @@ Due to PowerShell's limitations, caching users information may at times cause er
 **I get an error while deployment at 'appInsights' step of the script. I noticed the error is related to a /CurrentBillingFeatures**
 ![](images/OMSlicense.png)
 
-The error is due to the licensing model of your OMS/appInsights. You can correct the script by adding an enterprise plan in Azure Portal, or changing the deployment method:
+The error is due to the licensing model of your OMS/appInsights. You can correct the script by adding an enterprise plan in Azure Portal,or changing the deployment method via the appInsightsPlan deploy.ps1 argument.
+
 0 – Set up App Insights with Application Insights Basic Plan.
 
 1 – Set up App insights with Application Insights Enterprise Plan.
@@ -204,9 +206,12 @@ Soft-delete recovery option can be enabled, where deleted keys, secrets, and eve
 
 **How do I deploy the solution to another region?**
 
-The solution is set up to deploy in the West Central US. region. You can modify the scripts to deploy to other supported regions. It's important to verify that the region you pick has all the listed solution services [availible](https://azure.microsoft.com/en-us/regions/services/). 
+The solution is set up to deploy in the West Central US. region. You can modify the scripts to deploy to other supported regions. It's important to verify that the region you pick has all the listed solution services [available](https://azure.microsoft.com/en-us/regions/services/). 
 
 
+**The sample illustrates using a new Azure Disk Encryption extension deployment feature that may result in an incorrect security alert**  
+
+Azure Security Center may incorrectly flag the VM as still needing to enable disk encryption.  This will be fixed in a future update.
 
 
 
