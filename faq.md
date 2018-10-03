@@ -114,7 +114,7 @@ Once the script has completed, you should consider resetting your
 administrative passwords, including your ADsqladmin and Admin users. The
 following command can be used to quickly reset passwords in PowerShell:
 ```
-Set-MsolUserPassword -userPrincipalName *\<youradmin@yourdomain\>*-NewPassword *\<newpassword\>* ‑ForceChangePassword \$false
+Set-MsolUserPassword -userPrincipalName *\<youradmin@yourdomain\>* -NewPassword *\<newpassword\>* ‑ForceChangePassword \$false
 ```
 **When I Run .\\HealthcareDemo.ps1 -deploymentPrefix prefix -Operation
 Ingestion I get a permission error.**
