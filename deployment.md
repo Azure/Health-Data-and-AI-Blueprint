@@ -457,8 +457,8 @@ prefix) is selected under **Workspace**. Two experiments display.
     that are close to it.
 
 You can modify these experiments and create new ones to explore new
-machine learning possibilities. For more information, see [Azure Machine Learning preview
-documentation](https://docs.microsoft.com/en-us/azure/machine-learning/preview/)
+machine learning possibilities. For more information, see [Azure Machine Learning Studio
+documentation](https://docs.microsoft.com/azure/machine-learning/studio/)
 for more information about Machine Learning Studio and working with
 experiments.
 
