@@ -1,5 +1,5 @@
-
-
+## NOTE: This content is no longer being maintained or supported.
+Please see updated blueprints here: [https://docs.microsoft.com/en-us/azure/governance/blueprints/samples/](https://docs.microsoft.com/en-us/azure/governance/blueprints/samples/)
  
 # Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI  
 
