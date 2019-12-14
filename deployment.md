@@ -119,7 +119,7 @@ This command deploys the IaaS solution for testing purposes.
 
 ## Extension deployment Example
 ```
-.\deployIaaS.ps1 -deploymentPrefix <prefix> [Any max 5 length prefix e.g. demo1, test99, etc]
+.\deployIaaS.ps1 -deploymentPrefix <prefix> [Any max 5 length prefix e.g. demo1, test9, etc]
              -tenantId <tenant-id> [“XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX”] 
              -tenantDomain <tenant-domain> [“XXXXXXXX.com”]
              -subscriptionId <subscription-id> [XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX]
